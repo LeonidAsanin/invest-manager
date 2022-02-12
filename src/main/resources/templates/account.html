@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Account</title>
+</head>
+<body>
+    <h1>Invest Manager</h1>
+
+    <span th:text="${username} + ', hello!'"></span>
+
+    <table>
+        <caption>Purchase list</caption>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Amount</th>
+                <th>Commission</th>
+                <th>Date</th>
+                <th>Current price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="purchase : ${purchaseList}">
+                <form method="post">
+                    <td>
+                        <input th:disabled="${editable} != ${purchase.id}" name="name" th:value="${purchase.name}">
+                    </td>
+                    <td>
+                        <input th:disabled="${editable} != ${purchase.id}" name="price" th:value="${purchase.price}">
+                    </td>
+                    <td>
+                        <input th:disabled="${editable} != ${purchase.id}" name="amount" th:value="${purchase.amount}">
+                    </td>
+                    <td>
+                        <input th:disabled="${editable} != ${purchase.id}" name="commission" th:value="${purchase.commission}">
+                    </td>
+                    <td>
+                        <input th:disabled="${editable} != ${purchase.id}" name="date" th:value="${purchase.date}">
+                    </td>
+                    <td>
+                        <input th:disabled="${editable} != ${purchase.id}" name="current_price" th:value="${purchase.current_price}">
+                    </td>
+                    <td>
+                        <button type="submit" th:formaction="@{'/purchase/edit/' + ${purchase.id}}" th:if="${editable} != ${purchase.id}">
+                            Edit
+                        </button>
+                        <button type="submit" th:formaction="@{'/purchase/save/' + ${purchase.id}}" th:if="${editable} == ${purchase.id}">
+                            Save
+                        </button>
+                    </td>
+                    <td>
+                        <button type="submit" th:formaction="@{'/purchase/delete/' + ${purchase.id}}">
+                            Delete
+                        </button>
+                    </td>
+                </form>
+            </tr>
+        </tbody>
+    </table>
+
+    <form method="post" th:action="@{/purchase/add}">
+        <fieldset>
+            <label for="name">Name</label>
+            <input type="text" required id="name" name="name">
+
+            <label for="price">Price</label>
+            <input type="number" required min="0" step="any" id="price" name="price">
+
+            <label for="amount">Amount</label>
+            <input type="number" required min="0" size="1" id="amount" name="amount">
+
+            <label for="commission">Commission</label>
+            <input type="number" required min="0" step="any" id="commission" name="commission">
+
+            <label for="date">Date</label>
+            <input type="date" required id="date" name="date">
+
+            <label for="current_price">Current price</label>
+            <input type="number" required min="0" step="any" id="current_price" name="current_price">
+
+            <button type="submit">Add new purchase</button>
+        </fieldset>
+    </form>
+
+    <form th:action="@{/}">
+        <input hidden name="logout">
+        <button type="submit">Log out</button>
+    </form>
+</body>
+</html>

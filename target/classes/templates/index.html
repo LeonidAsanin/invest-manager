@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Invest Manager</title>
+</head>
+<body>
+    <h1>Invest Manager</h1>
+
+    <form method="post" th:action="@{/login}">
+        <fieldset>
+            <legend>Authorization</legend>
+            <div>
+                <label for="username">Username</label>
+                <input type="text" required id="username" name="username">
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input type="password" required id="password" name="password">
+            </div>
+            <button type="submit">Log in</button>
+        </fieldset>
+    </form>
+
+    <form method="get" th:action="@{/register}">
+        <button type="submit">Register new account</button>
+    </form>
+
+    <div class="errorMessage" th:if="${loginError} == 'true'">
+        Sorry, username or password is not correct
+    </div>
+</body>
+</html>
