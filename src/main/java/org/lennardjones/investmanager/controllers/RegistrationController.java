@@ -45,8 +45,9 @@ public class RegistrationController {
         }
 
         accountService.registerNewAccount(Account.of(username, password));
-        loggedUserManagementService.setUsername(username);
         loggedUserManagementService.setUserId(accountService.getUserIdByUsername(username));
+        loggedUserManagementService.setUsername(username);
+        loggedUserManagementService.setLoggedIn(true);
 
         return "redirect:/account";
     }

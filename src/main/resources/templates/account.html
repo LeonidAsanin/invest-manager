@@ -7,10 +7,24 @@
 <body>
     <h1>Invest Manager</h1>
 
-    <span th:text="${username} + ', hello!'"></span>
+    <div th:text="${username} + ', hello!'">Username, hello!</div>
+
+    <br>
+
+    <div>
+        <form th:action="@{/account}">
+            Sort by
+            <select name="sortType" onchange="javascript:this.form.submit()">
+                <option value="NONE" th:selected="${sortType} == 'NONE'">none</option>
+                <option value="NAME" th:selected="${sortType} == 'NAME'">name</option>
+                <option value="DATE" th:selected="${sortType} == 'DATE'">date</option>
+            </select>
+        </form>
+    </div>
 
     <table>
         <caption>Purchase list</caption>
+
         <thead>
             <tr>
                 <th>Name</th>
@@ -21,6 +35,7 @@
                 <th>Current price</th>
             </tr>
         </thead>
+
         <tbody>
             <tr th:each="purchase : ${purchaseList}">
                 <form method="post">
@@ -60,6 +75,8 @@
         </tbody>
     </table>
 
+    <br>
+
     <form method="post" th:action="@{/purchase/add}" th:object="${purchase}">
         <fieldset>
             <label for="name">Name</label>
@@ -85,6 +102,8 @@
             <button type="submit">Add new purchase</button>
         </fieldset>
     </form>
+
+    <br>
 
     <form th:action="@{/}">
         <input hidden name="logout">

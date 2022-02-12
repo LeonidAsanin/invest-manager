@@ -16,10 +16,10 @@ public class MainController {
     @GetMapping("/")
     public String index(@RequestParam(required = false) String logout) {
         if (logout != null) {
-            loggedUserManagementService.setUsername(null);
+            loggedUserManagementService.setLoggedIn(false);
         }
 
-        if (loggedUserManagementService.getUsername() != null) {
+        if (loggedUserManagementService.isLoggedIn()) {
             return "redirect:/account";
         }
 
