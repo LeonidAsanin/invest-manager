@@ -5,6 +5,7 @@ import org.lennardjones.investmanager.services.AccountService;
 import org.lennardjones.investmanager.services.LoggedUserManagementService;
 import org.lennardjones.investmanager.services.PurchaseService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,8 +27,7 @@ public class PurchaseController {
     }
 
     @PostMapping("/add")
-    public String add(Purchase purchase) {
-        purchase.setOwner(accountService.getAccountById(loggedUserManagementService.getUserId()));
+    public String add(@ModelAttribute Purchase purchase) {
         purchaseService.save(purchase);
         return "redirect:/account";
     }
