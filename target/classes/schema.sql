@@ -14,3 +14,15 @@ CREATE TABLE IF NOT EXISTS purchase (
     date DATE,
     current_price DOUBLE
 );
+
+CREATE TABLE IF NOT EXISTS sale (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    seller_id BIGINT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    price DOUBLE,
+    amount INT,
+    commission DOUBLE,
+    date DATE,
+    absolute_benefit DOUBLE,
+    relative_benefit DOUBLE
+);

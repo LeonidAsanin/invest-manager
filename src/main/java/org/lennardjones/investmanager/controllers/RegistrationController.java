@@ -23,7 +23,7 @@ public class RegistrationController {
 
     @GetMapping
     public String getRegister() {
-        return "registration.html";
+        return "registration";
     }
 
     @PostMapping
@@ -35,13 +35,13 @@ public class RegistrationController {
     ) {
         if (!password.equals(passwordConfirmation)) {
             model.addAttribute("username", username);
-            model.addAttribute("passwordError", "true");
-            return "registration.html";
+            model.addAttribute("passwordError", true);
+            return "registration";
         }
 
         if (accountService.existsByUsername(username)) {
-            model.addAttribute("usernameError", "true");
-            return "registration.html";
+            model.addAttribute("usernameError", true);
+            return "registration";
         }
 
         accountService.registerNewAccount(Account.of(username, password));

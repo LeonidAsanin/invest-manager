@@ -17,8 +17,11 @@ public class Account {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Purchase> purchaseList;
+
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+    private List<Sale> saleList;
 
     public static Account of(String username, String password) {
         var account = new Account();
@@ -57,5 +60,13 @@ public class Account {
 
     public void setPurchaseList(List<Purchase> purchaseList) {
         this.purchaseList = purchaseList;
+    }
+
+    public List<Sale> getSaleList() {
+        return saleList;
+    }
+
+    public void setSaleList(List<Sale> saleList) {
+        this.saleList = saleList;
     }
 }

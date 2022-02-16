@@ -23,6 +23,6 @@ public class MainController {
             return "redirect:/account";
         }
 
-        return "index.html";
+        return "index";
     }
 }

@@ -6,16 +6,16 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "purchase")
-public class Purchase {
+@Table(name = "sale")
+public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "owner_id", nullable = false)
-    private Account owner;
+    @JoinColumn(name = "seller_id")
+    private Account seller;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
@@ -32,8 +32,11 @@ public class Purchase {
     @Column(name = "commission")
     private double commission;
 
-    @Column(name = "current_price")
-    private double currentPrice;
+    @Column(name = "absolute_benefit")
+    private double absoluteBenefit;
+
+    @Column(name = "relative_benefit")
+    private double relativeBenefit;
 
     public Long getId() {
         return id;
@@ -43,12 +46,12 @@ public class Purchase {
         this.id = id;
     }
 
-    public Account getOwner() {
-        return owner;
+    public Account getSeller() {
+        return seller;
     }
 
-    public void setOwner(Account owner) {
-        this.owner = owner;
+    public void setSeller(Account seller) {
+        this.seller = seller;
     }
 
     public LocalDate getDate() {
@@ -91,11 +94,19 @@ public class Purchase {
         this.commission = commission;
     }
 
-    public double getCurrentPrice() {
-        return currentPrice;
+    public double getAbsoluteBenefit() {
+        return absoluteBenefit;
     }
 
-    public void setCurrentPrice(double currentPrice) {
-        this.currentPrice = currentPrice;
+    public void setAbsoluteBenefit(double absoluteBenefit) {
+        this.absoluteBenefit = absoluteBenefit;
+    }
+
+    public double getRelativeBenefit() {
+        return relativeBenefit;
+    }
+
+    public void setRelativeBenefit(double relativeBenefit) {
+        this.relativeBenefit = relativeBenefit;
     }
 }

@@ -26,12 +26,16 @@
         </fieldset>
     </form>
 
-    <div class="errorMessage" th:if="${usernameError} == 'true'">
+    <div class="errorMessage" th:if="${usernameError} == true">
         Sorry, this username already exists
     </div>
 
-    <div class="errorMessage" th:if="${passwordError} == 'true'">
+    <div class="errorMessage" th:if="${passwordError} == true">
         Please, type in your desired password twice correctly
     </div>
+
+    <form th:action="@{/}">
+        <button type="submit">Back</button>
+    </form>
 </body>
 </html>

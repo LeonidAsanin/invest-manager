@@ -31,7 +31,7 @@ public class LoginController {
             return "redirect:/account";
         }
 
-        model.addAttribute("loginError", "true");
-        return "index.html";
+        model.addAttribute("loginError", true);
+        return "index";
     }
 }

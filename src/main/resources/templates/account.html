@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>My Account</title>
@@ -28,7 +28,7 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Price</th>
+                <th>Price of buying</th>
                 <th>Amount</th>
                 <th>Commission</th>
                 <th>Date</th>
@@ -40,28 +40,36 @@
             <tr th:each="purchase : ${purchaseList}">
                 <form method="post">
                     <td>
-                        <input type="text" required th:disabled="${editable} != ${purchase.id}" name="name" th:value="${purchase.name}">
+                        <input type="text" required th:disabled="${editable_purchase} != ${purchase.id}"
+                               name="name" th:value="${purchase.name}">
                     </td>
                     <td>
-                        <input type="number" min="0" step="any" required th:disabled="${editable} != ${purchase.id}" name="price" th:value="${purchase.price}">
+                        <input type="number" required min="0" step="any" th:disabled="${editable_purchase} != ${purchase.id}"
+                               name="price" th:value="${purchase.price}">
                     </td>
                     <td>
-                        <input type="number" min="0" step="1" required th:disabled="${editable} != ${purchase.id}" name="amount" th:value="${purchase.amount}">
+                        <input type="number" required min="1" step="1" th:disabled="${editable_purchase} != ${purchase.id}"
+                               name="amount" th:value="${purchase.amount}">
                     </td>
                     <td>
-                        <input type="number" min="0" step="any" required th:disabled="${editable} != ${purchase.id}" name="commission" th:value="${purchase.commission}">
+                        <input type="number" required min="0" step="any" th:disabled="${editable_purchase} != ${purchase.id}"
+                               name="commission" th:value="${purchase.commission}">
                     </td>
                     <td>
-                        <input type="date" required th:disabled="${editable} != ${purchase.id}" name="date" th:value="${purchase.date}">
+                        <input type="date" required th:disabled="${editable_purchase} != ${purchase.id}"
+                               name="date" th:value="${purchase.date}">
                     </td>
                     <td>
-                        <input type="number" min="0" step="any" required th:disabled="${editable} != ${purchase.id}" name="current_price" th:value="${purchase.current_price}">
+                        <input type="number" required min="0" step="any" th:disabled="${editable_purchase} != ${purchase.id}"
+                               name="currentPrice" th:value="${purchase.currentPrice}">
                     </td>
                     <td>
-                        <button type="submit" th:formaction="@{'/purchase/edit/' + ${purchase.id}}" th:if="${editable} != ${purchase.id}">
+                        <button type="submit" th:formaction="@{'/purchase/edit/' + ${purchase.id}}"
+                                th:if="${editable_purchase} != ${purchase.id}">
                             Edit
                         </button>
-                        <button type="submit" th:formaction="@{'/purchase/save/' + ${purchase.id}}" th:if="${editable} == ${purchase.id}">
+                        <button type="submit" th:formaction="@{'/purchase/save/' + ${purchase.id}}"
+                                th:if="${editable_purchase} == ${purchase.id}">
                             Save
                         </button>
                     </td>
@@ -69,6 +77,18 @@
                         <button type="submit" th:formaction="@{'/purchase/delete/' + ${purchase.id}}">
                             Delete
                         </button>
+                    </td>
+                    <td class="errorMessage" th:if="${error} == 'editPurchase' AND ${errorId} == ${purchase.id}">
+                        Sorry, but you cannot update the purchase with given values and date
+                        <a th:href="@{/account}">
+                            <button type="button">OK</button>
+                        </a>
+                    </td>
+                    <td class="errorMessage" th:if="${error} == 'deletePurchase' AND ${errorId} == ${purchase.id}">
+                        Sorry, but you cannot delete this purchase
+                        <a th:href="@{/account}">
+                            <button type="button">OK</button>
+                        </a>
                     </td>
                 </form>
             </tr>
@@ -79,29 +99,136 @@
 
     <form method="post" th:action="@{/purchase/add}" th:object="${purchase}">
         <fieldset>
-            <label for="name">Name</label>
-            <input type="text" required id="name" name="name" th:field="*{name}">
+            <label for="purchase_name">Name</label>
+            <input type="text" required id="purchase_name" th:field="*{name}">
 
-            <label for="price">Price</label>
-            <input type="number" required min="0" step="any" id="price" th:field="*{price}">
+            <label for="purchase_price">Price of buying</label>
+            <input type="number" required min="0" step="any" id="purchase_price" th:field="*{price}">
 
-            <label for="amount">Amount</label>
-            <input type="number" required min="0" size="1" id="amount" th:field="*{amount}">
+            <label for="purchase_amount">Amount</label>
+            <input type="number" required min="1" step="1" id="purchase_amount" th:field="*{amount}">
 
-            <label for="commission">Commission</label>
-            <input type="number" required min="0" step="any" id="commission" th:field="*{commission}">
+            <label for="purchase_commission">Commission</label>
+            <input type="number" required min="0" step="any" id="purchase_commission" th:field="*{commission}">
 
-            <label for="date">Date</label>
-            <input type="date" required id="date" th:field="*{date}">
+            <label for="purchase_date">Date</label>
+            <input type="date" required id="purchase_date" th:field="*{date}">
 
-            <label for="current_price">Current price</label>
-            <input type="number" required min="0" step="any" id="current_price" th:field="*{current_price}">
+            <label for="purchase_current_price">Current price</label>
+            <input type="number" required min="0" step="any" id="purchase_current_price" th:field="*{currentPrice}">
 
             <input hidden th:field="*{owner}">
 
             <button type="submit">Add new purchase</button>
         </fieldset>
     </form>
+
+    <br><br>
+
+    <table>
+        <caption>Sale list</caption>
+
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price of selling</th>
+            <th>Amount</th>
+            <th>Commission</th>
+            <th>Date</th>
+            <th>Absolute benefit</th>
+            <th>Relative benefit</th>
+        </tr>
+        </thead>
+
+
+        <tbody>
+        <tr th:each="sale : ${saleList}">
+            <form method="post">
+                <td>
+                    <input type="text" required th:disabled="${editable_sale} != ${sale.id}"
+                           name="name" th:value="${sale.name}">
+                </td>
+                <td>
+                    <input type="number" required min="0" step="any" th:disabled="${editable_sale} != ${sale.id}"
+                           name="price" th:value="${sale.price}">
+                </td>
+                <td>
+                    <input type="number" required min="1" step="1" th:disabled="${editable_sale} != ${sale.id}"
+                           name="amount" th:value="${sale.amount}">
+                </td>
+                <td>
+                    <input type="number" required min="0" step="any" th:disabled="${editable_sale} != ${sale.id}"
+                           name="commission" th:value="${sale.commission}">
+                </td>
+                <td>
+                    <input type="date" required th:disabled="${editable_sale} != ${sale.id}"
+                           name="date" th:value="${sale.date}">
+                </td>
+                <td>
+                    <span th:text="${sale.absoluteBenefit}"></span>
+                </td>
+                <td>
+                    <span th:text="${sale.relativeBenefit}"></span>
+                </td>
+                <td>
+                    <button type="submit" th:formaction="@{'/sale/edit/' + ${sale.id}}"
+                            th:if="${editable_sale} != ${sale.id}">
+                        Edit
+                    </button>
+                    <button type="submit" th:formaction="@{'/sale/save/' + ${sale.id}}"
+                            th:if="${editable_sale} == ${sale.id}">
+                        Save
+                    </button>
+                </td>
+                <td>
+                    <button type="submit" th:formaction="@{'/sale/delete/' + ${sale.id}}">
+                        Delete
+                    </button>
+                </td>
+                <td class="errorMessage" th:if="${error} == 'editSale' AND ${errorId} == ${sale.id}">
+                    Sorry, but you cannot update the sale with given values and date
+                    <a th:href="@{/account}">
+                        <button type="button">OK</button>
+                    </a>
+                </td>
+            </form>
+        </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+    <form method="post" th:action="@{/sale/add}" th:object="${sale}">
+        <fieldset>
+            <label for="sale_name">Name</label>
+            <input type="text" required id="sale_name" name="name" th:field="*{name}">
+
+            <label for="sale_price">Price of selling</label>
+            <input type="number" required min="0" step="any" id="sale_price" th:field="*{price}">
+
+            <label for="sale_amount">Amount</label>
+            <input type="number" required min="1" step="1" id="sale_amount" th:field="*{amount}">
+
+            <label for="sale_commission">Commission</label>
+            <input type="number" required min="0" step="any" id="sale_commission" th:field="*{commission}">
+
+            <label for="sale_date">Date</label>
+            <input type="date" required id="sale_date" th:field="*{date}">
+
+            <input hidden th:field="*{seller}">
+
+            <button type="submit">Add new sale</button>
+        </fieldset>
+    </form>
+
+    <br>
+
+    <div class="errorMessage" th:if="${error} == 'addSale'">
+        <form th:action="@{/account}">
+            Sorry, but you cannot add sale with given values and date.
+            <button type="submit">OK</button>
+        </form>
+    </div>
 
     <br>
 

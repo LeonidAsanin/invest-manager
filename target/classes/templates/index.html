@@ -26,7 +26,7 @@
         <button type="submit">Register new account</button>
     </form>
 
-    <div class="errorMessage" th:if="${loginError} == 'true'">
+    <div class="errorMessage" th:if="${loginError} == true">
         Sorry, username or password is not correct
     </div>
 </body>

@@ -12,10 +12,14 @@ import java.util.List;
 public class PurchaseService {
     private final PurchaseRepository purchaseRepository;
     private final AccountRepository accountRepository;
+    private  final LoggedUserManagementService loggedUserManagementService;
 
-    public PurchaseService(PurchaseRepository purchaseRepository, AccountRepository accountRepository) {
+    public PurchaseService(PurchaseRepository purchaseRepository,
+                           AccountRepository accountRepository,
+                           LoggedUserManagementService loggedUserManagementService) {
         this.purchaseRepository = purchaseRepository;
         this.accountRepository = accountRepository;
+        this.loggedUserManagementService = loggedUserManagementService;
     }
 
     public List<Purchase> getListByOwnerId(Long userId) {
@@ -26,11 +30,27 @@ public class PurchaseService {
         return Collections.emptyList();
     }
 
+    public String getNameById(Long id) {
+        return purchaseRepository.getById(id).getName();
+    }
+
     public void save(Purchase purchase) {
-        purchaseRepository.save(purchase);
+        var userId = loggedUserManagementService.getUserId();
+        var ownerId = purchase.getOwner().getId();
+        if (userId != null && userId.equals(ownerId)) {
+            purchaseRepository.save(purchase);
+        } else {
+            throw new RuntimeException("Attempt to save purchase to someone else's account");
+        }
     }
 
     public void deleteById(Long id) {
-        purchaseRepository.deleteById(id);
+        var userId = loggedUserManagementService.getUserId();
+        var ownerId = purchaseRepository.findById(id).orElseThrow().getOwner().getId();
+        if (userId != null && userId.equals(ownerId)) {
+            purchaseRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Attempt to delete someone else's purchase");
+        }
     }
 }
