@@ -12,8 +12,8 @@
     <br>
 
     <div>
+        Sort by
         <form th:action="@{/account}">
-            Sort by
             <span>
                 <select name="sortType" onchange="javascript:this.form.submit()">
                     <option value="NONE" th:selected="${sortType} == 'NONE'">none</option>
@@ -21,16 +21,28 @@
                     <option value="DATE" th:selected="${sortType} == 'DATE'">date</option>
                 </select>
             </span>
-            in
             <span>
                 <input type="radio" id="asc_order" name="sortOrderType" value="ASC" checked
                        th:checked="${sortOrderType} == 'ASC'" onclick="javascript:this.form.submit()">
-                <label for="asc_order">ascending order</label>
+                <label for="asc_order">Ascending order</label>
 
                 <input type="radio" id="dec_order" name="sortOrderType" value="DEC"
                        th:checked="${sortOrderType} == 'DEC'" onclick="javascript:this.form.submit()">
-                <label for="dec_order">decreasing order</label>
+                <label for="dec_order">Decreasing order</label>
             </span>
+        </form>
+    </div>
+
+    <br>
+
+    <div>
+        <form th:action="@{/account}">
+            <input type="text" name="filter" th:value="${filterByNameString}" placeholder="Filter by name">
+            <button type="submit" th:formaction="@{/account}">Apply</button>
+        </form>
+        <form th:action="@{/account}">
+            <input type="text" name="filter" value="" hidden>
+            <button type="submit" th:if="${filterByNameString} != ''">Cancel</button>
         </form>
     </div>
 

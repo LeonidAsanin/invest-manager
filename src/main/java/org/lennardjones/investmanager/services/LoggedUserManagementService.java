@@ -13,6 +13,7 @@ public class LoggedUserManagementService {
     private boolean loggedIn;
     private SortType sortType = SortType.NONE;
     private SortOrderType sortOrderType = SortOrderType.ASC;
+    private String filterByNameString = "";
 
     public Long getUserId() {
         return userId;
@@ -52,5 +53,13 @@ public class LoggedUserManagementService {
 
     public void setSortOrderType(SortOrderType sortOrderType) {
         this.sortOrderType = sortOrderType;
+    }
+
+    public String getFilterByNameString() {
+        return filterByNameString;
+    }
+
+    public void setFilterByNameString(String filterByNameString) {
+        this.filterByNameString = filterByNameString;
     }
 }

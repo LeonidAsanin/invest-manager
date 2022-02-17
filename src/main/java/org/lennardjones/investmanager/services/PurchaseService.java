@@ -30,6 +30,10 @@ public class PurchaseService {
         return Collections.emptyList();
     }
 
+    public List<Purchase> getListByOwnerIdContainingSubstring(Long id, String substring) {
+        return purchaseRepository.findByOwner_IdAndNameContainingIgnoreCase(id, substring);
+    }
+
     public String getNameById(Long id) {
         return purchaseRepository.getById(id).getName();
     }

@@ -12,9 +12,9 @@
     <br>
 
     <div>
+        Sort by
         <form th:action="@{/account}">
             <span>
-                Sort by
                 <select name="sortType" onchange="javascript:this.form.submit()">
                     <option value="NONE" th:selected="${sortType} == 'NONE'">none</option>
                     <option value="NAME" th:selected="${sortType} == 'NAME'">name</option>
@@ -30,6 +30,19 @@
                        th:checked="${sortOrderType} == 'DEC'" onclick="javascript:this.form.submit()">
                 <label for="dec_order">Decreasing order</label>
             </span>
+        </form>
+    </div>
+
+    <br>
+
+    <div>
+        <form th:action="@{/account}">
+            <input type="text" name="filter" th:value="${filterByNameString}" placeholder="Filter by name">
+            <button type="submit" th:formaction="@{/account}">Apply</button>
+        </form>
+        <form th:action="@{/account}">
+            <input type="text" name="filter" value="" hidden>
+            <button type="submit" th:if="${filterByNameString} != ''">Cancel</button>
         </form>
     </div>
 

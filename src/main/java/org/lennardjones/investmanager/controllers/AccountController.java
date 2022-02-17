@@ -14,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 public class AccountController {
     private final LoggedUserManagementService loggedUserManagementService;
@@ -37,6 +39,7 @@ public class AccountController {
             @RequestParam(name = "editable_sale", required = false) Long editableSaleId,
             @RequestParam(name = "sortType", required = false) String sortType,
             @RequestParam(name = "sortOrderType", required = false) String sortOrderType,
+            @RequestParam(name = "filter", required = false) String filterByNameString,
             @RequestParam(name = "error", required = false) String error,
             @RequestParam(name = "errorId", required = false) Long errorId,
             Model model
@@ -60,14 +63,34 @@ public class AccountController {
             loggedUserManagementService.setSortOrderType(SortOrderType.valueOf(sortOrderType));
         } else {
             model.addAttribute("sortOrderType", loggedUserManagementService.getSortOrderType().toString());
+        }
 
+        /* For filtering by name */
+        if (filterByNameString != null) {
+            if (filterByNameString.equals("")){
+                model.addAttribute("filterByNameString", "");
+                loggedUserManagementService.setFilterByNameString("");
+            } else{
+                model.addAttribute("filterByNameString", filterByNameString);
+                loggedUserManagementService.setFilterByNameString(filterByNameString);
+            }
+        } else {
+            model.addAttribute("filterByNameString", loggedUserManagementService.getFilterByNameString());
         }
 
         var usedId = loggedUserManagementService.getUserId();
 
         /* For purchase table */
-        var purchaseList = purchaseService.getListByOwnerId(usedId);
-        var saleList = saleService.getListBySellerId(usedId);
+        List<Purchase> purchaseList;
+        List<Sale> saleList;
+        var filterByName = loggedUserManagementService.getFilterByNameString();
+        if (filterByName.equals("")) {
+            purchaseList = purchaseService.getListByOwnerId(usedId);
+            saleList = saleService.getListBySellerId(usedId);
+        } else {
+            purchaseList = purchaseService.getListByOwnerIdContainingSubstring(usedId, filterByName);
+            saleList = saleService.getListBySellerIdContainingSubstring(usedId, filterByName);
+        }
         var typeOfSort = loggedUserManagementService.getSortType();
         var typeOfSortOrder = loggedUserManagementService.getSortOrderType();
         purchaseList = PurchaseSaleUtil.sortPurchaseList(purchaseList, typeOfSort, typeOfSortOrder);

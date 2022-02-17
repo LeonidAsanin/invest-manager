@@ -30,6 +30,10 @@ public class SaleService {
         return Collections.emptyList();
     }
 
+    public List<Sale> getListBySellerIdContainingSubstring(Long id, String substring) {
+        return saleRepository.findBySeller_IdAndNameContainingIgnoreCase(id, substring);
+    }
+
     public void save(Sale sale) {
         var userId = loggedUserManagementService.getUserId();
         var sellerId = sale.getSeller().getId();
