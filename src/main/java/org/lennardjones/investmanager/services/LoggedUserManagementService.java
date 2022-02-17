@@ -1,5 +1,6 @@
 package org.lennardjones.investmanager.services;
 
+import org.lennardjones.investmanager.util.SortOrderType;
 import org.lennardjones.investmanager.util.SortType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
@@ -11,6 +12,7 @@ public class LoggedUserManagementService {
     private String username;
     private boolean loggedIn;
     private SortType sortType = SortType.NONE;
+    private SortOrderType sortOrderType = SortOrderType.ASC;
 
     public Long getUserId() {
         return userId;
@@ -42,5 +44,13 @@ public class LoggedUserManagementService {
 
     public void setSortType(SortType sortType) {
         this.sortType = sortType;
+    }
+
+    public SortOrderType getSortOrderType() {
+        return sortOrderType;
+    }
+
+    public void setSortOrderType(SortOrderType sortOrderType) {
+        this.sortOrderType = sortOrderType;
     }
 }

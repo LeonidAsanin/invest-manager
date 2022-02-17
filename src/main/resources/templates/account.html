@@ -13,12 +13,23 @@
 
     <div>
         <form th:action="@{/account}">
-            Sort by
-            <select name="sortType" onchange="javascript:this.form.submit()">
-                <option value="NONE" th:selected="${sortType} == 'NONE'">none</option>
-                <option value="NAME" th:selected="${sortType} == 'NAME'">name</option>
-                <option value="DATE" th:selected="${sortType} == 'DATE'">date</option>
-            </select>
+            <span>
+                Sort by
+                <select name="sortType" onchange="javascript:this.form.submit()">
+                    <option value="NONE" th:selected="${sortType} == 'NONE'">none</option>
+                    <option value="NAME" th:selected="${sortType} == 'NAME'">name</option>
+                    <option value="DATE" th:selected="${sortType} == 'DATE'">date</option>
+                </select>
+            </span>
+            <span>
+                <input type="radio" id="asc_order" name="sortOrderType" value="ASC" checked
+                       th:checked="${sortOrderType} == 'ASC'" onclick="javascript:this.form.submit()">
+                <label for="asc_order">Ascending order</label>
+
+                <input type="radio" id="dec_order" name="sortOrderType" value="DEC"
+                       th:checked="${sortOrderType} == 'DEC'" onclick="javascript:this.form.submit()">
+                <label for="dec_order">Decreasing order</label>
+            </span>
         </form>
     </div>
 
