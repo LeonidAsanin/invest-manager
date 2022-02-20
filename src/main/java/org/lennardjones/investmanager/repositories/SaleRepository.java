@@ -10,7 +10,7 @@ import java.util.List;
 public interface SaleRepository extends JpaRepository<Sale, Long> {
     @Override
     @Modifying
-    @Query("DELETE FROM Sale WHERE id = :id")
+    @Query("delete from Sale where id = :id")
     void deleteById(Long id);
 
     List<Sale> findBySeller_IdAndNameContainingIgnoreCase(Long id, String name);

@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "sale")
-public class Sale {
+public class Sale implements Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -18,6 +18,7 @@ public class Sale {
     private Account seller;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "date")
     private LocalDate date;
 
     @Column(name = "name")
@@ -108,5 +109,25 @@ public class Sale {
 
     public void setRelativeBenefit(double relativeBenefit) {
         this.relativeBenefit = relativeBenefit;
+    }
+
+    @Override
+    public String toString() {
+        return "Sale{" +
+                "id=" + id +
+                ", seller=" + seller +
+                ", date=" + date +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", amount=" + amount +
+                ", commission=" + commission +
+                ", absoluteBenefit=" + absoluteBenefit +
+                ", relativeBenefit=" + relativeBenefit +
+                '}';
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

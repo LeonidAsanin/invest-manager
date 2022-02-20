@@ -22,12 +22,12 @@ public class RegistrationController {
     }
 
     @GetMapping
-    public String getRegister() {
+    public String getRegisterPage() {
         return "registration";
     }
 
     @PostMapping
-    public String postRegister(
+    public String registerNewUser(
             @RequestParam String username,
             @RequestParam String password,
             @RequestParam String passwordConfirmation,

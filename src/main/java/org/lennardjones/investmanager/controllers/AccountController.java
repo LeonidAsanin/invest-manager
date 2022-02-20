@@ -1,5 +1,6 @@
 package org.lennardjones.investmanager.controllers;
 
+import org.lennardjones.investmanager.entities.Account;
 import org.lennardjones.investmanager.entities.Purchase;
 import org.lennardjones.investmanager.entities.Sale;
 import org.lennardjones.investmanager.services.AccountService;
@@ -12,8 +13,10 @@ import org.lennardjones.investmanager.util.SortType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -34,7 +37,7 @@ public class AccountController {
     }
 
     @GetMapping("/account")
-    public String accountPage(
+    public String getAccountPage(
             @RequestParam(name = "editable_purchase", required = false) Long editablePurchaseId,
             @RequestParam(name = "editable_sale", required = false) Long editableSaleId,
             @RequestParam(name = "sortType", required = false) String sortType,
@@ -78,18 +81,18 @@ public class AccountController {
             model.addAttribute("filterByNameString", loggedUserManagementService.getFilterByNameString());
         }
 
-        var usedId = loggedUserManagementService.getUserId();
+        var userId = loggedUserManagementService.getUserId();
 
         /* For purchase table */
         List<Purchase> purchaseList;
         List<Sale> saleList;
         var filterByName = loggedUserManagementService.getFilterByNameString();
         if (filterByName.equals("")) {
-            purchaseList = purchaseService.getListByOwnerId(usedId);
-            saleList = saleService.getListBySellerId(usedId);
+            purchaseList = purchaseService.getListByOwnerId(userId);
+            saleList = saleService.getListBySellerId(userId);
         } else {
-            purchaseList = purchaseService.getListByOwnerIdContainingSubstring(usedId, filterByName);
-            saleList = saleService.getListBySellerIdContainingSubstring(usedId, filterByName);
+            purchaseList = purchaseService.getListByOwnerIdContainingSubstring(userId, filterByName);
+            saleList = saleService.getListBySellerIdContainingSubstring(userId, filterByName);
         }
         var typeOfSort = loggedUserManagementService.getSortType();
         var typeOfSortOrder = loggedUserManagementService.getSortOrderType();
@@ -102,20 +105,35 @@ public class AccountController {
         model.addAttribute("editable_purchase", editablePurchaseId);
         model.addAttribute("editable_sale", editableSaleId);
 
-        /* For "Add new purchase" button */
-        var purchaseTemplate = new Purchase();
-        purchaseTemplate.setOwner(accountService.getAccountById(usedId));
-        model.addAttribute("purchase", purchaseTemplate);
-
-        /* For "Add new sale" button */
-        var saleTemplate = new Sale();
-        saleTemplate.setSeller(accountService.getAccountById(usedId));
-        model.addAttribute("sale", saleTemplate);
-
         /* For adding error messages */
         model.addAttribute("error", error);
         model.addAttribute("errorId", errorId);
 
         return "account";
+    }
+
+    @ModelAttribute
+    public void addModelAttributes(Model model) {
+        var userId = loggedUserManagementService.getUserId();
+        Account userAccount;
+        try {
+            userAccount = accountService.getAccountById(userId);
+        } catch (Exception e) {
+            return;
+        }
+
+        /* For "Add new purchase" button */
+        var purchaseTemplate = new Purchase();
+        purchaseTemplate.setOwner(userAccount);
+        purchaseTemplate.setDate(LocalDate.now());
+        purchaseTemplate.setAmount(1);
+        model.addAttribute("purchase", purchaseTemplate);
+
+        /* For "Add new sale" button */
+        var saleTemplate = new Sale();
+        saleTemplate.setSeller(userAccount);
+        saleTemplate.setDate(LocalDate.now());
+        saleTemplate.setAmount(1);
+        model.addAttribute("sale", saleTemplate);
     }
 }

@@ -31,7 +31,7 @@ public class PurchaseController {
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute Purchase purchase) {
+    public String add(Purchase purchase) {
         purchaseService.save(purchase);
         return "redirect:/account";
     }
@@ -44,14 +44,17 @@ public class PurchaseController {
         /* Validating presence of enough amount products to sell considering purchase and sale dates */
         var purchaseList = purchaseService.getListByOwnerId(userId)
                 .stream()
-                .filter(p -> p.getName().equals(productName) && !p.getId().equals(id))
+                .filter(p -> !p.getId().equals(id))
                 .toList();
-        var saleList = saleService.getListBySellerId(userId)
-                .stream()
-                .filter(s -> s.getName().equals(productName))
-                .toList();
-        if (!PurchaseSaleUtil.isQueueCorrect(purchaseList, saleList)) {
+        var saleList = saleService.getListBySellerId(userId);
+        if (!PurchaseSaleUtil.isQueueCorrect(purchaseList, saleList, productName)) {
             return "redirect:/account?error=deletePurchase&errorId=" + id;
+        }
+
+        /* Calculating and setting up refreshed benefits to the sales */
+        saleList = PurchaseSaleUtil.calculateBenefitsFromSales(purchaseList, saleList, productName);
+        for (var sale : saleList) {
+            saleService.save(sale);
         }
 
         purchaseService.deleteById(id);
@@ -66,19 +69,24 @@ public class PurchaseController {
     @PostMapping("/save/{id}")
     public String save(Purchase purchase, Model model) {
         var userId = loggedUserManagementService.getUserId();
+        var purchaseId = purchase.getId();
+        var productName = purchase.getName();
 
         /* Validating presence of enough amount products to sell considering purchase and sale dates */
         var purchaseList = purchaseService.getListByOwnerId(userId)
                 .stream()
-                .filter(p -> p.getName().equals(purchase.getName()) && !p.getId().equals(purchase.getId()))
+                .filter(p -> !p.getId().equals(purchaseId))
                 .collect(Collectors.toList());
         purchaseList.add(purchase);
-        var saleList = saleService.getListBySellerId(userId)
-                .stream()
-                .filter(s -> s.getName().equals(purchase.getName()))
-                .toList();
-        if (!PurchaseSaleUtil.isQueueCorrect(purchaseList, saleList)) {
-            return "redirect:/account?error=editPurchase&errorId=" + purchase.getId();
+        var saleList = saleService.getListBySellerId(userId);
+        if (!PurchaseSaleUtil.isQueueCorrect(purchaseList, saleList, productName)) {
+            return "redirect:/account?error=editPurchase&errorId=" + purchaseId;
+        }
+
+        /* Calculating and setting up refreshed benefits to the sales */
+        saleList = PurchaseSaleUtil.calculateBenefitsFromSales(purchaseList, saleList, productName);
+        for (var sale : saleList) {
+            saleService.save(sale);
         }
 
         purchase.setOwner(accountService.getAccountById(loggedUserManagementService.getUserId()));

@@ -14,7 +14,7 @@ public class MainController {
     }
 
     @GetMapping("/")
-    public String index(@RequestParam(required = false) String logout) {
+    public String getMainPage(@RequestParam(required = false) String logout) {
         if (logout != null) {
             loggedUserManagementService.setLoggedIn(false);
         }

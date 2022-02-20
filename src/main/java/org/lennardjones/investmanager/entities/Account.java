@@ -69,4 +69,13 @@ public class Account {
     public void setSaleList(List<Sale> saleList) {
         this.saleList = saleList;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

@@ -8,11 +8,11 @@ import org.lennardjones.investmanager.services.SaleService;
 import org.lennardjones.investmanager.util.PurchaseSaleUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 @Controller
@@ -34,22 +34,25 @@ public class SaleController {
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute Sale sale, Model model) {
+    public String add(Sale sale, Model model) {
         var userId = loggedUserManagementService.getUserId();
+        var productName = sale.getName();
 
         /* Validating presence of enough amount products to sell considering purchase and sale dates */
-        var purchaseList = purchaseService.getListByOwnerId(userId)
-                .stream()
-                .filter(p -> p.getName().equals(sale.getName()))
-                .toList();
-        var saleList = saleService.getListBySellerId(userId)
-                .stream()
-                .filter(s -> s.getName().equals(sale.getName()))
-                .collect(Collectors.toList());
+        var purchaseList = purchaseService.getListByOwnerId(userId);
+        var saleList = saleService.getListBySellerId(userId);
         saleList.add(sale);
-        if (!PurchaseSaleUtil.isQueueCorrect(purchaseList, saleList)) {
+        if (!PurchaseSaleUtil.isQueueCorrect(purchaseList, saleList, productName)) {
             return "redirect:/account?error=addSale";
         }
+
+        /* Calculating and setting up benefits to the sale */
+        saleList = PurchaseSaleUtil.calculateBenefitsFromSales(purchaseList, saleList, productName);
+        var saleWithCalculatedBenefits = saleList.stream()
+                .filter(s -> s.getId() == null)
+                .findFirst().orElseThrow();
+        sale.setAbsoluteBenefit(saleWithCalculatedBenefits.getAbsoluteBenefit());
+        sale.setRelativeBenefit(saleWithCalculatedBenefits.getRelativeBenefit());
 
         saleService.save(sale);
 
@@ -70,20 +73,30 @@ public class SaleController {
     @PostMapping("/save/{id}")
     public String save(Sale sale, Model model) {
         var userId = loggedUserManagementService.getUserId();
+        var saleId = sale.getId();
+        var productName = sale.getName();
 
         /* Validating presence of enough amount products to sell considering purchase and sale dates */
-        var purchaseList = purchaseService.getListByOwnerId(userId)
-                .stream()
-                .filter(p -> p.getName().equals(sale.getName()))
-                .toList();
+        var purchaseList = purchaseService.getListByOwnerId(userId);
         var saleList = saleService.getListBySellerId(userId)
                 .stream()
-                .filter(s -> s.getName().equals(sale.getName()) && !s.getId().equals(sale.getId()))
+                .filter(s -> !s.getId().equals(saleId))
                 .collect(Collectors.toList());
         saleList.add(sale);
-        if (!PurchaseSaleUtil.isQueueCorrect(purchaseList, saleList)) {
-            return "redirect:/account?error=editSale&errorId=" + sale.getId();
+        if (!PurchaseSaleUtil.isQueueCorrect(purchaseList, saleList, productName)) {
+            return "redirect:/account?error=editSale&errorId=" + saleId;
         }
+
+        /* Calculating and setting up benefits to the sale */
+        saleList = saleList.stream() //refreshing sort to place edited sale at the right place
+                .sorted(Comparator.comparing(Sale::getDate))
+                .collect(Collectors.toList());
+        saleList = PurchaseSaleUtil.calculateBenefitsFromSales(purchaseList, saleList, productName);
+        var saleWithCalculatedBenefits = saleList.stream()
+                .filter(s -> s.getId().equals(saleId))
+                .findFirst().orElseThrow();
+        sale.setAbsoluteBenefit(saleWithCalculatedBenefits.getAbsoluteBenefit());
+        sale.setRelativeBenefit(saleWithCalculatedBenefits.getRelativeBenefit());
 
         sale.setSeller(accountService.getAccountById(userId));
         saleService.save(sale);

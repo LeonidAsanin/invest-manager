@@ -13,7 +13,7 @@
 
     <div>
         Sort by
-        <form th:action="@{/account}">
+        <form>
             <span>
                 <select name="sortType" onchange="javascript:this.form.submit()">
                     <option value="NONE" th:selected="${sortType} == 'NONE'">none</option>
@@ -36,11 +36,11 @@
     <br>
 
     <div>
-        <form th:action="@{/account}">
+        <form>
             <input type="text" name="filter" th:value="${filterByNameString}" placeholder="Filter by name">
             <button type="submit" th:formaction="@{/account}">Apply</button>
         </form>
-        <form th:action="@{/account}">
+        <form>
             <input type="text" name="filter" value="" hidden>
             <button type="submit" th:if="${filterByNameString} != ''">Cancel</button>
         </form>
