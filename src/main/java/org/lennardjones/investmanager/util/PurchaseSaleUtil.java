@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * This util class is supposed to validate queue of purchases and sales considering their amount and date.
+ * This util class is supposed to help to work with purchase and sale lists.
  *
  * @since 1.0
  * @author lennardjones
@@ -49,7 +49,16 @@ public class PurchaseSaleUtil {
         return true;
     }
 
-    //TODO: add calculating of relative benefits from the sales
+    /**
+     * This method calculates absolute and relative benefits from
+     * {@link org.lennardjones.investmanager.entities.Sale sales}.
+     * Input lists are supposed to be sorted by date.
+     *
+     * @param purchaseList list of purchases that were made by user
+     * @param saleList list of sales that were made by user
+     * @param productName name of the product
+     * @return updated with new benefit values sale list
+     */
     public static List<Sale> calculateBenefitsFromSales(List<Purchase> purchaseList,
                                                         List<Sale> saleList,
                                                         String productName) {
@@ -121,16 +130,22 @@ public class PurchaseSaleUtil {
             }
         }
 
-        /* Changing during while-loop affected amounts to original ones */
         for (int i = 0; i < resultSaleList.size(); i++) {
-            resultSaleList.get(i).setAmount(saleOriginalValuesList.get(i));
+            var sale = resultSaleList.get(i);
+            sale.setAmount(saleOriginalValuesList.get(i)); // Changing affected amounts during while-loop
+                                                           // to original ones
+            var fullPriceOfSelling = sale.getPrice() - sale.getCommission();
+            var relativeBenefit = (fullPriceOfSelling / (fullPriceOfSelling - sale.getAbsoluteBenefit()) - 1) * 100;
+            sale.setRelativeBenefit(relativeBenefit);
         }
 
         return resultSaleList;
     }
 
     /**
-     * This method sorts purchase list by the specified type of sort in the specified order type
+     * This method sorts {@link org.lennardjones.investmanager.entities.Purchase purchase} list
+     * by the specified {@link org.lennardjones.investmanager.util.SortType type of sort}
+     * in the specified {@link org.lennardjones.investmanager.util.SortOrderType order type}
      *
      * @param purchaseList list to sort
      * @param sortType type of sort
@@ -162,7 +177,9 @@ public class PurchaseSaleUtil {
     }
 
     /**
-     * This method sorts sale list by the specified type of sort in the specified order type
+     * This method sorts {@link org.lennardjones.investmanager.entities.Sale sale} list
+     * by the specified {@link org.lennardjones.investmanager.util.SortType type of sort}
+     * in the specified {@link org.lennardjones.investmanager.util.SortOrderType order type}
      *
      * @param saleList list to sort
      * @param sortType type of sort
