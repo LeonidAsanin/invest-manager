@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>org.lennardjones</groupId>
 	<artifactId>invest-manager</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>Invest Manager</name>
 	<description>Web application to manage your investments</description>
 	<properties>

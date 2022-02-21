@@ -1,0 +1,7 @@
+org.lennardjones.investmanager
+org.lennardjones.investmanager.controllers
+org.lennardjones.investmanager.entities
+org.lennardjones.investmanager.model
+org.lennardjones.investmanager.repositories
+org.lennardjones.investmanager.services
+org.lennardjones.investmanager.util
