@@ -42,7 +42,6 @@ public class PurchaseService {
         var userId = loggedUserManagementService.getUserId();
         var ownerId = purchase.getOwner().getId();
         if (userId != null && userId.equals(ownerId)) {
-            purchaseRepository.setCurrentPriceByOwnerIdAndName(purchase.getCurrentPrice(), ownerId, purchase.getName());
             purchaseRepository.save(purchase);
         } else {
             throw new RuntimeException("Attempt to save purchase to someone else's account");

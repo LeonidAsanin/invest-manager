@@ -15,9 +15,4 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
     void deleteById(Long id);
 
     List<Purchase> findByOwner_IdAndNameContainingIgnoreCase(Long id, String name);
-
-    @Transactional
-    @Modifying
-    @Query("update Purchase p set p.currentPrice = ?1 where p.owner.id = ?2 and p.name = ?3")
-    void setCurrentPriceByOwnerIdAndName(double currentPrice, Long id, String name);
 }

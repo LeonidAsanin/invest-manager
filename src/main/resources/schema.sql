@@ -11,8 +11,7 @@ CREATE TABLE IF NOT EXISTS purchase (
     price DOUBLE,
     amount INT,
     commission DOUBLE,
-    date DATE,
-    current_price DOUBLE
+    date DATE
 );
 
 CREATE TABLE IF NOT EXISTS sale (

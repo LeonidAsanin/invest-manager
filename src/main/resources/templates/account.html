@@ -55,7 +55,6 @@
                 <th>Amount</th>
                 <th>Commission</th>
                 <th>Date</th>
-                <th>Current price</th>
                 <th colspan="2">Actions</th>
             </tr>
         </thead>
@@ -82,10 +81,6 @@
                     <td>
                         <input type="date" required th:disabled="${editable_purchase} != ${purchase.id}"
                                name="date" th:value="${purchase.date}">
-                    </td>
-                    <td>
-                        <input type="number" required min="0" step="any" th:disabled="${editable_purchase} != ${purchase.id}"
-                               name="currentPrice" th:value="${purchase.currentPrice}">
                     </td>
                     <td>
                         <button type="submit" th:formaction="@{'/purchase/edit/' + ${purchase.id}}"
@@ -142,9 +137,6 @@
             <label for="purchase_date">Date</label>
             <input type="date" required id="purchase_date" th:field="*{date}">
 
-            <label for="purchase_current_price">Current price</label>
-            <input type="number" required min="0" step="any" id="purchase_current_price" th:field="*{currentPrice}">
-
             <input hidden th:field="*{owner}">
 
             <button type="submit">Add new purchase</button>
@@ -194,10 +186,12 @@
                            name="date" th:value="${sale.date}">
                 </td>
                 <td>
-                    <span th:text="${sale.absoluteBenefit}"></span>
+                    <span th:text="${sale.absoluteBenefit}"
+                          th:style="${sale.absoluteBenefit} >= 0 ? 'color:green' : 'color:red'"></span>
                 </td>
                 <td>
-                    <span th:text="${sale.relativeBenefit}"></span>
+                    <span th:text="${sale.relativeBenefit} + '%'"
+                          th:style="${sale.relativeBenefit} >=0 ? 'color:green' : 'color:red'"></span>
                 </td>
                 <td>
                     <button type="submit" th:formaction="@{'/sale/edit/' + ${sale.id}}"
