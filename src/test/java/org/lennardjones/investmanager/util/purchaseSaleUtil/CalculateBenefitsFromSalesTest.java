@@ -32,7 +32,6 @@ public class CalculateBenefitsFromSalesTest {
         var defaultPurchasePrice = 10;
         var defaultPurchaseAmount = 5;
         var defaultPurchaseCommission = 1;
-        var defaultPurchaseCurrentPrice = 50;
 
         var purchase = new Purchase();
             purchase.setId(defaultPurchaseId);
@@ -42,7 +41,6 @@ public class CalculateBenefitsFromSalesTest {
             purchase.setPrice(defaultPurchasePrice);
             purchase.setAmount(defaultPurchaseAmount);
             purchase.setCommission(defaultPurchaseCommission);
-            purchase.setCurrentPrice(defaultPurchaseCurrentPrice);
 
         var defaultSaleId = 2L;
         var defaultSeller= new Account();
@@ -77,7 +75,6 @@ public class CalculateBenefitsFromSalesTest {
         Assertions.assertEquals(purchase.getPrice(), defaultPurchasePrice);
         Assertions.assertEquals(purchase.getAmount(), defaultPurchaseAmount);
         Assertions.assertEquals(purchase.getCommission(), defaultPurchaseCommission);
-        Assertions.assertEquals(purchase.getCurrentPrice(), defaultPurchaseCurrentPrice);
 
         Assertions.assertEquals((long) sale.getId(), defaultSaleId);
         Assertions.assertEquals(sale.getSeller(), defaultSeller);

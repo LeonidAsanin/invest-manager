@@ -133,10 +133,21 @@ public class PurchaseSaleUtil {
 
         for (int i = 0; i < resultSaleList.size(); i++) {
             var sale = resultSaleList.get(i);
-            sale.setAmount(saleOriginalValuesList.get(i)); // Changing affected amounts during while-loop
-                                                           // to original ones
-            var fullPriceOfSelling = sale.getPrice() - sale.getCommission();
-            var relativeBenefit = (fullPriceOfSelling / (fullPriceOfSelling - sale.getAbsoluteBenefit()) - 1) * 100;
+            var absoluteBenefit = sale.getAbsoluteBenefit();
+
+            /* Changing affected amounts during while-loop to original ones */
+            sale.setAmount(saleOriginalValuesList.get(i));
+
+            /* Calculating relative benefit */
+            var fullPriceOfSelling = (sale.getPrice() - sale.getCommission()) * sale.getAmount();
+            var relativeBenefit = (fullPriceOfSelling / (fullPriceOfSelling - absoluteBenefit) - 1) * 100;
+
+            /* Rounding benefits to 2 decimal places */
+            relativeBenefit = Math.round(relativeBenefit * 100) / 100.;
+            absoluteBenefit = Math.round(absoluteBenefit * 100) / 100.;
+
+            /* Setting final (for the current calculation) benefit values to the sale */
+            sale.setAbsoluteBenefit(absoluteBenefit);
             sale.setRelativeBenefit(relativeBenefit);
         }
 

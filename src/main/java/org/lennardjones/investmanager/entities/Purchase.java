@@ -33,9 +33,6 @@ public class Purchase implements Cloneable {
     @Column(name = "commission")
     private double commission;
 
-    @Column(name = "current_price")
-    private double currentPrice;
-
     public Long getId() {
         return id;
     }
@@ -92,14 +89,6 @@ public class Purchase implements Cloneable {
         this.commission = commission;
     }
 
-    public double getCurrentPrice() {
-        return currentPrice;
-    }
-
-    public void setCurrentPrice(double currentPrice) {
-        this.currentPrice = currentPrice;
-    }
-
     @Override
     public String toString() {
         return "Purchase{" +
@@ -110,7 +99,6 @@ public class Purchase implements Cloneable {
                 ", price=" + price +
                 ", amount=" + amount +
                 ", commission=" + commission +
-                ", currentPrice=" + currentPrice +
                 '}';
     }
 
