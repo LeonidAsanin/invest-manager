@@ -63,33 +63,34 @@ public class PurchaseSaleUtil {
                                                         List<Sale> saleList,
                                                         String productName) {
         /* Filtering input lists by name */
-        purchaseList = purchaseList.stream().filter(p -> p.getName().equals(productName)).collect(Collectors.toList());
-        saleList = saleList.stream().filter(s -> s.getName().equals(productName)).collect(Collectors.toList());
+        var purchaseStack = purchaseList.stream()
+                .filter(p -> p.getName().equals(productName))
+                .collect(Collectors.toCollection(LinkedList::new));
+        var saleStack = saleList.stream()
+                .filter(s -> s.getName().equals(productName))
+                .collect(Collectors.toCollection(LinkedList::new));
 
         /* Cloning of input list elements in order not to affect them */
-        for (int i = 0; i < purchaseList.size(); i++) {
-            var purchase = purchaseList.get(i);
+        for (int i = 0; i < purchaseStack.size(); i++) {
+            var purchase = purchaseStack.get(i);
             Purchase purchaseClone = null;
             try {
                 purchaseClone = (Purchase) purchase.clone();
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
             }
-            purchaseList.set(i, purchaseClone);
+            purchaseStack.set(i, purchaseClone);
         }
-        for (int i = 0; i < saleList.size(); i++) {
-            var sale = saleList.get(i);
+        for (int i = 0; i < saleStack.size(); i++) {
+            var sale = saleStack.get(i);
             Sale saleClone = null;
             try {
                 saleClone = (Sale) sale.clone();
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
             }
-            saleList.set(i, saleClone);
+            saleStack.set(i, saleClone);
         }
-
-        var purchaseStack = new LinkedList<>(purchaseList);
-        var saleStack = new LinkedList<>(saleList);
 
         /* Setting up sale benefits to zero in order to calculate new values */
         saleStack = saleStack.stream().peek(sale -> {
@@ -97,7 +98,7 @@ public class PurchaseSaleUtil {
             sale.setRelativeBenefit(0);
         }).collect(Collectors.toCollection(LinkedList::new));
 
-        var saleOriginalValuesList = saleList.stream().map(Sale::getAmount).toList();
+        var saleOriginalValuesList = saleStack.stream().map(Sale::getAmount).toList();
 
         var resultSaleList = new LinkedList<Sale>();
 

@@ -84,7 +84,7 @@ public class SaleController {
                 .collect(Collectors.toList());
         saleList.add(sale);
         if (!PurchaseSaleUtil.isQueueCorrect(purchaseList, saleList, productName)) {
-            return "redirect:/account?error=editSale&errorId=" + saleId;
+            return "redirect:/account?error=editSale";
         }
 
         /* Calculating and setting up benefits to the sale */

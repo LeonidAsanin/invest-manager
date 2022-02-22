@@ -1,0 +1,51 @@
+body {
+    font-family: Georgia, serif;
+}
+
+h1, #greeting {
+    text-align: center;
+}
+
+#sortType, #filterByName {
+    width: 80%;
+    margin: auto;
+}
+
+#logoutButton {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+table {
+	width: 80%;
+	margin: auto;
+	border: 1px solid #dddddd;
+	border-collapse: collapse;
+}
+
+caption {
+    margin-bottom: 5px;
+}
+
+th {
+	font-weight: bold;
+	padding: 5px;
+	background: #efefef;
+	border: 1px solid #dddddd;
+}
+td {
+	border: 1px solid #dddddd;
+	padding: 5px;
+}
+
+.addForm {
+    width: 80%;
+	margin: auto;
+}
+
+.errorMessage {
+    color: red;
+    width: 80%;
+    margin: auto;
+}
