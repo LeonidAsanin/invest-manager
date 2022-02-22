@@ -33,14 +33,14 @@ public class RegistrationController {
             @RequestParam String passwordConfirmation,
             Model model
     ) {
-        if (!password.equals(passwordConfirmation)) {
-            model.addAttribute("username", username);
-            model.addAttribute("passwordError", true);
+        if (accountService.existsByUsername(username)) {
+            model.addAttribute("error", "Sorry, but this username already exists");
             return "registration";
         }
 
-        if (accountService.existsByUsername(username)) {
-            model.addAttribute("usernameError", true);
+        if (!password.equals(passwordConfirmation)) {
+            model.addAttribute("error", "Please, type in your desired password twice correctly");
+            model.addAttribute("username", username);
             return "registration";
         }
 

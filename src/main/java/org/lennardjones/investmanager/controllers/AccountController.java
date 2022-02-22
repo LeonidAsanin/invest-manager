@@ -44,7 +44,6 @@ public class AccountController {
             @RequestParam(name = "sortOrderType", required = false) String sortOrderType,
             @RequestParam(name = "filter", required = false) String filterByNameString,
             @RequestParam(name = "error", required = false) String error,
-            @RequestParam(name = "errorId", required = false) Long errorId,
             Model model
     ) {
         if (!loggedUserManagementService.isLoggedIn()) {
@@ -107,7 +106,6 @@ public class AccountController {
 
         /* For adding error messages */
         model.addAttribute("error", error);
-        model.addAttribute("errorId", errorId);
 
         return "account";
     }

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
+    <link rel="stylesheet" th:href="@{/login-styles.css}">
 </head>
 <body>
     <h1>Invest Manager</h1>
@@ -24,17 +25,13 @@
             </div>
             <button type="submit">Register</button>
         </fieldset>
+
+        <div class="errorMessage" th:if="${error} != null" th:text="${error}">
+            Registration Error
+        </div>
     </form>
 
-    <div class="errorMessage" th:if="${usernameError} == true">
-        Sorry, this username already exists
-    </div>
-
-    <div class="errorMessage" th:if="${passwordError} == true">
-        Please, type in your desired password twice correctly
-    </div>
-
-    <form th:action="@{/}">
+    <form id="button" th:action="@{/}">
         <button type="submit">Back</button>
     </form>
 </body>

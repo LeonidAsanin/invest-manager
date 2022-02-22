@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>My Account</title>
+    <link rel="stylesheet" th:href="@{/account-styles.css}">
 </head>
 <body>
     <h1>Invest Manager</h1>
 
-    <div th:text="${username} + ', hello!'">Username, hello!</div>
+    <div id="greeting" th:text="${username} + ', hello!'">Username, hello!</div>
 
     <br>
 
-    <div>
-        Sort by
+    <div id="sortType">
         <form>
+            Sort by
             <span>
                 <select name="sortType" onchange="javascript:this.form.submit()">
                     <option value="NONE" th:selected="${sortType} == 'NONE'">none</option>
@@ -33,9 +34,7 @@
         </form>
     </div>
 
-    <br>
-
-    <div>
+    <div id="filterByName">
         <form>
             <input type="text" name="filter" th:value="${filterByNameString}" placeholder="Filter by name">
             <button type="submit" th:formaction="@{/account}">Apply</button>
@@ -57,6 +56,7 @@
                 <th>Commission</th>
                 <th>Date</th>
                 <th>Current price</th>
+                <th colspan="2">Actions</th>
             </tr>
         </thead>
 
@@ -102,18 +102,7 @@
                             Delete
                         </button>
                     </td>
-                    <td class="errorMessage" th:if="${error} == 'editPurchase' AND ${errorId} == ${purchase.id}">
-                        Sorry, but you cannot update the purchase with given values and date
-                        <a th:href="@{/account}">
-                            <button type="button">OK</button>
-                        </a>
-                    </td>
-                    <td class="errorMessage" th:if="${error} == 'deletePurchase' AND ${errorId} == ${purchase.id}">
-                        Sorry, but you cannot delete this purchase
-                        <a th:href="@{/account}">
-                            <button type="button">OK</button>
-                        </a>
-                    </td>
+
                 </form>
             </tr>
         </tbody>
@@ -121,7 +110,22 @@
 
     <br>
 
-    <form method="post" th:action="@{/purchase/add}" th:object="${purchase}">
+    <div class="errorMessage" th:if="${error} == 'editPurchase'">
+        Sorry, but you cannot update the purchase with given values and date
+        <a th:href="@{/account}">
+            <button type="button">OK</button>
+        </a>
+    </div>
+    <div class="errorMessage" th:if="${error} == 'deletePurchase'">
+        Sorry, but you cannot delete this purchase
+        <a th:href="@{/account}">
+            <button type="button">OK</button>
+        </a>
+    </div>
+
+    <br>
+
+    <form class="addForm" method="post" th:action="@{/purchase/add}" th:object="${purchase}">
         <fieldset>
             <label for="purchase_name">Name</label>
             <input type="text" required id="purchase_name" th:field="*{name}">
@@ -161,6 +165,7 @@
             <th>Date</th>
             <th>Absolute benefit</th>
             <th>Relative benefit</th>
+            <th colspan="2">Actions</th>
         </tr>
         </thead>
 
@@ -209,12 +214,7 @@
                         Delete
                     </button>
                 </td>
-                <td class="errorMessage" th:if="${error} == 'editSale' AND ${errorId} == ${sale.id}">
-                    Sorry, but you cannot update the sale with given values and date
-                    <a th:href="@{/account}">
-                        <button type="button">OK</button>
-                    </a>
-                </td>
+
             </form>
         </tr>
         </tbody>
@@ -222,7 +222,16 @@
 
     <br>
 
-    <form method="post" th:action="@{/sale/add}" th:object="${sale}">
+    <div class="errorMessage" th:if="${error} == 'editSale'">
+        Sorry, but you cannot update the sale with given values and date
+        <a th:href="@{/account}">
+            <button type="button">OK</button>
+        </a>
+    </div>
+
+    <br>
+
+    <form class="addForm" method="post" th:action="@{/sale/add}" th:object="${sale}">
         <fieldset>
             <label for="sale_name">Name</label>
             <input type="text" required id="sale_name" name="name" th:field="*{name}">
@@ -254,11 +263,9 @@
         </form>
     </div>
 
-    <br>
-
     <form th:action="@{/}">
         <input hidden name="logout">
-        <button type="submit">Log out</button>
+        <button id="logoutButton" type="submit">Log out</button>
     </form>
 </body>
 </html>

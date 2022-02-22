@@ -4,11 +4,14 @@ import org.lennardjones.investmanager.entities.Account;
 import org.lennardjones.investmanager.services.AccountService;
 import org.lennardjones.investmanager.services.LoggedUserManagementService;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/login")
 public class LoginController {
     private final AccountService accountService;
     private final LoggedUserManagementService loggedUserManagementService;
@@ -18,20 +21,28 @@ public class LoginController {
         this.loggedUserManagementService = loggedUserManagementService;
     }
 
-    @PostMapping("/login")
+    @GetMapping()
+    public String backToLoginForm() {
+        return "redirect:/";
+    }
+
+    @PostMapping()
     public String login(
-            @RequestParam String username,
-            @RequestParam String password,
-            Model model
+            Account account,
+            BindingResult bindingResult
     ) {
-        if (accountService.exists(Account.of(username, password))) {
-            loggedUserManagementService.setUserId(accountService.getUserIdByUsername(username));
-            loggedUserManagementService.setUsername(username);
-            loggedUserManagementService.setLoggedIn(true);
-            return "redirect:/account";
+        if (!accountService.exists(account)) {
+            var error = new ObjectError("login", "Invalid credentials");
+            bindingResult.addError(error);
+            return "index";
         }
 
-        model.addAttribute("loginError", true);
-        return "index";
+        var username = account.getUsername();
+        var userId = accountService.getUserIdByUsername(username);
+        loggedUserManagementService.setUserId(userId);
+        loggedUserManagementService.setUsername(username);
+        loggedUserManagementService.setLoggedIn(true);
+
+        return "redirect:/account";
     }
 }

@@ -48,7 +48,7 @@ public class PurchaseController {
                 .toList();
         var saleList = saleService.getListBySellerId(userId);
         if (!PurchaseSaleUtil.isQueueCorrect(purchaseList, saleList, productName)) {
-            return "redirect:/account?error=deletePurchase&errorId=" + id;
+            return "redirect:/account?error=deletePurchase";
         }
 
         /* Calculating and setting up refreshed benefits to the sales */
@@ -80,7 +80,7 @@ public class PurchaseController {
         purchaseList.add(purchase);
         var saleList = saleService.getListBySellerId(userId);
         if (!PurchaseSaleUtil.isQueueCorrect(purchaseList, saleList, productName)) {
-            return "redirect:/account?error=editPurchase&errorId=" + purchaseId;
+            return "redirect:/account?error=editPurchase";
         }
 
         /* Calculating and setting up refreshed benefits to the sales */
