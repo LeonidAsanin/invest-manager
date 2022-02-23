@@ -15,6 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
+/**
+ * Controller for working with {@link org.lennardjones.investmanager.entities.Sale sales}.
+ *
+ * @since 1.0
+ * @author lennardjones
+ */
 @Controller
 @RequestMapping("/sale")
 public class SaleController {

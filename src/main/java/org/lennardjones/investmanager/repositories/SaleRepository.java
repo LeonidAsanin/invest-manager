@@ -7,6 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/**
+ * Interface for creating repository for {@link org.lennardjones.investmanager.entities.Sale sale objects}
+ * by Spring Data.
+ *
+ * @since 1.0
+ * @author lennardjones
+ */
 public interface SaleRepository extends JpaRepository<Sale, Long> {
     @Override
     @Modifying

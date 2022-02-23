@@ -1,10 +1,23 @@
 package org.lennardjones.investmanager.entities;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * Entity class that describes a user account and is used for persisting purposes in the database.
+ *
+ * @since 1.0
+ * @author lennardjones
+ */
 @Entity
 @Table(name = "account")
+@Getter
+@Setter
+@ToString
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,64 +31,10 @@ public class Account {
     private String password;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Purchase> purchaseList;
 
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<Sale> saleList;
-
-    public static Account of(String username, String password) {
-        var account = new Account();
-        account.setUsername(username);
-        account.setPassword(password);
-        return account;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<Purchase> getPurchaseList() {
-        return purchaseList;
-    }
-
-    public void setPurchaseList(List<Purchase> purchaseList) {
-        this.purchaseList = purchaseList;
-    }
-
-    public List<Sale> getSaleList() {
-        return saleList;
-    }
-
-    public void setSaleList(List<Sale> saleList) {
-        this.saleList = saleList;
-    }
-
-    @Override
-    public String toString() {
-        return "Account{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
 }

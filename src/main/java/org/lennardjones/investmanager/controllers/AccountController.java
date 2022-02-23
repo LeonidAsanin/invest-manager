@@ -19,6 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Controller for working with Account page.
+ *
+ * @since 1.0
+ * @author lennardjones
+ */
 @Controller
 public class AccountController {
     private final LoggedUserManagementService loggedUserManagementService;

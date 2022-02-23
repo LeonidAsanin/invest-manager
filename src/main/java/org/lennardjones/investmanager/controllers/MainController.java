@@ -7,6 +7,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * Controller for index page.
+ *
+ * @since 1.0
+ * @author lennardjones
+ */
 @Controller
 public class MainController {
     private final LoggedUserManagementService loggedUserManagementService;

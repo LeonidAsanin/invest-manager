@@ -5,6 +5,12 @@ import org.lennardjones.investmanager.util.SortType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
+/**
+ * Service for working with session data of logged user.
+ *
+ * @since 1.0
+ * @author lennardjones
+ */
 @Service
 @SessionScope
 public class LoggedUserManagementService {
