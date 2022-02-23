@@ -12,20 +12,20 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
-public class CalculateBenefitsFromSalesTests {
+class CalculateBenefitsFromSalesTests {
     List<Purchase> purchaseList;
     List<Sale> saleList;
     String productName = "test product";
     String otherProductName = "other test product";
 
     @BeforeEach
-    public void before() {
+    void before() {
         purchaseList = new LinkedList<>();
         saleList = new LinkedList<>();
     }
 
     @Test
-    public void methodShouldFilterByProductName() {
+    void methodShouldFilterByProductName() {
         var purchase1 = new Purchase();
         purchase1.setAmount(1);
         purchase1.setPrice(100.001);
@@ -63,7 +63,7 @@ public class CalculateBenefitsFromSalesTests {
     }
 
     @Test
-    public void methodDoesNotAffectInputLists() {
+    void methodDoesNotAffectInputLists() {
         var defaultPurchaseId = 1L;
         var defaultPurchaseOwner = new Account();
         var defaultPurchaseDate = LocalDate.MIN;
@@ -127,7 +127,7 @@ public class CalculateBenefitsFromSalesTests {
     }
 
     @Test
-    public void oneSaleWithAmountLessThanPurchaseAmount() {
+    void oneSaleWithAmountLessThanPurchaseAmount() {
         var purchase = new Purchase();
             purchase.setName(productName);
             purchase.setAmount(5);
@@ -160,7 +160,7 @@ public class CalculateBenefitsFromSalesTests {
     }
 
     @Test
-    public void twoSalesWithAmountLessThanPurchaseAmount() {
+    void twoSalesWithAmountLessThanPurchaseAmount() {
         var purchase = new Purchase();
         purchase.setName(productName);
         purchase.setAmount(5);
@@ -212,7 +212,7 @@ public class CalculateBenefitsFromSalesTests {
     }
 
     @Test
-    public void oneSaleWithAmountEqualToPurchaseAmount() {
+    void oneSaleWithAmountEqualToPurchaseAmount() {
         var purchase = new Purchase();
         purchase.setName(productName);
         purchase.setAmount(5);
@@ -245,7 +245,7 @@ public class CalculateBenefitsFromSalesTests {
     }
 
     @Test
-    public void oneSaleWithAmountGreaterThanPurchaseAmount() {
+    void oneSaleWithAmountGreaterThanPurchaseAmount() {
         var purchase1 = new Purchase();
         purchase1.setName(productName);
         purchase1.setAmount(5);

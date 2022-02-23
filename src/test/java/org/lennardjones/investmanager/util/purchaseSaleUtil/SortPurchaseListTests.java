@@ -13,16 +13,16 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SortPurchaseListTests {
+class SortPurchaseListTests {
     List<Purchase> purchaseList;
 
     @BeforeEach
-    public void before() {
+    void before() {
         purchaseList = new LinkedList<>();
     }
 
     @Test
-    public void shouldSortByIdAscendingOrder() {
+    void shouldSortByIdAscendingOrder() {
         var purchase1 = new Purchase();
         purchase1.setId(1L);
 
@@ -41,7 +41,7 @@ public class SortPurchaseListTests {
     }
 
     @Test
-    public void shouldSortByIdDecreasingOrder() {
+    void shouldSortByIdDecreasingOrder() {
         var purchase1 = new Purchase();
         purchase1.setId(1L);
 
@@ -59,7 +59,7 @@ public class SortPurchaseListTests {
     }
 
     @Test
-    public void shouldSortByNameAscendingOrder() {
+    void shouldSortByNameAscendingOrder() {
         var purchase1 = new Purchase();
         purchase1.setDate(LocalDate.MAX);
         purchase1.setName("a");
@@ -80,7 +80,7 @@ public class SortPurchaseListTests {
     }
 
     @Test
-    public void shouldSortByNameDecreasingOrder() {
+    void shouldSortByNameDecreasingOrder() {
         var purchase1 = new Purchase();
         purchase1.setDate(LocalDate.MAX);
         purchase1.setName("a");
@@ -101,7 +101,7 @@ public class SortPurchaseListTests {
     }
 
     @Test
-    public void shouldSortByDateAscendingOrder() {
+    void shouldSortByDateAscendingOrder() {
         var purchase1 = new Purchase();
         purchase1.setDate(LocalDate.MIN);
         purchase1.setName("b");
@@ -122,7 +122,7 @@ public class SortPurchaseListTests {
     }
 
     @Test
-    public void shouldSortByDateDecreasingOrder() {
+    void shouldSortByDateDecreasingOrder() {
         var purchase1 = new Purchase();
         purchase1.setDate(LocalDate.MIN);
         purchase1.setName("b");
