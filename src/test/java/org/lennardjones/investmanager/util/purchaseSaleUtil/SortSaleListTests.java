@@ -13,16 +13,16 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SortSaleListTests {
+class SortSaleListTests {
     List<Sale> saleList;
 
     @BeforeEach
-    public void before() {
+    void before() {
         saleList = new LinkedList<>();
     }
 
     @Test
-    public void shouldSortByIdAscendingOrder() {
+    void shouldSortByIdAscendingOrder() {
         var sale1 = new Sale();
         sale1.setId(1L);
 
@@ -41,7 +41,7 @@ public class SortSaleListTests {
     }
 
     @Test
-    public void shouldSortByIdDecreasingOrder() {
+    void shouldSortByIdDecreasingOrder() {
         var sale1 = new Sale();
         sale1.setId(1L);
 
@@ -59,7 +59,7 @@ public class SortSaleListTests {
     }
 
     @Test
-    public void shouldSortByNameAscendingOrder() {
+    void shouldSortByNameAscendingOrder() {
         var sale1 = new Sale();
         sale1.setDate(LocalDate.MAX);
         sale1.setName("a");
@@ -80,7 +80,7 @@ public class SortSaleListTests {
     }
 
     @Test
-    public void shouldSortByNameDecreasingOrder() {
+    void shouldSortByNameDecreasingOrder() {
         var sale1 = new Sale();
         sale1.setDate(LocalDate.MAX);
         sale1.setName("a");
@@ -101,7 +101,7 @@ public class SortSaleListTests {
     }
 
     @Test
-    public void shouldSortByDateAscendingOrder() {
+    void shouldSortByDateAscendingOrder() {
         var sale1 = new Sale();
         sale1.setDate(LocalDate.MIN);
         sale1.setName("b");
@@ -122,7 +122,7 @@ public class SortSaleListTests {
     }
 
     @Test
-    public void shouldSortByDateDecreasingOrder() {
+    void shouldSortByDateDecreasingOrder() {
         var sale1 = new Sale();
         sale1.setDate(LocalDate.MIN);
         sale1.setName("b");
