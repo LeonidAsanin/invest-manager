@@ -5,6 +5,12 @@ import org.lennardjones.investmanager.repositories.AccountRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service for convenient working with {@link org.lennardjones.investmanager.entities.Account Account} objects.
+ *
+ * @since 1.0
+ * @author lennardjones
+ */
 @Service
 public class AccountService {
     private final AccountRepository accountRepository;

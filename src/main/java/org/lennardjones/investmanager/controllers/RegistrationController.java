@@ -10,6 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * Controller for registration procedure.
+ *
+ * @since 1.0
+ * @author lennardjones
+ */
 @Controller
 @RequestMapping("/register")
 public class RegistrationController {
@@ -44,7 +50,11 @@ public class RegistrationController {
             return "registration";
         }
 
-        accountService.registerNewAccount(Account.of(username, password));
+        var account = new Account();
+        account.setUsername(username);
+        account.setPassword(password);
+
+        accountService.registerNewAccount(account);
         loggedUserManagementService.setUserId(accountService.getUserIdByUsername(username));
         loggedUserManagementService.setUsername(username);
         loggedUserManagementService.setLoggedIn(true);

@@ -12,6 +12,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
 
+/**
+ * Controller for working with {@link org.lennardjones.investmanager.entities.Purchase purchases}.
+ *
+ * @since 1.0
+ * @author lennardjones
+ */
 @Controller
 @RequestMapping("/purchase")
 public class PurchaseController {

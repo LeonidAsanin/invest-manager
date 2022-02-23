@@ -8,6 +8,12 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Service for convenient working with {@link org.lennardjones.investmanager.entities.Sale Sale} objects.
+ *
+ * @since 1.0
+ * @author lennardjones
+ */
 @Service
 public class SaleService {
     private final SaleRepository saleRepository;

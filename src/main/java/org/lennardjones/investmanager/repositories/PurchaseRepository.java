@@ -8,6 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Interface for creating repository for {@link org.lennardjones.investmanager.entities.Purchase purchase objects}
+ * by Spring Data.
+ *
+ * @since 1.0
+ * @author lennardjones
+ */
 public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
     @Override
     @Modifying
