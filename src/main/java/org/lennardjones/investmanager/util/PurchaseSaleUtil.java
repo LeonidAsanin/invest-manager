@@ -2,8 +2,8 @@ package org.lennardjones.investmanager.util;
 
 import org.lennardjones.investmanager.entities.Purchase;
 import org.lennardjones.investmanager.entities.Sale;
-import org.lennardjones.investmanager.model.Transaction;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -17,6 +17,11 @@ import java.util.stream.Collectors;
  * @author lennardjones
  */
 public class PurchaseSaleUtil {
+    /**
+     * This record describes user's transaction (purchase or sale)
+     */
+    private static record Transaction(int amount, LocalDate date) {}
+
     /**
      *  This method validates presence of enough amount products to sell considering
      *  {@link org.lennardjones.investmanager.entities.Purchase purchase} and
