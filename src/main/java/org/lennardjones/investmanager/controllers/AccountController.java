@@ -53,7 +53,7 @@ public class AccountController {
             Model model
     ) {
         if (!loggedUserManagementService.isLoggedIn()) {
-            return "redirect:/";
+            return "redirect:/login";
         }
 
         /* For greeting message */
