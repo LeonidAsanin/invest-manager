@@ -38,11 +38,11 @@ public class Purchase implements Cloneable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "price")
-    private double price;
-
     @Column(name = "amount")
     private int amount;
+
+    @Column(name = "price")
+    private double price;
 
     @Column(name = "commission")
     private double commission;
