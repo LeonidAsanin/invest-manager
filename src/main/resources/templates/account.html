@@ -51,8 +51,8 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Price of buying</th>
                 <th>Amount</th>
+                <th>Price of buying</th>
                 <th>Commission</th>
                 <th>Date</th>
                 <th colspan="2">Actions</th>
@@ -67,12 +67,12 @@
                                name="name" th:value="${purchase.name}">
                     </td>
                     <td>
-                        <input type="number" required min="0" step="any" th:disabled="${editable_purchase} != ${purchase.id}"
-                               name="price" th:value="${purchase.price}">
-                    </td>
-                    <td>
                         <input type="number" required min="1" step="1" th:disabled="${editable_purchase} != ${purchase.id}"
                                name="amount" th:value="${purchase.amount}">
+                    </td>
+                    <td>
+                        <input type="number" required min="0" step="any" th:disabled="${editable_purchase} != ${purchase.id}"
+                               name="price" th:value="${purchase.price}">
                     </td>
                     <td>
                         <input type="number" required min="0" step="any" th:disabled="${editable_purchase} != ${purchase.id}"
@@ -125,11 +125,11 @@
             <label for="purchase_name">Name</label>
             <input type="text" required id="purchase_name" th:field="*{name}">
 
-            <label for="purchase_price">Price of buying</label>
-            <input type="number" required min="0" step="any" id="purchase_price" th:field="*{price}">
-
             <label for="purchase_amount">Amount</label>
             <input type="number" required min="1" step="1" id="purchase_amount" th:field="*{amount}">
+
+            <label for="purchase_price">Price of buying</label>
+            <input type="number" required min="0" step="any" id="purchase_price" th:field="*{price}">
 
             <label for="purchase_commission">Commission</label>
             <input type="number" required min="0" step="any" id="purchase_commission" th:field="*{commission}">
@@ -151,8 +151,8 @@
         <thead>
         <tr>
             <th>Name</th>
-            <th>Price of selling</th>
             <th>Amount</th>
+            <th>Price of selling</th>
             <th>Commission</th>
             <th>Date</th>
             <th>Absolute benefit</th>
@@ -170,12 +170,12 @@
                            name="name" th:value="${sale.name}">
                 </td>
                 <td>
-                    <input type="number" required min="0" step="any" th:disabled="${editable_sale} != ${sale.id}"
-                           name="price" th:value="${sale.price}">
-                </td>
-                <td>
                     <input type="number" required min="1" step="1" th:disabled="${editable_sale} != ${sale.id}"
                            name="amount" th:value="${sale.amount}">
+                </td>
+                <td>
+                    <input type="number" required min="0" step="any" th:disabled="${editable_sale} != ${sale.id}"
+                           name="price" th:value="${sale.price}">
                 </td>
                 <td>
                     <input type="number" required min="0" step="any" th:disabled="${editable_sale} != ${sale.id}"
@@ -230,11 +230,11 @@
             <label for="sale_name">Name</label>
             <input type="text" required id="sale_name" name="name" th:field="*{name}">
 
-            <label for="sale_price">Price of selling</label>
-            <input type="number" required min="0" step="any" id="sale_price" th:field="*{price}">
-
             <label for="sale_amount">Amount</label>
             <input type="number" required min="1" step="1" id="sale_amount" th:field="*{amount}">
+
+            <label for="sale_price">Price of selling</label>
+            <input type="number" required min="0" step="any" id="sale_price" th:field="*{price}">
 
             <label for="sale_commission">Commission</label>
             <input type="number" required min="0" step="any" id="sale_commission" th:field="*{commission}">
@@ -257,7 +257,7 @@
         </form>
     </div>
 
-    <form th:action="@{/}">
+    <form th:action="@{/login}">
         <input hidden name="logout">
         <button id="logoutButton" type="submit">Log out</button>
     </form>
