@@ -12,6 +12,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Service for calculating and interacting with products that user currently have.
+ *
+ * @since 1.1
+ * @author lennardjones
+ */
 @Service
 @SessionScope
 public class ProductService {
