@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+    <link rel="stylesheet" th:href="@{/account-styles.css}">
+</head>
+<body>
+    <h1>Invest Manager</h1>
+
+    <h2>Products</h2>
+
+    <table>
+        <caption>Products you currently have</caption>
+
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Average price</th>
+                <th>Current price</th>
+                <th>Absolute benefit</th>
+                <th>Relative benefit</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="product : ${productList}">
+                <form method="post">
+                    <td>
+                        <input type="text" disabled name="name" th:value="${product.name}">
+                    </td>
+                    <td>
+                        <span th:text="${product.amount}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${product.averagePrice}"></span>
+                    </td>
+                    <td>
+                            <input type="number" min="0" step="any"
+                                   name="currentPrice" placeholder="Enter number for benefits calculation">
+                    </td>
+                    <td>
+                        <span th:text="${product.absoluteBenefit}"></span>
+                    </td>
+                    <td>
+                        <span th:text="${product.relativeBenefit}"></span>
+                    </td>
+                </form>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
