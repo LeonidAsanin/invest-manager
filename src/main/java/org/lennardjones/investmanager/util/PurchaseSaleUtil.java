@@ -57,7 +57,6 @@ public class PurchaseSaleUtil {
     /**
      * This method calculates absolute and relative benefits from
      * {@link org.lennardjones.investmanager.entities.Sale sales}.
-     * Input lists are supposed to be sorted by date.
      *
      * @param purchaseList list of purchases that were made by user
      * @param saleList list of sales that were made by user
@@ -73,6 +72,14 @@ public class PurchaseSaleUtil {
                 .collect(Collectors.toCollection(LinkedList::new));
         var saleStack = saleList.stream()
                 .filter(s -> s.getName().equals(productName))
+                .collect(Collectors.toCollection(LinkedList::new));
+
+        purchaseStack = purchaseStack.stream()
+                .sorted(Comparator.comparing(Purchase::getDate))
+                .collect(Collectors.toCollection(LinkedList::new));
+
+        saleStack = saleStack.stream()
+                .sorted(Comparator.comparing(Sale::getDate))
                 .collect(Collectors.toCollection(LinkedList::new));
 
         /* Cloning of input list elements in order not to affect them */

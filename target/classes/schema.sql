@@ -8,8 +8,8 @@ CREATE TABLE IF NOT EXISTS purchase (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     owner_id BIGINT NOT NULL,
     name VARCHAR(255) NOT NULL,
-    price DOUBLE,
     amount INT,
+    price DOUBLE,
     commission DOUBLE,
     date DATE
 );
@@ -18,8 +18,8 @@ CREATE TABLE IF NOT EXISTS sale (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     seller_id BIGINT NOT NULL,
     name VARCHAR(255) NOT NULL,
-    price DOUBLE,
     amount INT,
+    price DOUBLE,
     commission DOUBLE,
     date DATE,
     absolute_benefit DOUBLE,
