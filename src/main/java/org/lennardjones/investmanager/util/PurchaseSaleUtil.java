@@ -148,10 +148,6 @@ public class PurchaseSaleUtil {
             var fullPriceOfSelling = (sale.getPrice() - sale.getCommission()) * sale.getAmount();
             var relativeBenefit = (fullPriceOfSelling / (fullPriceOfSelling - absoluteBenefit) - 1) * 100;
 
-            /* Rounding benefits to 2 decimal places */
-            relativeBenefit = Math.round(relativeBenefit * 100) / 100.;
-            absoluteBenefit = Math.round(absoluteBenefit * 100) / 100.;
-
             /* Setting final (for the current calculation) benefit values to the sale */
             sale.setAbsoluteBenefit(absoluteBenefit);
             sale.setRelativeBenefit(relativeBenefit);

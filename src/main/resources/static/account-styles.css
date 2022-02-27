@@ -20,7 +20,7 @@ h1, h2, #greeting {
 #showTransactions, #showProducts {
     position: absolute;
     top: 10px;
-    right: 200px;
+    right: 10%;
 }
 
 table {
@@ -43,6 +43,7 @@ th {
 td {
     border: 1px solid #dddddd;
     padding: 5px;
+    width: 10%
 }
 
 .addForm, .editForm {

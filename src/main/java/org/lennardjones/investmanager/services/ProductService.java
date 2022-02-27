@@ -57,11 +57,9 @@ public class ProductService {
             productRepository.save(userId, productName, currentPrice);
 
             var absoluteBenefit = (currentPrice - product.getAveragePrice()) * product.getAmount();
-            absoluteBenefit = Math.round(absoluteBenefit * 100) / 100.;
             product.setAbsoluteBenefit(absoluteBenefit);
 
             var relativePrice = (currentPrice / product.getAveragePrice() - 1) * 100;
-            relativePrice = Math.round(relativePrice * 100) / 100.;
             product.setRelativeBenefit(relativePrice);
 
             productSet.add(product);
@@ -121,17 +119,17 @@ public class ProductService {
             var productAmount = purchaseStack.stream()
                     .mapToInt(Purchase::getAmount)
                     .sum();
-            var averagePrice = purchaseStack.stream()
-                    .mapToDouble(Purchase::getPrice)
+            if (productAmount == 0) continue; // If there is no product with given name, then go to the next iteration
+            var averagePriceConsideringCommission = purchaseStack.stream()
+                    .mapToDouble(p -> p.getPrice() + p.getCommission())
                     .average()
                     .orElse(0);
-            averagePrice = Math.round(averagePrice * 100) / 100.;
 
             /* Filling in fields of the product */
             var product = new Product();
             product.setName(productName);
             product.setAmount(productAmount);
-            product.setAveragePrice(averagePrice);
+            product.setAveragePrice(averagePriceConsideringCommission);
 
             /* Setting current price and calculating current benefits if corresponding data exists */
             var optionalCurrentPrice = productRepository
@@ -141,12 +139,10 @@ public class ProductService {
 
                 product.setCurrentPrice(currentPrice);
 
-                var absoluteBenefit = (currentPrice - averagePrice) * productAmount;
-                absoluteBenefit = Math.round(absoluteBenefit * 100) / 100.;
+                var absoluteBenefit = (currentPrice - averagePriceConsideringCommission) * productAmount;
                 product.setAbsoluteBenefit(absoluteBenefit);
 
-                var relativePrice = (currentPrice / averagePrice - 1) * 100;
-                relativePrice = Math.round(relativePrice * 100) / 100.;
+                var relativePrice = (currentPrice / averagePriceConsideringCommission - 1) * 100;
                 product.setRelativeBenefit(relativePrice);
             }
 
