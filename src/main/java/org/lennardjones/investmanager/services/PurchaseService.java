@@ -19,13 +19,16 @@ public class PurchaseService {
     private final PurchaseRepository purchaseRepository;
     private final AccountRepository accountRepository;
     private  final LoggedUserManagementService loggedUserManagementService;
+    private final ProductService productService;
 
     public PurchaseService(PurchaseRepository purchaseRepository,
                            AccountRepository accountRepository,
-                           LoggedUserManagementService loggedUserManagementService) {
+                           LoggedUserManagementService loggedUserManagementService,
+                           ProductService productService) {
         this.purchaseRepository = purchaseRepository;
         this.accountRepository = accountRepository;
         this.loggedUserManagementService = loggedUserManagementService;
+        this.productService = productService;
     }
 
     public List<Purchase> getListByOwnerId(Long userId) {
@@ -49,6 +52,7 @@ public class PurchaseService {
         var ownerId = purchase.getOwner().getId();
         if (userId != null && userId.equals(ownerId)) {
             purchaseRepository.save(purchase);
+            productService.setDateChanged();
         } else {
             throw new RuntimeException("Attempt to save purchase to someone else's account");
         }
@@ -59,6 +63,7 @@ public class PurchaseService {
         var ownerId = purchaseRepository.findById(id).orElseThrow().getOwner().getId();
         if (userId != null && userId.equals(ownerId)) {
             purchaseRepository.deleteById(id);
+            productService.setDateChanged();
         } else {
             throw new RuntimeException("Attempt to delete someone else's purchase");
         }

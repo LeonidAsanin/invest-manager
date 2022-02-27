@@ -10,45 +10,72 @@
 
     <h2>Products</h2>
 
-    <table>
-        <caption>Products you currently have</caption>
+    <form method="post">
+        <div class="editForm">
+            <button type="submit" th:formaction="@{/product/edit}"
+                    th:if="${editable} == null AND ${!productSet.isEmpty()}">
+                Edit current prices
+            </button>
+            <button type="submit" th:formaction="@{/product/calculate}"
+                    th:if="${editable} != null AND ${!productSet.isEmpty()}">
+                Calculate benefits
+            </button>
+        </div>
 
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Amount</th>
-                <th>Average price</th>
-                <th>Current price</th>
-                <th>Absolute benefit</th>
-                <th>Relative benefit</th>
-            </tr>
-        </thead>
+        <table>
+            <caption>Products you currently have</caption>
 
-        <tbody>
-            <tr th:each="product : ${productList}">
-                <form method="post">
-                    <td>
-                        <input type="text" disabled name="name" th:value="${product.name}">
-                    </td>
-                    <td>
-                        <span th:text="${product.amount}"></span>
-                    </td>
-                    <td>
-                        <span th:text="${product.averagePrice}"></span>
-                    </td>
-                    <td>
-                            <input type="number" min="0" step="any"
-                                   name="currentPrice" placeholder="Enter number for benefits calculation">
-                    </td>
-                    <td>
-                        <span th:text="${product.absoluteBenefit}"></span>
-                    </td>
-                    <td>
-                        <span th:text="${product.relativeBenefit}"></span>
-                    </td>
-                </form>
-            </tr>
-        </tbody>
-    </table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Average price</th>
+                    <th>Current price</th>
+                    <th>Total price</th>
+                    <th>Current absolute benefit</th>
+                    <th>Current relative benefit</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                    <tr th:each="product : ${productSet}">
+                        <td>
+                            <span th:text="${product.name}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${product.amount}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${product.averagePrice}"></span>
+                        </td>
+                        <td>
+                            <input type="text" name="productName" th:value="${product.name}" hidden>
+                            <input type="number" min="0" step="any" required th:disabled="${editable} == null"
+                                   name="currentPrice" th:value="${product.currentPrice}" placeholder="Enter number">
+                        </td>
+                        <td>
+                            <span th:text="${product.amount} * ${product.averagePrice}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${product.absoluteBenefit}"
+                                  th:style="${product.absoluteBenefit} >= 0 ? 'color:green' : 'color:red'"></span>
+                        </td>
+                        <td>
+                            <span th:text="${product.relativeBenefit} + '%'"
+                                  th:style="${product.absoluteBenefit} >= 0 ? 'color:green' : 'color:red'"></span>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+    </form>
+
+    <form id="showTransactions" th:action="@{/account}">
+        <button type="submit">Show transactions</button>
+    </form>
+
+    <form th:action="@{/login}">
+        <input hidden name="logout">
+        <button id="logoutButton" type="submit">Log out</button>
+    </form>
 </body>
 </html>

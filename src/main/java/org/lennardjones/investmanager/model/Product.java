@@ -2,6 +2,7 @@ package org.lennardjones.investmanager.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * This class represents product that user currently have.
@@ -11,6 +12,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@ToString
 public class Product {
     private String name;
     private int amount;

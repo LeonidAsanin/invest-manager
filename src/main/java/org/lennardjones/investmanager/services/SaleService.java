@@ -19,13 +19,16 @@ public class SaleService {
     private final SaleRepository saleRepository;
     private final AccountRepository accountRepository;
     private final LoggedUserManagementService loggedUserManagementService;
+    private final ProductService productService;
 
     public SaleService(SaleRepository saleRepository,
                        AccountRepository accountRepository,
-                       LoggedUserManagementService loggedUserManagementService) {
+                       LoggedUserManagementService loggedUserManagementService,
+                       ProductService productService) {
         this.saleRepository = saleRepository;
         this.accountRepository = accountRepository;
         this.loggedUserManagementService = loggedUserManagementService;
+        this.productService = productService;
     }
 
     public List<Sale> getListBySellerId(Long userId) {
@@ -45,6 +48,7 @@ public class SaleService {
         var sellerId = sale.getSeller().getId();
         if (userId != null && userId.equals(sellerId)) {
             saleRepository.save(sale);
+            productService.setDateChanged();
         } else {
             throw new RuntimeException("Attempt to save sale to someone else's account");
         }
@@ -55,6 +59,7 @@ public class SaleService {
         var sellerId = saleRepository.findById(id).orElseThrow().getSeller().getId();
         if (userId != null && userId.equals(sellerId)) {
             saleRepository.deleteById(id);
+            productService.setDateChanged();
         } else {
             throw new RuntimeException("Attempt to delete someone else's sale");
         }

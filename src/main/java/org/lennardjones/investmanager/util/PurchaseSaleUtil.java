@@ -69,16 +69,10 @@ public class PurchaseSaleUtil {
         /* Filtering input lists by name */
         var purchaseStack = purchaseList.stream()
                 .filter(p -> p.getName().equals(productName))
+                .sorted(Comparator.comparing(Purchase::getDate))
                 .collect(Collectors.toCollection(LinkedList::new));
         var saleStack = saleList.stream()
                 .filter(s -> s.getName().equals(productName))
-                .collect(Collectors.toCollection(LinkedList::new));
-
-        purchaseStack = purchaseStack.stream()
-                .sorted(Comparator.comparing(Purchase::getDate))
-                .collect(Collectors.toCollection(LinkedList::new));
-
-        saleStack = saleStack.stream()
                 .sorted(Comparator.comparing(Sale::getDate))
                 .collect(Collectors.toCollection(LinkedList::new));
 

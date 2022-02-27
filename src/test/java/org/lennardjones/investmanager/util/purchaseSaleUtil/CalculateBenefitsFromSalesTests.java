@@ -173,12 +173,14 @@ class CalculateBenefitsFromSalesTests {
         sale1.setAmount(3);
         sale1.setPrice(22.003);
         sale1.setCommission(1);
+        sale1.setDate(LocalDate.MAX);
 
         var sale2 = new Sale();
         sale2.setName(productName);
         sale2.setAmount(1);
         sale2.setPrice(22.004);
         sale2.setCommission(1);
+        sale2.setDate(LocalDate.MAX);
 
         saleList.add(sale1);
         saleList.add(sale2);
@@ -251,12 +253,14 @@ class CalculateBenefitsFromSalesTests {
         purchase1.setAmount(5);
         purchase1.setPrice(10);
         purchase1.setCommission(1);
+        purchase1.setDate(LocalDate.MIN);
 
         var purchase2 = new Purchase();
         purchase2.setName(productName);
         purchase2.setAmount(5);
         purchase2.setPrice(20);
         purchase2.setCommission(2);
+        purchase2.setDate(LocalDate.MIN);
 
         purchaseList.add(purchase1);
         purchaseList.add(purchase2);
