@@ -3,72 +3,170 @@ package org.lennardjones.investmanager.services;
 import org.lennardjones.investmanager.entities.Purchase;
 import org.lennardjones.investmanager.entities.Sale;
 import org.lennardjones.investmanager.model.Product;
+import org.lennardjones.investmanager.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Service for calculating and interacting with products that user currently have.
+ *
+ * @author lennardjones
+ * @since 1.1
+ */
 @Service
 @SessionScope
 public class ProductService {
-    private final LoggedUserManagementService loggedUserManagementService;
     private final PurchaseService purchaseService;
     private final SaleService saleService;
-    private Set<Product> productList;
+    private final ProductRepository productRepository;
+    private final Long userId;
+    private Set<Product> productSet;
     private boolean isDateChanged;
 
     public ProductService(LoggedUserManagementService loggedUserManagementService,
                           PurchaseService purchaseService,
-                          SaleService saleService) {
-        this.loggedUserManagementService = loggedUserManagementService;
+                          SaleService saleService,
+                          ProductRepository productRepository) {
         this.purchaseService = purchaseService;
         this.saleService = saleService;
-        isDateChanged = false;
+        this.productRepository = productRepository;
+
+        userId = loggedUserManagementService.getUserId();
+
+        isDateChanged = true;
     }
 
     public void setDateChanged() {
         isDateChanged = true;
     }
 
-    public void setCurrentPriceByName(String productName, double currentPrice) {
-        var optionalProduct = productList.stream()
+    public void calculateBenefitsByName(String productName, double currentPrice) {
+        /* Searching for product by name */
+        var optionalProduct = productSet.stream()
                 .filter(p -> p.getName().equals(productName))
                 .findFirst();
 
-        optionalProduct.ifPresent(product -> product.setCurrentPrice(currentPrice));
+        /* Updating current price and calculating current benefits if product exists */
+        if (optionalProduct.isPresent()) {
+            var product = optionalProduct.get();
+
+            product.setCurrentPrice(currentPrice);
+            productRepository.save(userId, productName, currentPrice);
+
+            var absoluteBenefit = (currentPrice - product.getAveragePrice()) * product.getAmount();
+            absoluteBenefit = Math.round(absoluteBenefit * 100) / 100.;
+            product.setAbsoluteBenefit(absoluteBenefit);
+
+            var relativePrice = (currentPrice / product.getAveragePrice() - 1) * 100;
+            relativePrice = Math.round(relativePrice * 100) / 100.;
+            product.setRelativeBenefit(relativePrice);
+
+            productSet.add(product);
+        }
     }
 
-    //TODO: implement "calculateProducts" method
     private void calculateProducts(List<Purchase> purchaseList, List<Sale> saleList) {
-        productList = new HashSet<>();
+        productSet = new HashSet<>();
 
+        /* Defining unique names of the purchases */
         var uniquePurchaseNames = new HashSet<String>();
         for (var purchase : purchaseList) {
             uniquePurchaseNames.add(purchase.getName());
         }
 
-        for (var productName : uniquePurchaseNames) {
-            var purchases = purchaseList.stream()
-                    .filter(p -> p.getName().equals(productName))
-                    .collect(Collectors.toCollection(LinkedList::new));
-            var sales = saleList.stream()
-                    .filter(s -> s.getName().equals(productName))
-                    .collect(Collectors.toCollection(LinkedList::new));
+        /* Removing unnecessary entries from "productNameCurrentPriceMap" map */
+        for (var productName : productRepository.getAllNamesByUserId(userId)) {
+            if (!uniquePurchaseNames.contains(productName)) {
+                productRepository.removeByUserIdAndProductName(userId, productName);
+            }
         }
+
+        /* Calculating current products for all unique names */
+        for (var productName : uniquePurchaseNames) {
+
+            /* Defining purchase and sale stacks of the product by name and sorting them by date */
+            var purchaseStack = purchaseList.stream()
+                    .filter(p -> p.getName().equals(productName))
+                    .sorted(Comparator.comparing(Purchase::getDate))
+                    .collect(Collectors.toCollection(LinkedList::new));
+            var saleStack = saleList.stream()
+                    .filter(s -> s.getName().equals(productName))
+                    .sorted(Comparator.comparing(Sale::getDate))
+                    .collect(Collectors.toCollection(LinkedList::new));
+
+            /* Calculating resulting purchaseStack */
+            while (!saleStack.isEmpty()) {
+                var purchase = purchaseStack.removeFirst();
+
+                var sale = saleStack.removeFirst();
+
+                var purchaseAmount = purchase.getAmount();
+                var saleAmount = sale.getAmount();
+
+                var remainingProductAmount = purchaseAmount - saleAmount;
+
+                if (remainingProductAmount > 0) {
+                    purchase.setAmount(remainingProductAmount);
+                    purchaseStack.addFirst(purchase);
+                } else if (remainingProductAmount < 0) {
+                    sale.setAmount(-remainingProductAmount);
+                    saleStack.addFirst(sale);
+                }
+            }
+
+            /* Calculating data for the product fields */
+            var productAmount = purchaseStack.stream()
+                    .mapToInt(Purchase::getAmount)
+                    .sum();
+            var averagePrice = purchaseStack.stream()
+                    .mapToDouble(Purchase::getPrice)
+                    .average()
+                    .orElse(0);
+            averagePrice = Math.round(averagePrice * 100) / 100.;
+
+            /* Filling in fields of the product */
+            var product = new Product();
+            product.setName(productName);
+            product.setAmount(productAmount);
+            product.setAveragePrice(averagePrice);
+
+            /* Setting current price and calculating current benefits if corresponding data exists */
+            var optionalCurrentPrice = productRepository
+                    .getCurrentPriceByUserIdAndProductName(userId, productName);
+            if (optionalCurrentPrice.isPresent()) {
+                double currentPrice = optionalCurrentPrice.get();
+
+                product.setCurrentPrice(currentPrice);
+
+                var absoluteBenefit = (currentPrice - averagePrice) * productAmount;
+                absoluteBenefit = Math.round(absoluteBenefit * 100) / 100.;
+                product.setAbsoluteBenefit(absoluteBenefit);
+
+                var relativePrice = (currentPrice / averagePrice - 1) * 100;
+                relativePrice = Math.round(relativePrice * 100) / 100.;
+                product.setRelativeBenefit(relativePrice);
+            }
+
+            /* Adding product to the product set */
+            productSet.add(product);
+        }
+
+        /* Sorting current product set by name */
+        productSet = productSet.stream()
+                .sorted(Comparator.comparing(Product::getName))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     public Set<Product> getAll() {
         if (isDateChanged) {
-            var userId = loggedUserManagementService.getUserId();
             var purchaseList = purchaseService.getListByOwnerId(userId);
             var saleList = saleService.getListBySellerId(userId);
             calculateProducts(purchaseList, saleList);
             isDateChanged = false;
         }
-        return productList;
+        return productSet;
     }
 }

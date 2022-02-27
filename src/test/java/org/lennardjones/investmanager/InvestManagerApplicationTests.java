@@ -9,5 +9,4 @@ class InvestManagerApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

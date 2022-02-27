@@ -257,6 +257,10 @@
         </form>
     </div>
 
+    <form th:action="@{/product}">
+        <button id="showProducts" type="submit">Show current products</button>
+    </form>
+
     <form th:action="@{/login}">
         <input hidden name="logout">
         <button id="logoutButton" type="submit">Log out</button>
