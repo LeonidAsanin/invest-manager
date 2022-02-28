@@ -4,82 +4,97 @@
     <meta charset="UTF-8">
     <title>Products</title>
     <link rel="stylesheet" th:href="@{/account-styles.css}">
+    <link rel="stylesheet" th:href="@{/common-styles.css}">
 </head>
 <body>
-    <h1>Invest Manager</h1>
+    <header>
+        <h1>Invest Manager</h1>
 
-    <h2>Products</h2>
+        <h2>Products</h2>
 
-    <form method="post">
-        <div class="editForm">
-            <button type="submit" th:formaction="@{/product/edit}"
-                    th:if="${editable} == null AND ${!productSet.isEmpty()}">
-                Edit current prices
-            </button>
-            <button type="submit" th:formaction="@{/product/calculate}"
-                    th:if="${editable} != null AND ${!productSet.isEmpty()}">
-                Calculate benefits
-            </button>
-        </div>
+        <nav>
+            <form id="showTransactions" th:action="@{/account}">
+                <button type="submit">Show transactions</button>
+            </form>
+            <form th:action="@{/login}">
+                <input hidden name="logout">
+                <button id="logoutButton" type="submit">Log out</button>
+            </form>
+        </nav>
+    </header>
+    <main>
+        <form method="post">
+            <div class="editForm">
+                <button type="submit" th:formaction="@{/product/edit}"
+                        th:if="${editable} == null AND ${!productSet.isEmpty()}">
+                    Edit current prices
+                </button>
+                <button type="submit" th:formaction="@{/product/calculate}"
+                        th:if="${editable} != null AND ${!productSet.isEmpty()}">
+                    Calculate benefits
+                </button>
+            </div>
 
-        <table>
-            <caption>Products you currently have</caption>
+            <table>
+                <caption>Products you currently have</caption>
 
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Amount</th>
-                    <th>Average price<sup><acronym title="considering commission">*</acronym></sup></th>
-                    <th>Current price</th>
-                    <th>Total price</th>
-                    <th>Total current price</th>
-                    <th>Current absolute benefit</th>
-                    <th>Current relative benefit</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                    <tr th:each="product : ${productSet}">
-                        <td>
-                            <span th:text="${product.name}"></span>
-                        </td>
-                        <td>
-                            <span th:text="${product.amount}"></span>
-                        </td>
-                        <td>
-                            <span th:text="${#numbers.formatDecimal(product.averagePrice, 1, 2)}"></span>
-                        </td>
-                        <td>
-                            <input type="text" name="productName" th:value="${product.name}" hidden>
-                            <input type="number" min="0" step="0.01" required th:disabled="${editable} == null"
-                                   name="currentPrice" th:value="${product.currentPrice}" placeholder="Enter number">
-                        </td>
-                        <td>
-                            <span th:text="${#numbers.formatDecimal(product.amount * product.averagePrice, 1, 2)}"></span>
-                        </td>
-                        <td>
-                            <span th:text="${#numbers.formatDecimal(product.amount * product.currentPrice, 1, 2)}"></span>
-                        </td>
-                        <td>
-                            <span th:text="${#numbers.formatDecimal(product.absoluteBenefit, 1, 2)}"
-                                  th:style="${product.absoluteBenefit} >= 0 ? 'color:green' : 'color:red'"></span>
-                        </td>
-                        <td>
-                            <span th:text="${#numbers.formatDecimal(product.relativeBenefit, 1, 2)} + '%'"
-                                  th:style="${product.absoluteBenefit} >= 0 ? 'color:green' : 'color:red'"></span>
-                        </td>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Amount</th>
+                        <th>Average price<sup><acronym title="considering commission">*</acronym></sup></th>
+                        <th>Current price</th>
+                        <th>Total price</th>
+                        <th>Total current price</th>
+                        <th>Current absolute benefit</th>
+                        <th>Current relative benefit</th>
                     </tr>
-            </tbody>
-        </table>
-    </form>
+                </thead>
 
-    <form id="showTransactions" th:action="@{/account}">
-        <button type="submit">Show transactions</button>
-    </form>
-
-    <form th:action="@{/login}">
-        <input hidden name="logout">
-        <button id="logoutButton" type="submit">Log out</button>
-    </form>
+                <tbody>
+                        <tr th:each="product : ${productSet}">
+                            <td>
+                                <span th:text="${product.name}"></span>
+                            </td>
+                            <td>
+                                <span th:text="${product.amount}"></span>
+                            </td>
+                            <td>
+                                <span th:text="${#numbers.formatDecimal(product.averagePrice, 1, 2)}"></span>
+                            </td>
+                            <td>
+                                <input type="text" name="productName" th:value="${product.name}" hidden>
+                                <input type="number" min="0" step="0.01" required th:disabled="${editable} == null"
+                                       name="currentPrice" th:value="${product.currentPrice}" placeholder="Enter number">
+                            </td>
+                            <td>
+                                <span th:text="${#numbers.formatDecimal(product.amount * product.averagePrice, 1, 2)}"></span>
+                            </td>
+                            <td>
+                                <span th:text="${#numbers.formatDecimal(product.amount * product.currentPrice, 1, 2)}"></span>
+                            </td>
+                            <td>
+                                <span th:text="${#numbers.formatDecimal(product.absoluteBenefit, 1, 2)}"
+                                      th:style="${product.absoluteBenefit} >= 0 ? 'color:green' : 'color:red'"></span>
+                            </td>
+                            <td>
+                                <span th:text="${#numbers.formatDecimal(product.relativeBenefit, 1, 2)} + '%'"
+                                      th:style="${product.absoluteBenefit} >= 0 ? 'color:green' : 'color:red'"></span>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+        </form>
+    </main>
+    <footer>
+        <p>
+            Application was developed by Leonid Asanin.
+        </p>
+        <address>
+            Contact information:<br>
+            Email: <a href="mailto:l.asanin@mail.ru">l.asanin@mail.ru</a><br>
+            GitHub: <a href="https://github.com/LeonidAsanin" target="_blank">github.com/LeonidAsanin</a>
+        </address>
+    </footer>
 </body>
 </html>

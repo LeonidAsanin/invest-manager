@@ -4,31 +4,45 @@
     <meta charset="UTF-8">
     <title>Invest Manager</title>
     <link rel="stylesheet" th:href="@{/login-styles.css}">
+    <link rel="stylesheet" th:href="@{/common-styles.css}">
 </head>
 <body>
-    <h1>Invest Manager</h1>
+    <header>
+        <h1>Invest Manager</h1>
+    </header>
+    <main>
+        <form method="post" th:action="@{/login}" th:object="${account}">
+            <fieldset>
+                <legend>Authorization</legend>
+                <div>
+                    <label for="username">Username</label>
+                    <input type="text" required id="username" th:field="*{username}">
+                </div>
+                <div>
+                    <label for="password">Password</label>
+                    <input type="password" required id="password" th:field="*{password}">
+                </div>
+                <button type="submit">Log in</button>
+            </fieldset>
 
-    <form method="post" th:action="@{/login}" th:object="${account}">
-        <fieldset>
-            <legend>Authorization</legend>
-            <div>
-                <label for="username">Username</label>
-                <input type="text" required id="username" th:field="*{username}">
+            <div class="errorMessage" th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}">
+                Login Error
             </div>
-            <div>
-                <label for="password">Password</label>
-                <input type="password" required id="password" th:field="*{password}">
-            </div>
-            <button type="submit">Log in</button>
-        </fieldset>
+        </form>
 
-        <div class="errorMessage" th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}">
-            Login Error
-        </div>
-    </form>
-
-    <form id="button" th:action="@{/register}">
-        <button type="submit">Register new account</button>
-    </form>
+        <form id="button" th:action="@{/register}">
+            <button type="submit">Register new account</button>
+        </form>
+    </main>
+    <footer>
+        <p>
+            Application was developed by Leonid Asanin.
+        </p>
+        <address>
+            Contact information:<br>
+            Email: <a href="mailto:l.asanin@mail.ru">l.asanin@mail.ru</a><br>
+            GitHub: <a href="https://github.com/LeonidAsanin" target="_blank">github.com/LeonidAsanin</a>
+        </address>
+    </footer>
 </body>
 </html>

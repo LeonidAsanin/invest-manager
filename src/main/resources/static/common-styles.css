@@ -1,0 +1,27 @@
+body {
+  font-family: Georgia, serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+header {
+  text-align: center;
+  flex-shrink: 0;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+footer {
+  text-align: center;
+  flex-shrink: 0;
+  padding: 20px;
+}
+
+.errorMessage {
+    color: red;
+    width: 80%;
+    margin: auto;
+}
