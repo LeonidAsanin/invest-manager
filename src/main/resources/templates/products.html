@@ -17,7 +17,7 @@
                 <button type="submit">Show transactions</button>
             </form>
             <form th:action="@{/login}">
-                <input hidden name="logout">
+                <input hidden name="logout"/>
                 <button id="logoutButton" type="submit">Log out</button>
             </form>
         </nav>
@@ -63,9 +63,9 @@
                                 <span th:text="${#numbers.formatDecimal(product.averagePrice, 1, 2)}"></span>
                             </td>
                             <td>
-                                <input type="text" name="productName" th:value="${product.name}" hidden>
+                                <input type="text" name="productName" th:value="${product.name}" hidden/>
                                 <input type="number" min="0" step="0.01" required th:disabled="${editable} == null"
-                                       name="currentPrice" th:value="${product.currentPrice}" placeholder="Enter number">
+                                       name="currentPrice" th:value="${product.currentPrice}" placeholder="Enter number"/>
                             </td>
                             <td>
                                 <span th:text="${#numbers.formatDecimal(product.amount * product.averagePrice, 1, 2)}"></span>
