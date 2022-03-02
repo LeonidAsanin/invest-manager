@@ -1,8 +1,10 @@
 package org.lennardjones.investmanager.services;
 
 import org.lennardjones.investmanager.entities.Purchase;
-import org.lennardjones.investmanager.repositories.AccountRepository;
+import org.lennardjones.investmanager.entities.User;
+import org.lennardjones.investmanager.repositories.UserRepository;
 import org.lennardjones.investmanager.repositories.PurchaseRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -17,30 +19,27 @@ import java.util.List;
 @Service
 public class PurchaseService {
     private final PurchaseRepository purchaseRepository;
-    private final AccountRepository accountRepository;
-    private  final LoggedUserManagementService loggedUserManagementService;
+    private final UserRepository userRepository;
     private final ProductService productService;
 
     public PurchaseService(PurchaseRepository purchaseRepository,
-                           AccountRepository accountRepository,
-                           LoggedUserManagementService loggedUserManagementService,
+                           UserRepository userRepository,
                            ProductService productService) {
         this.purchaseRepository = purchaseRepository;
-        this.accountRepository = accountRepository;
-        this.loggedUserManagementService = loggedUserManagementService;
+        this.userRepository = userRepository;
         this.productService = productService;
     }
 
-    public List<Purchase> getListByOwnerId(Long userId) {
-        var accountOptional = accountRepository.findById(userId);
+    public List<Purchase> getListByUsername(String username) {
+        var accountOptional = userRepository.findByUsername(username);
         if (accountOptional.isPresent()) {
             return accountOptional.get().getPurchaseList();
         }
         return Collections.emptyList();
     }
 
-    public List<Purchase> getListByOwnerIdContainingSubstring(Long id, String substring) {
-        return purchaseRepository.findByOwner_IdAndNameContainingIgnoreCase(id, substring);
+    public List<Purchase> getListByUsernameContainingSubstring(String username, String substring) {
+        return purchaseRepository.findByOwner_UsernameAndNameContainingIgnoreCase(username, substring);
     }
 
     public String getNameById(Long id) {
@@ -48,7 +47,8 @@ public class PurchaseService {
     }
 
     public void save(Purchase purchase) {
-        var userId = loggedUserManagementService.getUserId();
+        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var userId = user.getId();
         var ownerId = purchase.getOwner().getId();
         if (userId != null && userId.equals(ownerId)) {
             purchaseRepository.save(purchase);
@@ -59,7 +59,8 @@ public class PurchaseService {
     }
 
     public void deleteById(Long id) {
-        var userId = loggedUserManagementService.getUserId();
+        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var userId = user.getId();
         var ownerId = purchaseRepository.findById(id).orElseThrow().getOwner().getId();
         if (userId != null && userId.equals(ownerId)) {
             purchaseRepository.deleteById(id);

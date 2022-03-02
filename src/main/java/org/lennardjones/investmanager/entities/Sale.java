@@ -17,7 +17,6 @@ import java.time.LocalDate;
  * @author lennardjones
  */
 @Entity
-@Table(name = "sale")
 @Getter
 @Setter
 @ToString
@@ -29,7 +28,7 @@ public class Sale implements Cloneable {
 
     @ManyToOne
     @JoinColumn(name = "seller_id")
-    private Account seller;
+    private User seller;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "date")

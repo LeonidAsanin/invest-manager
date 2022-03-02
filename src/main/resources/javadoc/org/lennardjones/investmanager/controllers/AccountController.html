@@ -100,7 +100,7 @@ loadScripts(document, 'script');</script>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.lennardjones.investmanager.services.LoggedUserManagementService,org.lennardjones.investmanager.services.PurchaseService,org.lennardjones.investmanager.services.SaleService,org.lennardjones.investmanager.services.AccountService)" class="member-name-link">AccountController</a><wbr>(<a href="../services/LoggedUserManagementService.html" title="class in org.lennardjones.investmanager.services">LoggedUserManagementService</a>&nbsp;loggedUserManagementService,
  <a href="../services/PurchaseService.html" title="class in org.lennardjones.investmanager.services">PurchaseService</a>&nbsp;purchaseService,
  <a href="../services/SaleService.html" title="class in org.lennardjones.investmanager.services">SaleService</a>&nbsp;saleService,
- <a href="../services/AccountService.html" title="class in org.lennardjones.investmanager.services">AccountService</a>&nbsp;accountService)</code></div>
+ <a href="../services/AccountService.html" title="class in org.lennardjones.investmanager.services">AccountService</a>&nbsp;userService)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
@@ -151,7 +151,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AccountController</span><wbr><span class="parameters">(<a href="../services/LoggedUserManagementService.html" title="class in org.lennardjones.investmanager.services">LoggedUserManagementService</a>&nbsp;loggedUserManagementService,
  <a href="../services/PurchaseService.html" title="class in org.lennardjones.investmanager.services">PurchaseService</a>&nbsp;purchaseService,
  <a href="../services/SaleService.html" title="class in org.lennardjones.investmanager.services">SaleService</a>&nbsp;saleService,
- <a href="../services/AccountService.html" title="class in org.lennardjones.investmanager.services">AccountService</a>&nbsp;accountService)</span></div>
+ <a href="../services/AccountService.html" title="class in org.lennardjones.investmanager.services">AccountService</a>&nbsp;userService)</span></div>
 </section>
 </li>
 </ul>
@@ -165,7 +165,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getAccountPage(java.lang.Long,java.lang.Long,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.springframework.ui.Model)">
 <h3>getAccountPage</h3>
-<div class="member-signature"><span class="annotations">@GetMapping("/account")
+<div class="member-signature"><span class="annotations">@GetMapping("/user")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getAccountPage</span><wbr><span class="parameters">(@RequestParam(name="editable_purchase",required=false)
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;editablePurchaseId,
  @RequestParam(name="editable_sale",required=false)

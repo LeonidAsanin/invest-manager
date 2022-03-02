@@ -98,7 +98,7 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.lennardjones.investmanager.services.AccountService,org.lennardjones.investmanager.services.LoggedUserManagementService)" class="member-name-link">LoginController</a><wbr>(<a href="../services/AccountService.html" title="class in org.lennardjones.investmanager.services">AccountService</a>&nbsp;accountService,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.lennardjones.investmanager.services.UserService,org.lennardjones.investmanager.services.LoggedUserManagementService)" class="member-name-link">LoginController</a><wbr>(<a href="../services/AccountService.html" title="class in org.lennardjones.investmanager.services">AccountService</a>&nbsp;userService,
  <a href="../services/LoggedUserManagementService.html" title="class in org.lennardjones.investmanager.services">LoggedUserManagementService</a>&nbsp;loggedUserManagementService)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
@@ -120,7 +120,7 @@ loadScripts(document, 'script');</script>
  org.springframework.ui.Model&nbsp;model)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#login(org.lennardjones.investmanager.entities.Account,org.springframework.validation.BindingResult)" class="member-name-link">login</a><wbr>(<a href="../entities/Account.html" title="class in org.lennardjones.investmanager.entities">Account</a>&nbsp;account,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#login(org.lennardjones.investmanager.entities.User,org.springframework.validation.BindingResult)" class="member-name-link">login</a><wbr>(<a href="../entities/Account.html" title="class in org.lennardjones.investmanager.entities">Account</a>&nbsp;user,
  org.springframework.validation.BindingResult&nbsp;bindingResult)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
@@ -141,9 +141,9 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.lennardjones.investmanager.services.AccountService,org.lennardjones.investmanager.services.LoggedUserManagementService)">
+<section class="detail" id="&lt;init&gt;(org.lennardjones.investmanager.services.UserService,org.lennardjones.investmanager.services.LoggedUserManagementService)">
 <h3>LoginController</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">LoginController</span><wbr><span class="parameters">(<a href="../services/AccountService.html" title="class in org.lennardjones.investmanager.services">AccountService</a>&nbsp;accountService,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">LoginController</span><wbr><span class="parameters">(<a href="../services/AccountService.html" title="class in org.lennardjones.investmanager.services">AccountService</a>&nbsp;userService,
  <a href="../services/LoggedUserManagementService.html" title="class in org.lennardjones.investmanager.services">LoggedUserManagementService</a>&nbsp;loggedUserManagementService)</span></div>
 </section>
 </li>
@@ -165,10 +165,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="login(org.lennardjones.investmanager.entities.Account,org.springframework.validation.BindingResult)">
+<section class="detail" id="login(org.lennardjones.investmanager.entities.User,org.springframework.validation.BindingResult)">
 <h3>login</h3>
 <div class="member-signature"><span class="annotations">@PostMapping
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">login</span><wbr><span class="parameters">(<a href="../entities/Account.html" title="class in org.lennardjones.investmanager.entities">Account</a>&nbsp;account,
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">login</span><wbr><span class="parameters">(<a href="../entities/Account.html" title="class in org.lennardjones.investmanager.entities">Account</a>&nbsp;user,
  org.springframework.validation.BindingResult&nbsp;bindingResult)</span></div>
 </section>
 </li>

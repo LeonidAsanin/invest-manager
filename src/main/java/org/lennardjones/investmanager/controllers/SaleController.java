@@ -1,11 +1,11 @@
 package org.lennardjones.investmanager.controllers;
 
 import org.lennardjones.investmanager.entities.Sale;
-import org.lennardjones.investmanager.services.AccountService;
-import org.lennardjones.investmanager.services.LoggedUserManagementService;
+import org.lennardjones.investmanager.entities.User;
 import org.lennardjones.investmanager.services.PurchaseService;
 import org.lennardjones.investmanager.services.SaleService;
 import org.lennardjones.investmanager.util.PurchaseSaleUtil;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,27 +26,20 @@ import java.util.stream.Collectors;
 public class SaleController {
     private final SaleService saleService;
     private final PurchaseService purchaseService;
-    private final AccountService accountService;
-    private final LoggedUserManagementService loggedUserManagementService;
 
-    public SaleController(SaleService saleService,
-                          PurchaseService purchaseService,
-                          AccountService accountService,
-                          LoggedUserManagementService loggedUserManagementService) {
+    public SaleController(SaleService saleService, PurchaseService purchaseService) {
         this.saleService = saleService;
         this.purchaseService = purchaseService;
-        this.accountService = accountService;
-        this.loggedUserManagementService = loggedUserManagementService;
     }
 
     @PostMapping("/add")
-    public String add(Sale sale, Model model) {
-        var userId = loggedUserManagementService.getUserId();
+    public String add(Sale sale, @AuthenticationPrincipal User user) {
+        var username = user.getUsername();
         var productName = sale.getName();
 
         /* Validating presence of enough amount products to sell considering purchase and sale dates */
-        var purchaseList = purchaseService.getListByOwnerId(userId);
-        var saleList = saleService.getListBySellerId(userId);
+        var purchaseList = purchaseService.getListByUsername(username);
+        var saleList = saleService.getListByUsername(username);
         saleList.add(sale);
         if (!PurchaseSaleUtil.isQueueCorrect(purchaseList, saleList, productName)) {
             return "redirect:/account?error=addSale";
@@ -77,14 +70,14 @@ public class SaleController {
     }
 
     @PostMapping("/save/{id}")
-    public String save(Sale sale, Model model) {
-        var userId = loggedUserManagementService.getUserId();
+    public String save(Sale sale, Model model, @AuthenticationPrincipal User user) {
+        var username = user.getUsername();
         var saleId = sale.getId();
         var productName = sale.getName();
 
         /* Validating presence of enough amount products to sell considering purchase and sale dates */
-        var purchaseList = purchaseService.getListByOwnerId(userId);
-        var saleList = saleService.getListBySellerId(userId)
+        var purchaseList = purchaseService.getListByUsername(username);
+        var saleList = saleService.getListByUsername(username)
                 .stream()
                 .filter(s -> !s.getId().equals(saleId))
                 .collect(Collectors.toList());
@@ -104,7 +97,7 @@ public class SaleController {
         sale.setAbsoluteBenefit(saleWithCalculatedBenefits.getAbsoluteBenefit());
         sale.setRelativeBenefit(saleWithCalculatedBenefits.getRelativeBenefit());
 
-        sale.setSeller(accountService.getAccountById(userId));
+        sale.setSeller(user);
         saleService.save(sale);
         return "redirect:/account";
     }

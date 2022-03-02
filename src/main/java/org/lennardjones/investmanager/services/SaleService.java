@@ -1,8 +1,10 @@
 package org.lennardjones.investmanager.services;
 
 import org.lennardjones.investmanager.entities.Sale;
-import org.lennardjones.investmanager.repositories.AccountRepository;
+import org.lennardjones.investmanager.entities.User;
+import org.lennardjones.investmanager.repositories.UserRepository;
 import org.lennardjones.investmanager.repositories.SaleRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -17,34 +19,32 @@ import java.util.List;
 @Service
 public class SaleService {
     private final SaleRepository saleRepository;
-    private final AccountRepository accountRepository;
-    private final LoggedUserManagementService loggedUserManagementService;
+    private final UserRepository userRepository;
     private final ProductService productService;
 
     public SaleService(SaleRepository saleRepository,
-                       AccountRepository accountRepository,
-                       LoggedUserManagementService loggedUserManagementService,
+                       UserRepository userRepository,
                        ProductService productService) {
         this.saleRepository = saleRepository;
-        this.accountRepository = accountRepository;
-        this.loggedUserManagementService = loggedUserManagementService;
+        this.userRepository = userRepository;
         this.productService = productService;
     }
 
-    public List<Sale> getListBySellerId(Long userId) {
-        var accountOptional = accountRepository.findById(userId);
+    public List<Sale> getListByUsername(String username) {
+        var accountOptional = userRepository.findByUsername(username);
         if (accountOptional.isPresent()) {
             return accountOptional.get().getSaleList();
         }
         return Collections.emptyList();
     }
 
-    public List<Sale> getListBySellerIdContainingSubstring(Long id, String substring) {
-        return saleRepository.findBySeller_IdAndNameContainingIgnoreCase(id, substring);
+    public List<Sale> getListByUsernameContainingSubstring(String username, String substring) {
+        return saleRepository.findBySeller_UsernameAndNameContainingIgnoreCase(username, substring);
     }
 
     public void save(Sale sale) {
-        var userId = loggedUserManagementService.getUserId();
+        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var userId = user.getId();
         var sellerId = sale.getSeller().getId();
         if (userId != null && userId.equals(sellerId)) {
             saleRepository.save(sale);
@@ -55,7 +55,8 @@ public class SaleService {
     }
 
     public void deleteById(Long id) {
-        var userId = loggedUserManagementService.getUserId();
+        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var userId = user.getId();
         var sellerId = saleRepository.findById(id).orElseThrow().getSeller().getId();
         if (userId != null && userId.equals(sellerId)) {
             saleRepository.deleteById(id);

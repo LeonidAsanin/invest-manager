@@ -3,7 +3,7 @@ package org.lennardjones.investmanager.util.purchaseSaleUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.lennardjones.investmanager.entities.Account;
+import org.lennardjones.investmanager.entities.User;
 import org.lennardjones.investmanager.entities.Purchase;
 import org.lennardjones.investmanager.entities.Sale;
 import org.lennardjones.investmanager.util.PurchaseSaleUtil;
@@ -65,7 +65,7 @@ class CalculateBenefitsFromSalesTests {
     @Test
     void methodDoesNotAffectInputLists() {
         var defaultPurchaseId = 1L;
-        var defaultPurchaseOwner = new Account();
+        var defaultPurchaseOwner = new User();
         var defaultPurchaseDate = LocalDate.MIN;
         var defaultPurchaseName = productName;
         var defaultPurchasePrice = 10;
@@ -73,7 +73,7 @@ class CalculateBenefitsFromSalesTests {
         var defaultPurchaseCommission = 1;
 
         var defaultSaleId = 2L;
-        var defaultSeller= new Account();
+        var defaultSeller= new User();
         var defaultSaleDate = LocalDate.MAX;
         var defaultSaleName = productName;
         var defaultSalePrice = 22;

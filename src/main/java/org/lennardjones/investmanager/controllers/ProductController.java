@@ -1,6 +1,5 @@
 package org.lennardjones.investmanager.controllers;
 
-import org.lennardjones.investmanager.services.LoggedUserManagementService;
 import org.lennardjones.investmanager.services.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,20 +19,14 @@ import java.util.List;
 @Controller
 @RequestMapping("/product")
 public class ProductController {
-    private final LoggedUserManagementService loggedUserManagementService;
     private final ProductService productService;
 
-    public ProductController(LoggedUserManagementService loggedUserManagementService, ProductService productService) {
-        this.loggedUserManagementService = loggedUserManagementService;
+    public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
     @GetMapping
     public String getProductPage(@RequestParam(required = false) String editable, Model model) {
-        if (!loggedUserManagementService.isLoggedIn()) {
-            return "redirect:/login";
-        }
-
         if (editable != null) {
             model.addAttribute("editable", true);
         }
@@ -55,6 +48,6 @@ public class ProductController {
 
     @PostMapping("/edit")
     public String editCurrentPrices(Model model) {
-        return "redirect:/product?editable=";
+        return "redirect:/product?editable";
     }
 }

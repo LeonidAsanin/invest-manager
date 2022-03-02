@@ -15,10 +15,12 @@ import java.util.List;
  * @author lennardjones
  */
 public interface SaleRepository extends JpaRepository<Sale, Long> {
+
     @Override
     @Modifying
     @Query("delete from Sale where id = :id")
     void deleteById(Long id);
 
-    List<Sale> findBySeller_IdAndNameContainingIgnoreCase(Long id, String name);
+    List<Sale> findBySeller_UsernameAndNameContainingIgnoreCase(String username, String name);
+
 }

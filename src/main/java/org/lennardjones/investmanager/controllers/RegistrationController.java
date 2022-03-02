@@ -1,8 +1,8 @@
 package org.lennardjones.investmanager.controllers;
 
-import org.lennardjones.investmanager.entities.Account;
-import org.lennardjones.investmanager.services.AccountService;
-import org.lennardjones.investmanager.services.LoggedUserManagementService;
+import org.lennardjones.investmanager.entities.User;
+import org.lennardjones.investmanager.services.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/register")
 public class RegistrationController {
-    private final AccountService accountService;
-    private final LoggedUserManagementService loggedUserManagementService;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-    public RegistrationController(AccountService accountService, LoggedUserManagementService loggedUserManagementService) {
-        this.accountService = accountService;
-        this.loggedUserManagementService = loggedUserManagementService;
+    public RegistrationController(UserService userService, PasswordEncoder passwordEncoder) {
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -39,7 +39,7 @@ public class RegistrationController {
             @RequestParam String passwordConfirmation,
             Model model
     ) {
-        if (accountService.existsByUsername(username)) {
+        if (userService.existsByUsername(username)) {
             model.addAttribute("error", "Sorry, but this username already exists");
             return "registration";
         }
@@ -50,15 +50,12 @@ public class RegistrationController {
             return "registration";
         }
 
-        var account = new Account();
-        account.setUsername(username);
-        account.setPassword(password);
+        var user = new User();
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(password));
 
-        accountService.registerNewAccount(account);
-        loggedUserManagementService.setUserId(accountService.getUserIdByUsername(username));
-        loggedUserManagementService.setUsername(username);
-        loggedUserManagementService.setLoggedIn(true);
+        userService.registerNewUser(user);
 
-        return "redirect:/account";
+        return "redirect:/login";
     }
 }

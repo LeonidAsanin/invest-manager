@@ -2,8 +2,10 @@ package org.lennardjones.investmanager.services;
 
 import org.lennardjones.investmanager.entities.Purchase;
 import org.lennardjones.investmanager.entities.Sale;
+import org.lennardjones.investmanager.entities.User;
 import org.lennardjones.investmanager.model.Product;
 import org.lennardjones.investmanager.repositories.ProductRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
@@ -22,19 +24,22 @@ public class ProductService {
     private final PurchaseService purchaseService;
     private final SaleService saleService;
     private final ProductRepository productRepository;
+
     private final Long userId;
+    private final String username;
     private Set<Product> productSet;
     private boolean isDateChanged;
 
-    public ProductService(LoggedUserManagementService loggedUserManagementService,
-                          PurchaseService purchaseService,
+    public ProductService(PurchaseService purchaseService,
                           SaleService saleService,
                           ProductRepository productRepository) {
         this.purchaseService = purchaseService;
         this.saleService = saleService;
         this.productRepository = productRepository;
 
-        userId = loggedUserManagementService.getUserId();
+        var user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        userId = user.getId();
+        username = user.getUsername();
 
         isDateChanged = true;
     }
@@ -158,8 +163,8 @@ public class ProductService {
 
     public Set<Product> getAll() {
         if (isDateChanged) {
-            var purchaseList = purchaseService.getListByOwnerId(userId);
-            var saleList = saleService.getListBySellerId(userId);
+            var purchaseList = purchaseService.getListByUsername(username);
+            var saleList = saleService.getListByUsername(username);
             calculateProducts(purchaseList, saleList);
             isDateChanged = false;
         }

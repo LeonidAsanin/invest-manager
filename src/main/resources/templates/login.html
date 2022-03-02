@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Invest Manager</title>
+    <title>Login</title>
     <link rel="stylesheet" th:href="@{/login-styles.css}">
     <link rel="stylesheet" th:href="@{/common-styles.css}">
 </head>
@@ -11,7 +11,7 @@
         <h1>Invest Manager</h1>
     </header>
     <main>
-        <form method="post" th:action="@{/login}" th:object="${account}">
+        <form method="post" th:action="@{/login}" th:object="${user}">
             <fieldset>
                 <legend>Authorization</legend>
                 <div>
@@ -25,13 +25,13 @@
                 <button type="submit">Log in</button>
             </fieldset>
 
-            <div class="errorMessage" th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}">
+            <div class="errorMessage" th:if="${error} != null" th:text="${error}">
                 Login Error
             </div>
         </form>
 
         <form id="button" th:action="@{/register}">
-            <button type="submit">Register new account</button>
+            <button type="submit">Register new user</button>
         </form>
     </main>
     <footer>

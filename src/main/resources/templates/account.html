@@ -16,8 +16,7 @@
             <form th:action="@{/product}">
                 <button id="showProducts" type="submit">Show current products</button>
             </form>
-            <form th:action="@{/login}">
-                <input hidden name="logout"/>
+            <form method="post" th:action="@{/logout}">
                 <button id="logoutButton" type="submit">Log out</button>
             </form>
         </nav>
@@ -48,7 +47,7 @@
         <div id="filterByName">
             <form>
                 <input type="text" name="filter" th:value="${filterByNameString}" placeholder="Filter by name"/>
-                <button type="submit" th:formaction="@{/account}">Apply</button>
+                <button type="submit">Apply</button>
             </form>
             <form>
                 <input type="text" name="filter" value="" hidden/>
@@ -73,7 +72,7 @@
 
             <tbody>
                 <tr th:each="purchase : ${purchaseList}">
-                    <form method="post">
+                    <form method="post" th:action="@{/account}"> <!-- th:action is used to allow submitting -->
                         <td>
                             <input type="text" required th:disabled="${editable_purchase} != ${purchase.id}"
                                    name="name" th:value="${purchase.name}"/>
@@ -143,7 +142,7 @@
                 <input type="number" required min="1" step="1" id="purchase_amount" th:field="*{amount}"/>
 
                 <label for="purchase_price">Price of buying</label>
-                <input type="number" required min="0" step="0.01" id="purchase_price" th:field="*{price}"/>
+                <input type="number" required min="0.01" step="0.01" id="purchase_price" th:field="*{price}"/>
 
                 <label for="purchase_commission">Commission</label>
                 <input type="number" required min="0" step="0.01" id="purchase_commission" th:field="*{commission}"/>
@@ -178,7 +177,7 @@
 
             <tbody>
             <tr th:each="sale : ${saleList}">
-                <form method="post">
+                <form method="post" th:action="@{/account}"> <!-- th:action is used to allow submitting -->
                     <td>
                         <input type="text" required th:disabled="${editable_sale} != ${sale.id}"
                                name="name" th:value="${sale.name}"/>
@@ -250,7 +249,7 @@
                 <input type="number" required min="1" step="1" id="sale_amount" th:field="*{amount}"/>
 
                 <label for="sale_price">Price of selling</label>
-                <input type="number" required min="0" step="0.01" id="sale_price" th:field="*{price}"/>
+                <input type="number" required min="0.01" step="0.01" id="sale_price" th:field="*{price}"/>
 
                 <label for="sale_commission">Commission</label>
                 <input type="number" required min="0" step="0.01" id="sale_commission" th:field="*{commission}"/>
@@ -267,7 +266,7 @@
         <br/>
 
         <div class="errorMessage" th:if="${error} == 'addSale'">
-            <form th:action="@{/account}">
+            <form>
                 Sorry, but you cannot add sale with given values and date.
                 <button type="submit">OK</button>
             </form>

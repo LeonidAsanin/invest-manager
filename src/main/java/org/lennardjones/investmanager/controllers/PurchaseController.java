@@ -1,11 +1,11 @@
 package org.lennardjones.investmanager.controllers;
 
 import org.lennardjones.investmanager.entities.Purchase;
-import org.lennardjones.investmanager.services.AccountService;
-import org.lennardjones.investmanager.services.LoggedUserManagementService;
+import org.lennardjones.investmanager.entities.User;
 import org.lennardjones.investmanager.services.PurchaseService;
 import org.lennardjones.investmanager.services.SaleService;
 import org.lennardjones.investmanager.util.PurchaseSaleUtil;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,17 +23,10 @@ import java.util.stream.Collectors;
 public class PurchaseController {
     private final SaleService saleService;
     private final PurchaseService purchaseService;
-    private final AccountService accountService;
-    private final LoggedUserManagementService loggedUserManagementService;
 
-    public PurchaseController(SaleService saleService,
-                              PurchaseService purchaseService,
-                              AccountService accountService,
-                              LoggedUserManagementService loggedUserManagementService) {
+    public PurchaseController(SaleService saleService, PurchaseService purchaseService) {
         this.saleService = saleService;
         this.purchaseService = purchaseService;
-        this.accountService = accountService;
-        this.loggedUserManagementService = loggedUserManagementService;
     }
 
     @PostMapping("/add")
@@ -43,16 +36,16 @@ public class PurchaseController {
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Long id, Model model) {
-        var userId = loggedUserManagementService.getUserId();
+    public String delete(@PathVariable Long id, @AuthenticationPrincipal User user) {
+        var username = user.getUsername();
         var productName = purchaseService.getNameById(id);
 
         /* Validating presence of enough amount products to sell considering purchase and sale dates */
-        var purchaseList = purchaseService.getListByOwnerId(userId)
+        var purchaseList = purchaseService.getListByUsername(username)
                 .stream()
                 .filter(p -> !p.getId().equals(id))
                 .toList();
-        var saleList = saleService.getListBySellerId(userId);
+        var saleList = saleService.getListByUsername(username);
         if (!PurchaseSaleUtil.isQueueCorrect(purchaseList, saleList, productName)) {
             return "redirect:/account?error=deletePurchase";
         }
@@ -73,18 +66,18 @@ public class PurchaseController {
     }
 
     @PostMapping("/save/{id}")
-    public String save(Purchase purchase, Model model) {
-        var userId = loggedUserManagementService.getUserId();
+    public String save(Purchase purchase, Model model, @AuthenticationPrincipal User user) {
+        var username = user.getUsername();
         var purchaseId = purchase.getId();
         var productName = purchase.getName();
 
         /* Validating presence of enough amount products to sell considering purchase and sale dates */
-        var purchaseList = purchaseService.getListByOwnerId(userId)
+        var purchaseList = purchaseService.getListByUsername(username)
                 .stream()
                 .filter(p -> !p.getId().equals(purchaseId))
                 .collect(Collectors.toList());
         purchaseList.add(purchase);
-        var saleList = saleService.getListBySellerId(userId);
+        var saleList = saleService.getListByUsername(username);
         if (!PurchaseSaleUtil.isQueueCorrect(purchaseList, saleList, productName)) {
             return "redirect:/account?error=editPurchase";
         }
@@ -95,7 +88,7 @@ public class PurchaseController {
             saleService.save(sale);
         }
 
-        purchase.setOwner(accountService.getAccountById(loggedUserManagementService.getUserId()));
+        purchase.setOwner(user);
         purchaseService.save(purchase);
         return "redirect:/account";
     }
