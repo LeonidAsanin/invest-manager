@@ -1,10 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
   <meta charset="UTF-8">
   <title>Error</title>
+  <link rel="stylesheet" th:href="@{/styles/common-styles.css}">
 </head>
 <body>
-<!--TODO: make error page-->
+  <header>
+    <h1>Error</h1>
+  </header>
+  <main class="errorMessage">
+    <img th:src="@{/images/sad-cat.png}" alt="Very sad cat" width="600" height="338">
+    <p>You encountered an unexpected error, push the button below to go to the main page</p>
+    <a th:href="@{/account}">
+      <button>Go back</button>
+    </a>
+  </main>
+  <footer>
+    <p>
+      Application was developed by Leonid Asanin.
+    </p>
+    <address>
+      Contact information:<br/>
+      Email: <a href="mailto:l.asanin@mail.ru">l.asanin@mail.ru</a><br/>
+      GitHub: <a href="https://github.com/LeonidAsanin" target="_blank">github.com/LeonidAsanin</a>
+    </address>
+  </footer>
 </body>
 </html>

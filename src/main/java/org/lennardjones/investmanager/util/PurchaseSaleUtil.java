@@ -32,7 +32,7 @@ public class PurchaseSaleUtil {
      * @param productName name of the product
      * @return true if current queue purchase and sale lists are correct, otherwise false
      */
-    public static boolean isQueueCorrect(List<Purchase> purchaseList, List<Sale> saleList, String productName) {
+    public static boolean isQueueIncorrect(List<Purchase> purchaseList, List<Sale> saleList, String productName) {
         purchaseList = purchaseList.stream().filter(p -> p.getName().equals(productName)).toList();
         saleList = saleList.stream().filter(s -> s.getName().equals(productName)).toList();
 
@@ -48,10 +48,10 @@ public class PurchaseSaleUtil {
         var productAmount = 0;
         for (var transaction: transactionList) {
             if ((productAmount += transaction.amount()) < 0) {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     /**

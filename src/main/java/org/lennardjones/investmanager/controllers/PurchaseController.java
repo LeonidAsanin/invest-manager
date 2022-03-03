@@ -7,7 +7,6 @@ import org.lennardjones.investmanager.services.SaleService;
 import org.lennardjones.investmanager.util.PurchaseSaleUtil;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
@@ -46,7 +45,7 @@ public class PurchaseController {
                 .filter(p -> !p.getId().equals(id))
                 .toList();
         var saleList = saleService.getListByUsername(username);
-        if (!PurchaseSaleUtil.isQueueCorrect(purchaseList, saleList, productName)) {
+        if (PurchaseSaleUtil.isQueueIncorrect(purchaseList, saleList, productName)) {
             return "redirect:/account?error=deletePurchase";
         }
 
@@ -66,7 +65,7 @@ public class PurchaseController {
     }
 
     @PostMapping("/save/{id}")
-    public String save(Purchase purchase, Model model, @AuthenticationPrincipal User user) {
+    public String save(Purchase purchase, @AuthenticationPrincipal User user) {
         var username = user.getUsername();
         var purchaseId = purchase.getId();
         var productName = purchase.getName();
@@ -78,7 +77,7 @@ public class PurchaseController {
                 .collect(Collectors.toList());
         purchaseList.add(purchase);
         var saleList = saleService.getListByUsername(username);
-        if (!PurchaseSaleUtil.isQueueCorrect(purchaseList, saleList, productName)) {
+        if (PurchaseSaleUtil.isQueueIncorrect(purchaseList, saleList, productName)) {
             return "redirect:/account?error=editPurchase";
         }
 

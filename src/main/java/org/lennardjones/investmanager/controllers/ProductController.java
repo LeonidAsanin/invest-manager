@@ -37,8 +37,7 @@ public class ProductController {
 
     @PostMapping("/calculate")
     public String setCurrentPricesAndCalculateBenefits(@RequestParam List<String> productName,
-                                                      @RequestParam List<Double> currentPrice,
-                                                      Model model) {
+                                                      @RequestParam List<Double> currentPrice) {
         for (int i = 0; i < productName.size(); i++) {
             productService.calculateBenefitsByName(productName.get(i), currentPrice.get(i));
         }
@@ -47,7 +46,7 @@ public class ProductController {
     }
 
     @PostMapping("/edit")
-    public String editCurrentPrices(Model model) {
+    public String editCurrentPrices() {
         return "redirect:/product?editable";
     }
 }

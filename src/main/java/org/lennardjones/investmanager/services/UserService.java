@@ -19,23 +19,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Long getUserIdByUsername(String username) {
-        var account = new User();
-        account.setUsername(username);
-        account = userRepository.findOne(Example.of(account)).orElseThrow();
-        return account.getId();
-    }
-
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow();
-    }
-
     public boolean existsByUsername(String username) {
         return userRepository.existsByUsernameIgnoreCase(username);
-    }
-
-    public boolean exists(User user) {
-        return userRepository.exists(Example.of(user));
     }
 
     public void registerNewUser(User user) {
