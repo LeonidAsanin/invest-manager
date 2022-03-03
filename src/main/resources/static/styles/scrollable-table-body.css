@@ -1,0 +1,16 @@
+tbody {
+    display: block;
+    height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+thead, tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+td {
+    width: 100%;
+}

@@ -22,7 +22,7 @@
         </nav>
     </header>
     <main>
-        <form method="post" th:action="@{/product}"> <!-- th:action is used to allow submitting -->
+        <form method="post" th:action="@{/product}">
             <div class="editForm">
                 <button type="submit" th:formaction="@{/product/edit}"
                         th:if="${editable} == null AND ${!productSet.isEmpty()}">
