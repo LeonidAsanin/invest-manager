@@ -37,8 +37,8 @@
                     Save new username
                 </button>
             </form>
-            <div class="errorMessage" th:if="${error} == editUsername" th:text="${error}">
-                Changing Username Error
+            <div class="errorMessage" th:if="${error} == 'editUsername'" >
+                Sorry, but this username already exists
             </div>
         </div>
 
@@ -58,8 +58,8 @@
                     Save new password
                 </button>
             </form>
-            <div class="errorMessage" th:if="${error} == editPassword" th:text="${error}">
-                Registration Error
+            <div class="errorMessage" th:if="${error} == 'editPassword'">
+                Please, type in your desired password twice correctly
             </div>
         </div>
 
@@ -71,11 +71,11 @@
                     <button>Delete account</button>
                 </a>
             </div>
-            <div class="warning message" th:if="${intentionToDeleteAccount} != null">
+            <div class="warningMessage" th:if="${intentionToDeleteAccount} != null">
                 <p>
                     Do you really want to delete your account?
                 </p>
-                <a th:href="@{settings/deleteAccount}">
+                <a th:href="@{settings/deleteAccount?confirmation}">
                     <button>Yes, I do</button>
                 </a>
                 <a th:href="@{/settings}">

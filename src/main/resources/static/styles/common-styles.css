@@ -26,3 +26,10 @@ footer {
     width: 80%;
     margin: auto;
 }
+
+.warningMessage {
+    text-align: center;
+    color: orange;
+    width: 80%;
+    margin: auto;
+}

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>My Account</title>
-    <link rel="stylesheet" th:href="@{/styles/account-styles.css}">
-    <link rel="stylesheet" th:href="@{/styles/common-styles.css}">
+    <link rel="stylesheet" th:href="@{/styles/account-styles.css}" href="/../static/styles/account-styles.css">
+    <link rel="stylesheet" th:href="@{/styles/common-styles.css}" href="/../static/styles/common-styles.css">
     <link rel="stylesheet" th:href="@{/styles/scrollable-table-body.css}">
 </head>
 <body>
@@ -16,6 +16,9 @@
         <nav>
             <form th:action="@{/product}">
                 <button id="showProducts" type="submit">Show current products</button>
+            </form>
+            <form th:action="@{/settings}">
+                <button id="settings" type="submit">Settings</button>
             </form>
             <form method="post" th:action="@{/logout}">
                 <button id="logoutButton" type="submit">Log out</button>
@@ -73,7 +76,7 @@
 
             <tbody>
                 <tr th:each="purchase : ${purchaseList}">
-                    <form method="post" th:action="@{/account}"> <!-- th:action is used to allow submitting -->
+                    <form method="post" th:action="@{/account}">
                         <td>
                             <input type="text" required th:disabled="${editable_purchase} != ${purchase.id}"
                                    name="name" th:value="${purchase.name}"/>
@@ -178,7 +181,7 @@
 
             <tbody>
             <tr th:each="sale : ${saleList}">
-                <form method="post" th:action="@{/account}"> <!-- th:action is used to allow submitting -->
+                <form method="post" th:action="@{/account}">
                     <td>
                         <input type="text" required th:disabled="${editable_sale} != ${sale.id}"
                                name="name" th:value="${sale.name}"/>

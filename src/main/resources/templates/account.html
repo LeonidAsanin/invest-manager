@@ -76,7 +76,7 @@
 
             <tbody>
                 <tr th:each="purchase : ${purchaseList}">
-                    <form method="post" th:action="@{/account}"> <!-- th:action is used to allow submitting -->
+                    <form method="post" th:action="@{/account}">
                         <td>
                             <input type="text" required th:disabled="${editable_purchase} != ${purchase.id}"
                                    name="name" th:value="${purchase.name}"/>
@@ -181,7 +181,7 @@
 
             <tbody>
             <tr th:each="sale : ${saleList}">
-                <form method="post" th:action="@{/account}"> <!-- th:action is used to allow submitting -->
+                <form method="post" th:action="@{/account}">
                     <td>
                         <input type="text" required th:disabled="${editable_sale} != ${sale.id}"
                                name="name" th:value="${sale.name}"/>
