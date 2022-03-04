@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Products</title>
-    <link rel="stylesheet" th:href="@{/styles/account-styles.css}">
-    <link rel="stylesheet" th:href="@{/styles/common-styles.css}">
+    <link rel="stylesheet" th:href="@{/styles/account-styles.css}" href="/../static/styles/account-styles.css">
+    <link rel="stylesheet" th:href="@{/styles/common-styles.css}" href="/../static/styles/common-styles.css">
 </head>
 <body>
     <header>
@@ -15,6 +15,9 @@
         <nav>
             <form id="showTransactions" th:action="@{/account}">
                 <button type="submit">Show transactions</button>
+            </form>
+            <form th:action="@{/settings}">
+                <button id="settings" type="submit">Settings</button>
             </form>
             <form method="post" th:action="@{/logout}">
                 <button id="logoutButton" type="submit">Log out</button>

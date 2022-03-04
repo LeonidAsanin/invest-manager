@@ -1,0 +1,15 @@
+.settingBlock {
+    text-align: center;
+}
+
+#showTransactions {
+    position: absolute;
+    top: 10px;
+    right: 18%;
+}
+
+#showProducts {
+    position: absolute;
+    top: 10px;
+    right: 10%;
+}

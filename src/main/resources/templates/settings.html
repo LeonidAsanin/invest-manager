@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Settings</title>
+    <link rel="stylesheet" th:href="@{/styles/account-styles.css}" href="/../static/styles/account-styles.css">
+    <link rel="stylesheet" th:href="@{/styles/common-styles.css}" href="/../static/styles/common-styles.css">
+    <link rel="stylesheet" th:href="@{/styles/settings-styles.css}" href="/../static/styles/settings-styles.css">
+</head>
+<body>
+    <header>
+        <h1>Account</h1>
+        <h2>Settings</h2>
+
+        <nav>
+            <form th:action="@{/account}">
+                <button id="showTransactions" type="submit">Show transactions</button>
+            </form>
+            <form th:action="@{/product}">
+                <button id="showProducts" type="submit">Show current products</button>
+            </form>
+            <form method="post" th:action="@{/logout}">
+                <button id="logoutButton" type="submit">Log out</button>
+            </form>
+        </nav>
+    </header>
+    <main>
+        <div class="settingBlock">
+            <form method="post" th:action="@{/settings}">
+                Username:
+                <input type="text" name="username" th:value="${username}" required minlength="2"
+                       th:disabled="${editableUsername} == null">
+                <button type="submit" th:if="${editableUsername} == null" th:formaction="@{/settings/editUsername}">
+                    Change username
+                </button>
+                <button type="submit" th:if="${editableUsername} != null" th:formaction="@{/settings/saveNewUsername}">
+                    Save new username
+                </button>
+            </form>
+            <div class="errorMessage" th:if="${error} == editUsername" th:text="${error}">
+                Changing Username Error
+            </div>
+        </div>
+
+        <br/><br/>
+
+        <div class="settingBlock">
+            <form method="post" th:action="@{/settings}">
+                Password:
+                <input type="password" name="password" required minlength="8" placeholder="********"
+                       th:disabled="${editablePassword} == null">
+                <input type="password" name="passwordConfirmation" required minlength="8"
+                       th:if="${editablePassword} != null">
+                <button type="submit" th:if="${editablePassword} == null" th:formaction="@{/settings/editPassword}">
+                    Change password
+                </button>
+                <button type="submit" th:if="${editablePassword} != null" th:formaction="@{/settings/saveNewPassword}">
+                    Save new password
+                </button>
+            </form>
+            <div class="errorMessage" th:if="${error} == editPassword" th:text="${error}">
+                Registration Error
+            </div>
+        </div>
+
+        <br/><br/>
+
+        <div class="settingBlock">
+            <div th:if="${intentionToDeleteAccount} == null">
+                <a th:href="@{/settings/deleteAccount}">
+                    <button>Delete account</button>
+                </a>
+            </div>
+            <div class="warning message" th:if="${intentionToDeleteAccount} != null">
+                <p>
+                    Do you really want to delete your account?
+                </p>
+                <a th:href="@{settings/deleteAccount}">
+                    <button>Yes, I do</button>
+                </a>
+                <a th:href="@{/settings}">
+                    <button>No, I don't</button>
+                </a>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>
+            Application was developed by Leonid Asanin.
+        </p>
+        <address>
+            Contact information:<br>
+            Email: <a href="mailto:l.asanin@mail.ru">l.asanin@mail.ru</a><br>
+            GitHub: <a href="https://github.com/LeonidAsanin" target="_blank">github.com/LeonidAsanin</a>
+        </address>
+    </footer>
+</body>
+</html>

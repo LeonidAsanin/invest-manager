@@ -44,6 +44,7 @@ public class SecurityConfig {
                             "/purchase/save/*", "/purchase/add").authenticated()
                     .antMatchers("/sale/delete/*", "/sale/edit/*",
                             "/sale/save/*", "/sale/add").authenticated()
+                    .antMatchers("/settings", "/settings...").authenticated()//TODO: enumerate all options for /setting path
                     .antMatchers("/**").permitAll()
                 .and()
                 .formLogin()
