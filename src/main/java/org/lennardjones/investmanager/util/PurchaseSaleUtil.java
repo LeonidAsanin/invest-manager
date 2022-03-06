@@ -3,7 +3,7 @@ package org.lennardjones.investmanager.util;
 import org.lennardjones.investmanager.entities.Purchase;
 import org.lennardjones.investmanager.entities.Sale;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -20,7 +20,7 @@ public class PurchaseSaleUtil {
     /**
      * This record describes user's transaction (purchase or sale)
      */
-    private static record Transaction(int amount, LocalDate date) {}
+    private static record Transaction(int amount, LocalDateTime dateTime) {}
 
     /**
      *  This method validates presence of enough amount products to sell considering
@@ -38,12 +38,12 @@ public class PurchaseSaleUtil {
 
         List<Transaction> transactionList = new LinkedList<>();
         for (var p : purchaseList) {
-            transactionList.add(new Transaction(p.getAmount(), p.getDate()));
+            transactionList.add(new Transaction(p.getAmount(), p.getDateTime()));
         }
         for (var s : saleList) {
-            transactionList.add(new Transaction(-s.getAmount(), s.getDate()));
+            transactionList.add(new Transaction(-s.getAmount(), s.getDateTime()));
         }
-        transactionList = transactionList.stream().sorted(Comparator.comparing(Transaction::date)).toList();
+        transactionList = transactionList.stream().sorted(Comparator.comparing(Transaction::dateTime)).toList();
 
         var productAmount = 0;
         for (var transaction: transactionList) {
@@ -69,11 +69,11 @@ public class PurchaseSaleUtil {
         /* Filtering input lists by name */
         var purchaseStack = purchaseList.stream()
                 .filter(p -> p.getName().equals(productName))
-                .sorted(Comparator.comparing(Purchase::getDate))
+                .sorted(Comparator.comparing(Purchase::getDateTime))
                 .collect(Collectors.toCollection(LinkedList::new));
         var saleStack = saleList.stream()
                 .filter(s -> s.getName().equals(productName))
-                .sorted(Comparator.comparing(Sale::getDate))
+                .sorted(Comparator.comparing(Sale::getDateTime))
                 .collect(Collectors.toCollection(LinkedList::new));
 
         /* Cloning of input list elements in order not to affect them */
@@ -175,10 +175,10 @@ public class PurchaseSaleUtil {
                         .collect(Collectors.toList());
             case NAME -> purchaseList.stream()
                         .sorted(Comparator.comparing(Purchase::getName)
-                                .thenComparing(Purchase::getDate))
+                                .thenComparing(Purchase::getDateTime))
                         .collect(Collectors.toList());
             case DATE -> purchaseList.stream()
-                        .sorted(Comparator.comparing(Purchase::getDate)
+                        .sorted(Comparator.comparing(Purchase::getDateTime)
                                 .thenComparing(Purchase::getName))
                         .collect(Collectors.toList());
         };
@@ -209,10 +209,10 @@ public class PurchaseSaleUtil {
                         .collect(Collectors.toList());
             case NAME -> saleList.stream()
                         .sorted(Comparator.comparing(Sale::getName)
-                                .thenComparing(Sale::getDate))
+                                .thenComparing(Sale::getDateTime))
                         .collect(Collectors.toList());
             case DATE -> saleList.stream()
-                        .sorted(Comparator.comparing(Sale::getDate)
+                        .sorted(Comparator.comparing(Sale::getDateTime)
                                 .thenComparing(Sale::getName))
                         .collect(Collectors.toList());
         };

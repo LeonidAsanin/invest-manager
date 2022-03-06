@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS purchase (
     amount INT,
     price DOUBLE,
     commission DOUBLE,
-    date DATE,
+    date_time DATETIME,
     FOREIGN KEY (owner_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS sale (
     amount INT,
     price DOUBLE,
     commission DOUBLE,
-    date DATE,
+    date_time DATETIME,
     absolute_benefit DOUBLE,
     relative_benefit DOUBLE,
     FOREIGN KEY (seller_id) REFERENCES user(id) ON DELETE CASCADE

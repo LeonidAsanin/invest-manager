@@ -68,7 +68,7 @@
                     <th>Amount</th>
                     <th>Price of buying</th>
                     <th>Commission</th>
-                    <th>Date</th>
+                    <th>Date and time</th>
                     <th>Total</th>
                     <th colspan="2">Actions</th>
                 </tr>
@@ -94,8 +94,8 @@
                                    name="commission" th:value="${purchase.commission}"/>
                         </td>
                         <td>
-                            <input type="date" required th:disabled="${editable_purchase} != ${purchase.id}"
-                                   name="date" th:value="${purchase.date}"/>
+                            <input type="datetime-local" required th:disabled="${editable_purchase} != ${purchase.id}"
+                                   name="dateTime" th:value="${purchase.dateTime}"/>
                         </td>
                         <td>
                             <span th:text="'-' + ${#numbers.formatDecimal(purchase.amount * (purchase.price + purchase.commission), 1, 2)}"></span>
@@ -151,8 +151,8 @@
                 <label for="purchase_commission">Commission</label>
                 <input type="number" required min="0" step="0.01" id="purchase_commission" th:field="*{commission}"/>
 
-                <label for="purchase_date">Date</label>
-                <input type="date" required id="purchase_date" th:field="*{date}"/>
+                <label for="purchase_dateTime">Date and time</label>
+                <input type="datetime-local" required id="purchase_dateTime" th:field="*{dateTime}"/>
 
                 <input hidden th:field="*{owner}"/>
 
@@ -171,7 +171,7 @@
                 <th>Amount</th>
                 <th>Price of selling</th>
                 <th>Commission</th>
-                <th>Date</th>
+                <th>Date and time</th>
                 <th>Total</th>
                 <th>Absolute benefit</th>
                 <th>Relative benefit</th>
@@ -199,8 +199,8 @@
                                name="commission" th:value="${sale.commission}"/>
                     </td>
                     <td>
-                        <input type="date" required th:disabled="${editable_sale} != ${sale.id}"
-                               name="date" th:value="${sale.date}"/>
+                        <input type="datetime-local" required th:disabled="${editable_sale} != ${sale.id}"
+                               name="dateTime" th:value="${sale.dateTime}"/>
                     </td>
                     <td>
                         <span th:text="'+' + ${#numbers.formatDecimal(sale.amount * (sale.price - sale.commission), 1, 2)}"></span>
@@ -258,8 +258,8 @@
                 <label for="sale_commission">Commission</label>
                 <input type="number" required min="0" step="0.01" id="sale_commission" th:field="*{commission}"/>
 
-                <label for="sale_date">Date</label>
-                <input type="date" required id="sale_date" th:field="*{date}"/>
+                <label for="sale_dateTime">Date and time</label>
+                <input type="datetime-local" required id="sale_dateTime" th:field="*{dateTime}"/>
 
                 <input hidden th:field="*{seller}"/>
 

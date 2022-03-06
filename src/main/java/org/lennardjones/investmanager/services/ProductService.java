@@ -5,7 +5,6 @@ import org.lennardjones.investmanager.entities.Sale;
 import org.lennardjones.investmanager.entities.User;
 import org.lennardjones.investmanager.model.Product;
 import org.lennardjones.investmanager.repositories.ProductRepository;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
@@ -25,8 +24,6 @@ public class ProductService {
     private final SaleService saleService;
     private final ProductRepository productRepository;
 
-    private final Long userId;
-    private final String username;
     private Set<Product> productSet;
     private boolean isDateChanged;
 
@@ -37,10 +34,6 @@ public class ProductService {
         this.saleService = saleService;
         this.productRepository = productRepository;
 
-        var user = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        userId = user.getId();
-        username = user.getUsername();
-
         isDateChanged = true;
     }
 
@@ -48,7 +41,7 @@ public class ProductService {
         isDateChanged = true;
     }
 
-    public void calculateBenefitsByName(String productName, double currentPrice) {
+    public void calculateBenefits(Long userId, String productName, double currentPrice) {
         /* Searching for product by name */
         var optionalProduct = productSet.stream()
                 .filter(p -> p.getName().equals(productName))
@@ -71,7 +64,7 @@ public class ProductService {
         }
     }
 
-    private void calculateProducts(List<Purchase> purchaseList, List<Sale> saleList) {
+    private void calculateProducts(Long userId, List<Purchase> purchaseList, List<Sale> saleList) {
         productSet = new HashSet<>();
 
         /* Defining unique names of the purchases */
@@ -93,11 +86,11 @@ public class ProductService {
             /* Defining purchase and sale stacks of the product by name and sorting them by date */
             var purchaseStack = purchaseList.stream()
                     .filter(p -> p.getName().equals(productName))
-                    .sorted(Comparator.comparing(Purchase::getDate))
+                    .sorted(Comparator.comparing(Purchase::getDateTime))
                     .collect(Collectors.toCollection(LinkedList::new));
             var saleStack = saleList.stream()
                     .filter(s -> s.getName().equals(productName))
-                    .sorted(Comparator.comparing(Sale::getDate))
+                    .sorted(Comparator.comparing(Sale::getDateTime))
                     .collect(Collectors.toCollection(LinkedList::new));
 
             /* Calculating resulting purchaseStack */
@@ -161,11 +154,11 @@ public class ProductService {
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    public Set<Product> getAll() {
+    public Set<Product> getAllByUser(User user) {
         if (isDateChanged) {
-            var purchaseList = purchaseService.getListByUsername(username);
-            var saleList = saleService.getListByUsername(username);
-            calculateProducts(purchaseList, saleList);
+            var purchaseList = purchaseService.getListByUsername(user.getUsername());
+            var saleList = saleService.getListByUsername(user.getUsername());
+            calculateProducts(user.getId(), purchaseList, saleList);
             isDateChanged = false;
         }
         return productSet;

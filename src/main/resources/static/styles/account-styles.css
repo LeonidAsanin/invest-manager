@@ -3,7 +3,7 @@
 }
 
 #sortType, #filterByName {
-    width: 80%;
+    width: 95%;
     margin: auto;
 }
 
@@ -29,12 +29,12 @@
 }
 
 .addForm, .editForm {
-    width: 80%;
+    width: 95%;
     margin: auto;
 }
 
 table {
-    width: 80%;
+    width: 95%;
     margin: auto;
     border: 1px solid #dddddd;
     border-collapse: collapse;

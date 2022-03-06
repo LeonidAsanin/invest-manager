@@ -8,7 +8,7 @@ import org.lennardjones.investmanager.util.PurchaseSaleUtil;
 import org.lennardjones.investmanager.util.SortOrderType;
 import org.lennardjones.investmanager.util.SortType;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -61,15 +61,15 @@ class SortPurchaseListTests {
     @Test
     void shouldSortByNameAscendingOrder() {
         var purchase1 = new Purchase();
-        purchase1.setDate(LocalDate.MAX);
+        purchase1.setDateTime(LocalDateTime.MAX);
         purchase1.setName("a");
 
         var purchase2 = new Purchase();
-        purchase2.setDate(LocalDate.MAX);
+        purchase2.setDateTime(LocalDateTime.MAX);
         purchase2.setName("b");
 
         var purchase3 = new Purchase();
-        purchase3.setDate(LocalDate.MIN);
+        purchase3.setDateTime(LocalDateTime.MIN);
         purchase3.setName("b");
 
         Collections.addAll(purchaseList, purchase2, purchase1, purchase3);
@@ -82,15 +82,15 @@ class SortPurchaseListTests {
     @Test
     void shouldSortByNameDecreasingOrder() {
         var purchase1 = new Purchase();
-        purchase1.setDate(LocalDate.MAX);
+        purchase1.setDateTime(LocalDateTime.MAX);
         purchase1.setName("a");
 
         var purchase2 = new Purchase();
-        purchase2.setDate(LocalDate.MAX);
+        purchase2.setDateTime(LocalDateTime.MAX);
         purchase2.setName("b");
 
         var purchase3 = new Purchase();
-        purchase3.setDate(LocalDate.MIN);
+        purchase3.setDateTime(LocalDateTime.MIN);
         purchase3.setName("b");
 
         Collections.addAll(purchaseList, purchase1, purchase2, purchase3);
@@ -103,15 +103,15 @@ class SortPurchaseListTests {
     @Test
     void shouldSortByDateAscendingOrder() {
         var purchase1 = new Purchase();
-        purchase1.setDate(LocalDate.MIN);
+        purchase1.setDateTime(LocalDateTime.MIN);
         purchase1.setName("b");
 
         var purchase2 = new Purchase();
-        purchase2.setDate(LocalDate.MIN);
+        purchase2.setDateTime(LocalDateTime.MIN);
         purchase2.setName("c");
 
         var purchase3 = new Purchase();
-        purchase3.setDate(LocalDate.MAX);
+        purchase3.setDateTime(LocalDateTime.MAX);
         purchase3.setName("a");
 
         Collections.addAll(purchaseList, purchase2, purchase3, purchase1);
@@ -124,15 +124,15 @@ class SortPurchaseListTests {
     @Test
     void shouldSortByDateDecreasingOrder() {
         var purchase1 = new Purchase();
-        purchase1.setDate(LocalDate.MIN);
+        purchase1.setDateTime(LocalDateTime.MIN);
         purchase1.setName("b");
 
         var purchase2 = new Purchase();
-        purchase2.setDate(LocalDate.MIN);
+        purchase2.setDateTime(LocalDateTime.MIN);
         purchase2.setName("c");
 
         var purchase3 = new Purchase();
-        purchase3.setDate(LocalDate.MAX);
+        purchase3.setDateTime(LocalDateTime.MAX);
         purchase3.setName("a");
 
         Collections.addAll(purchaseList, purchase2, purchase1, purchase3);

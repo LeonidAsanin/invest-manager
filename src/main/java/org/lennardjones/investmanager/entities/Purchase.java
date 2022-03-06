@@ -6,7 +6,7 @@ import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Entity class that describes a user single purchase and is used for persisting purposes in the database.
@@ -30,9 +30,9 @@ public class Purchase implements Cloneable {
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "date")
-    private LocalDate date;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @Column(name = "date_time")
+    private LocalDateTime dateTime;
 
     @Column(name = "name")
     private String name;

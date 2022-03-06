@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -116,14 +117,14 @@ public class AccountController {
         /* For "Add new purchase" button */
         var purchaseTemplate = new Purchase();
         purchaseTemplate.setOwner(user);
-        purchaseTemplate.setDate(LocalDate.now());
+        purchaseTemplate.setDateTime(LocalDateTime.now());
         purchaseTemplate.setAmount(1);
         model.addAttribute("purchase", purchaseTemplate);
 
         /* For "Add new sale" button */
         var saleTemplate = new Sale();
         saleTemplate.setSeller(user);
-        saleTemplate.setDate(LocalDate.now());
+        saleTemplate.setDateTime(LocalDateTime.now());
         saleTemplate.setAmount(1);
         model.addAttribute("sale", saleTemplate);
     }

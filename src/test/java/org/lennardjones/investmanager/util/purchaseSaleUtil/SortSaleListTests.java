@@ -9,6 +9,7 @@ import org.lennardjones.investmanager.util.SortOrderType;
 import org.lennardjones.investmanager.util.SortType;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -61,15 +62,15 @@ class SortSaleListTests {
     @Test
     void shouldSortByNameAscendingOrder() {
         var sale1 = new Sale();
-        sale1.setDate(LocalDate.MAX);
+        sale1.setDateTime(LocalDateTime.MAX);
         sale1.setName("a");
 
         var sale2 = new Sale();
-        sale2.setDate(LocalDate.MAX);
+        sale2.setDateTime(LocalDateTime.MAX);
         sale2.setName("b");
 
         var sale3 = new Sale();
-        sale3.setDate(LocalDate.MIN);
+        sale3.setDateTime(LocalDateTime.MIN);
         sale3.setName("b");
 
         Collections.addAll(saleList, sale2, sale1, sale3);
@@ -82,15 +83,15 @@ class SortSaleListTests {
     @Test
     void shouldSortByNameDecreasingOrder() {
         var sale1 = new Sale();
-        sale1.setDate(LocalDate.MAX);
+        sale1.setDateTime(LocalDateTime.MAX);
         sale1.setName("a");
 
         var sale2 = new Sale();
-        sale2.setDate(LocalDate.MAX);
+        sale2.setDateTime(LocalDateTime.MAX);
         sale2.setName("b");
 
         var sale3 = new Sale();
-        sale3.setDate(LocalDate.MIN);
+        sale3.setDateTime(LocalDateTime.MIN);
         sale3.setName("b");
 
         Collections.addAll(saleList, sale1, sale2, sale3);
@@ -103,15 +104,15 @@ class SortSaleListTests {
     @Test
     void shouldSortByDateAscendingOrder() {
         var sale1 = new Sale();
-        sale1.setDate(LocalDate.MIN);
+        sale1.setDateTime(LocalDateTime.MIN);
         sale1.setName("b");
 
         var sale2 = new Sale();
-        sale2.setDate(LocalDate.MIN);
+        sale2.setDateTime(LocalDateTime.MIN);
         sale2.setName("c");
 
         var sale3 = new Sale();
-        sale3.setDate(LocalDate.MAX);
+        sale3.setDateTime(LocalDateTime.MAX);
         sale3.setName("a");
 
         Collections.addAll(saleList, sale2, sale3, sale1);
@@ -124,15 +125,15 @@ class SortSaleListTests {
     @Test
     void shouldSortByDateDecreasingOrder() {
         var sale1 = new Sale();
-        sale1.setDate(LocalDate.MIN);
+        sale1.setDateTime(LocalDateTime.MIN);
         sale1.setName("b");
 
         var sale2 = new Sale();
-        sale2.setDate(LocalDate.MIN);
+        sale2.setDateTime(LocalDateTime.MIN);
         sale2.setName("c");
 
         var sale3 = new Sale();
-        sale3.setDate(LocalDate.MAX);
+        sale3.setDateTime(LocalDateTime.MAX);
         sale3.setName("a");
 
         Collections.addAll(saleList, sale2, sale1, sale3);

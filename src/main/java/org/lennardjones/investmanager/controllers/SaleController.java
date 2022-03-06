@@ -86,9 +86,6 @@ public class SaleController {
         }
 
         /* Calculating and setting up benefits to the sale */
-        saleList = saleList.stream() //refreshing sort to place edited sale at the right place
-                .sorted(Comparator.comparing(Sale::getDate))
-                .collect(Collectors.toList());
         saleList = PurchaseSaleUtil.calculateBenefitsFromSales(purchaseList, saleList, productName);
         var saleWithCalculatedBenefits = saleList.stream()
                 .filter(s -> s.getId().equals(saleId))

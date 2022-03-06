@@ -8,7 +8,7 @@ import org.lennardjones.investmanager.entities.Purchase;
 import org.lennardjones.investmanager.entities.Sale;
 import org.lennardjones.investmanager.util.PurchaseSaleUtil;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -66,7 +66,7 @@ class CalculateBenefitsFromSalesTests {
     void methodDoesNotAffectInputLists() {
         var defaultPurchaseId = 1L;
         var defaultPurchaseOwner = new User();
-        var defaultPurchaseDate = LocalDate.MIN;
+        var defaultPurchaseDate = LocalDateTime.MIN;
         var defaultPurchaseName = productName;
         var defaultPurchasePrice = 10;
         var defaultPurchaseAmount = 5;
@@ -74,7 +74,7 @@ class CalculateBenefitsFromSalesTests {
 
         var defaultSaleId = 2L;
         var defaultSeller= new User();
-        var defaultSaleDate = LocalDate.MAX;
+        var defaultSaleDate = LocalDateTime.MAX;
         var defaultSaleName = productName;
         var defaultSalePrice = 22;
         var defaultSaleAmount = 3;
@@ -85,7 +85,7 @@ class CalculateBenefitsFromSalesTests {
         var purchase = new Purchase();
             purchase.setId(defaultPurchaseId);
             purchase.setOwner(defaultPurchaseOwner);
-            purchase.setDate(defaultPurchaseDate);
+            purchase.setDateTime(defaultPurchaseDate);
             purchase.setName(defaultPurchaseName);
             purchase.setPrice(defaultPurchasePrice);
             purchase.setAmount(defaultPurchaseAmount);
@@ -94,7 +94,7 @@ class CalculateBenefitsFromSalesTests {
         var sale = new Sale();
             sale.setId(defaultSaleId);
             sale.setSeller(defaultSeller);
-            sale.setDate(defaultSaleDate);
+            sale.setDateTime(defaultSaleDate);
             sale.setName(defaultSaleName);
             sale.setPrice(defaultSalePrice);
             sale.setAmount(defaultSaleAmount);
@@ -109,7 +109,7 @@ class CalculateBenefitsFromSalesTests {
 
         Assertions.assertEquals((long) purchase.getId(), defaultPurchaseId);
         Assertions.assertEquals(purchase.getOwner(), defaultPurchaseOwner);
-        Assertions.assertEquals(purchase.getDate(), defaultPurchaseDate);
+        Assertions.assertEquals(purchase.getDateTime(), defaultPurchaseDate);
         Assertions.assertEquals(purchase.getName(), defaultPurchaseName);
         Assertions.assertEquals(purchase.getPrice(), defaultPurchasePrice);
         Assertions.assertEquals(purchase.getAmount(), defaultPurchaseAmount);
@@ -117,7 +117,7 @@ class CalculateBenefitsFromSalesTests {
 
         Assertions.assertEquals((long) sale.getId(), defaultSaleId);
         Assertions.assertEquals(sale.getSeller(), defaultSeller);
-        Assertions.assertEquals(sale.getDate(), defaultSaleDate);
+        Assertions.assertEquals(sale.getDateTime(), defaultSaleDate);
         Assertions.assertEquals(sale.getName(), defaultSaleName);
         Assertions.assertEquals(sale.getPrice(), defaultSalePrice);
         Assertions.assertEquals(sale.getAmount(), defaultSaleAmount);
@@ -173,14 +173,14 @@ class CalculateBenefitsFromSalesTests {
         sale1.setAmount(3);
         sale1.setPrice(22.003);
         sale1.setCommission(1);
-        sale1.setDate(LocalDate.MAX);
+        sale1.setDateTime(LocalDateTime.MAX);
 
         var sale2 = new Sale();
         sale2.setName(productName);
         sale2.setAmount(1);
         sale2.setPrice(22.004);
         sale2.setCommission(1);
-        sale2.setDate(LocalDate.MAX);
+        sale2.setDateTime(LocalDateTime.MAX);
 
         saleList.add(sale1);
         saleList.add(sale2);
@@ -253,14 +253,14 @@ class CalculateBenefitsFromSalesTests {
         purchase1.setAmount(5);
         purchase1.setPrice(10);
         purchase1.setCommission(1);
-        purchase1.setDate(LocalDate.MIN);
+        purchase1.setDateTime(LocalDateTime.MIN);
 
         var purchase2 = new Purchase();
         purchase2.setName(productName);
         purchase2.setAmount(5);
         purchase2.setPrice(20);
         purchase2.setCommission(2);
-        purchase2.setDate(LocalDate.MIN);
+        purchase2.setDateTime(LocalDateTime.MIN);
 
         purchaseList.add(purchase1);
         purchaseList.add(purchase2);

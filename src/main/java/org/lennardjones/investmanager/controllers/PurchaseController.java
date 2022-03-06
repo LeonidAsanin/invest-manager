@@ -1,6 +1,7 @@
 package org.lennardjones.investmanager.controllers;
 
 import org.lennardjones.investmanager.entities.Purchase;
+import org.lennardjones.investmanager.entities.Sale;
 import org.lennardjones.investmanager.entities.User;
 import org.lennardjones.investmanager.services.PurchaseService;
 import org.lennardjones.investmanager.services.SaleService;
@@ -9,6 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 /**
