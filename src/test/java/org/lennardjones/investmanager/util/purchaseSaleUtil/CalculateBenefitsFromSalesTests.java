@@ -49,17 +49,17 @@ class CalculateBenefitsFromSalesTests {
         saleList.add(sale2);
 
         var methodResult = PurchaseSaleUtil
-                .calculateBenefitsFromSales(purchaseList, saleList, productName);
+                .calculateProfitsFromSales(purchaseList, saleList, productName);
 
         Assertions.assertEquals(1, methodResult.size());
         Assertions.assertEquals(productName, methodResult.get(0).getName());
 
         var absoluteBenefit = sale1.getAmount() * sale1.getPrice() - purchase1.getAmount() * purchase1.getPrice();
-        Assertions.assertEquals(absoluteBenefit, methodResult.get(0).getAbsoluteBenefit(), 0.01);
+        Assertions.assertEquals(absoluteBenefit, methodResult.get(0).getAbsoluteProfit(), 0.01);
 
         var fullPriceOfSelling = (sale1.getPrice() - sale1.getCommission()) * sale1.getAmount();
         var relativeBenefit = (fullPriceOfSelling / (fullPriceOfSelling - absoluteBenefit) - 1) * 100;
-        Assertions.assertEquals(relativeBenefit, methodResult.get(0).getRelativeBenefit(), 0.01);
+        Assertions.assertEquals(relativeBenefit, methodResult.get(0).getRelativeProfit(), 0.01);
     }
 
     @Test
@@ -99,13 +99,13 @@ class CalculateBenefitsFromSalesTests {
             sale.setPrice(defaultSalePrice);
             sale.setAmount(defaultSaleAmount);
             sale.setCommission(defaultSaleCommission);
-            sale.setAbsoluteBenefit(defaultSaleAbsoluteBenefit);
-            sale.setRelativeBenefit(defaultSaleRelativeBenefit);
+            sale.setAbsoluteProfit(defaultSaleAbsoluteBenefit);
+            sale.setRelativeProfit(defaultSaleRelativeBenefit);
 
         purchaseList.add(purchase);
         saleList.add(sale);
 
-        PurchaseSaleUtil.calculateBenefitsFromSales(purchaseList, saleList, productName);
+        PurchaseSaleUtil.calculateProfitsFromSales(purchaseList, saleList, productName);
 
         Assertions.assertEquals((long) purchase.getId(), defaultPurchaseId);
         Assertions.assertEquals(purchase.getOwner(), defaultPurchaseOwner);
@@ -122,8 +122,8 @@ class CalculateBenefitsFromSalesTests {
         Assertions.assertEquals(sale.getPrice(), defaultSalePrice);
         Assertions.assertEquals(sale.getAmount(), defaultSaleAmount);
         Assertions.assertEquals(sale.getCommission(), defaultSaleCommission);
-        Assertions.assertEquals(sale.getAbsoluteBenefit(), defaultSaleAbsoluteBenefit);
-        Assertions.assertEquals(sale.getRelativeBenefit(), defaultSaleRelativeBenefit);
+        Assertions.assertEquals(sale.getAbsoluteProfit(), defaultSaleAbsoluteBenefit);
+        Assertions.assertEquals(sale.getRelativeProfit(), defaultSaleRelativeBenefit);
     }
 
     @Test
@@ -143,7 +143,7 @@ class CalculateBenefitsFromSalesTests {
         saleList.add(sale);
 
         var methodResult = PurchaseSaleUtil
-                .calculateBenefitsFromSales(purchaseList, saleList, productName);
+                .calculateProfitsFromSales(purchaseList, saleList, productName);
 
         Assertions.assertEquals(1, methodResult.size());
         Assertions.assertEquals(productName, methodResult.get(0).getName());
@@ -152,11 +152,11 @@ class CalculateBenefitsFromSalesTests {
 
         var absoluteBenefit = sale.getAmount() * (sale.getPrice() - sale.getCommission()) -
                 sale.getAmount() * (purchase.getPrice() + purchase.getCommission());
-        Assertions.assertEquals(absoluteBenefit , methodResult.get(0).getAbsoluteBenefit(), 0.01);
+        Assertions.assertEquals(absoluteBenefit , methodResult.get(0).getAbsoluteProfit(), 0.01);
 
         var fullPriceOfSelling = (sale.getPrice() - sale.getCommission()) * sale.getAmount();
         var relativeBenefit = (fullPriceOfSelling / (fullPriceOfSelling - absoluteBenefit) - 1) * 100;
-        Assertions.assertEquals(relativeBenefit, methodResult.get(0).getRelativeBenefit(), 0.01);
+        Assertions.assertEquals(relativeBenefit, methodResult.get(0).getRelativeProfit(), 0.01);
     }
 
     @Test
@@ -186,7 +186,7 @@ class CalculateBenefitsFromSalesTests {
         saleList.add(sale2);
 
         var methodResult = PurchaseSaleUtil
-                .calculateBenefitsFromSales(purchaseList, saleList, productName);
+                .calculateProfitsFromSales(purchaseList, saleList, productName);
 
         Assertions.assertEquals(2, methodResult.size());
         Assertions.assertEquals(productName, methodResult.get(0).getName());
@@ -198,19 +198,19 @@ class CalculateBenefitsFromSalesTests {
 
         var absoluteBenefit = sale1.getAmount() * (sale1.getPrice() - sale1.getCommission()) -
                 sale1.getAmount() * (purchase.getPrice() + purchase.getCommission());
-        Assertions.assertEquals(absoluteBenefit, methodResult.get(0).getAbsoluteBenefit(), 0.01);
+        Assertions.assertEquals(absoluteBenefit, methodResult.get(0).getAbsoluteProfit(), 0.01);
 
         var fullPriceOfSelling = (sale1.getPrice() - sale1.getCommission()) * sale1.getAmount();
         var relativeBenefit = (fullPriceOfSelling / (fullPriceOfSelling - absoluteBenefit) - 1) * 100;
-        Assertions.assertEquals(relativeBenefit, methodResult.get(0).getRelativeBenefit(), 0.01);
+        Assertions.assertEquals(relativeBenefit, methodResult.get(0).getRelativeProfit(), 0.01);
 
         absoluteBenefit = sale2.getAmount() * (sale2.getPrice() - sale2.getCommission()) -
                 sale2.getAmount() * (purchase.getPrice() + purchase.getCommission());
-        Assertions.assertEquals(absoluteBenefit, methodResult.get(1).getAbsoluteBenefit(), 0.01);
+        Assertions.assertEquals(absoluteBenefit, methodResult.get(1).getAbsoluteProfit(), 0.01);
 
         fullPriceOfSelling = (sale2.getPrice() - sale2.getCommission()) * sale2.getAmount();
         relativeBenefit = (fullPriceOfSelling / (fullPriceOfSelling - absoluteBenefit) - 1) * 100;
-        Assertions.assertEquals(relativeBenefit, methodResult.get(0).getRelativeBenefit(), 0.01);
+        Assertions.assertEquals(relativeBenefit, methodResult.get(0).getRelativeProfit(), 0.01);
     }
 
     @Test
@@ -230,7 +230,7 @@ class CalculateBenefitsFromSalesTests {
         saleList.add(sale);
 
         var methodResult = PurchaseSaleUtil
-                .calculateBenefitsFromSales(purchaseList, saleList, productName);
+                .calculateProfitsFromSales(purchaseList, saleList, productName);
 
         Assertions.assertEquals(1, methodResult.size());
         Assertions.assertEquals(productName, methodResult.get(0).getName());
@@ -239,11 +239,11 @@ class CalculateBenefitsFromSalesTests {
 
         var absoluteBenefit = sale.getAmount() * (sale.getPrice() - sale.getCommission()) -
                 sale.getAmount() * (purchase.getPrice() + purchase.getCommission());
-        Assertions.assertEquals(absoluteBenefit, methodResult.get(0).getAbsoluteBenefit(), 0.01);
+        Assertions.assertEquals(absoluteBenefit, methodResult.get(0).getAbsoluteProfit(), 0.01);
 
         var fullPriceOfSelling = (sale.getPrice() - sale.getCommission()) * sale.getAmount();
         var relativeBenefit = (fullPriceOfSelling / (fullPriceOfSelling - absoluteBenefit) - 1) * 100;
-        Assertions.assertEquals(relativeBenefit, methodResult.get(0).getRelativeBenefit(), 0.01);
+        Assertions.assertEquals(relativeBenefit, methodResult.get(0).getRelativeProfit(), 0.01);
     }
 
     @Test
@@ -273,7 +273,7 @@ class CalculateBenefitsFromSalesTests {
         saleList.add(sale);
 
         var methodResult = PurchaseSaleUtil
-                .calculateBenefitsFromSales(purchaseList, saleList, productName);
+                .calculateProfitsFromSales(purchaseList, saleList, productName);
 
         Assertions.assertEquals(1, methodResult.size());
         Assertions.assertEquals(productName, methodResult.get(0).getName());
@@ -283,10 +283,10 @@ class CalculateBenefitsFromSalesTests {
         var absoluteBenefit = sale.getAmount() * (sale.getPrice() - sale.getCommission()) -
                 purchase1.getAmount() * (purchase1.getPrice() + purchase1.getCommission()) -
                 (sale.getAmount() - purchase1.getAmount()) * (purchase2.getPrice() + purchase2.getCommission());
-        Assertions.assertEquals(absoluteBenefit, methodResult.get(0).getAbsoluteBenefit(), 0.01);
+        Assertions.assertEquals(absoluteBenefit, methodResult.get(0).getAbsoluteProfit(), 0.01);
 
         var fullPriceOfSelling = (sale.getPrice() - sale.getCommission()) * sale.getAmount();
         var relativeBenefit = (fullPriceOfSelling / (fullPriceOfSelling - absoluteBenefit) - 1) * 100;
-        Assertions.assertEquals(relativeBenefit, methodResult.get(0).getRelativeBenefit(), 0.01);
+        Assertions.assertEquals(relativeBenefit, methodResult.get(0).getRelativeProfit(), 0.01);
     }
 }

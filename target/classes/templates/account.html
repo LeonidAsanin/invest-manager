@@ -173,8 +173,8 @@
                 <th>Commission</th>
                 <th>Date and time</th>
                 <th>Total</th>
-                <th>Absolute benefit</th>
-                <th>Relative benefit</th>
+                <th>Absolute profit</th>
+                <th>Relative profit</th>
                 <th colspan="2">Actions</th>
             </tr>
             </thead>
@@ -206,12 +206,12 @@
                         <span th:text="'+' + ${#numbers.formatDecimal(sale.amount * (sale.price - sale.commission), 1, 2)}"></span>
                     </td>
                     <td>
-                        <span th:text="${#numbers.formatDecimal(sale.absoluteBenefit, 1, 2)}"
-                              th:style="${sale.absoluteBenefit} >= 0 ? 'color:green' : 'color:red'"></span>
+                        <span th:text="${#numbers.formatDecimal(sale.absoluteProfit, 1, 2)}"
+                              th:style="${sale.absoluteProfit} >= 0 ? 'color:green' : 'color:red'"></span>
                     </td>
                     <td>
-                        <span th:text="${#numbers.formatDecimal(sale.relativeBenefit, 1, 2)} + '%'"
-                              th:style="${sale.relativeBenefit} >=0 ? 'color:green' : 'color:red'"></span>
+                        <span th:text="${#numbers.formatDecimal(sale.relativeProfit, 1, 2)} + '%'"
+                              th:style="${sale.relativeProfit} >=0 ? 'color:green' : 'color:red'"></span>
                     </td>
                     <td>
                         <button type="submit" th:formaction="@{'/sale/edit/' + ${sale.id}}"

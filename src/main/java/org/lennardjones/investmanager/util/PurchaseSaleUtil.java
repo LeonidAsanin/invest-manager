@@ -63,9 +63,9 @@ public class PurchaseSaleUtil {
      * @param productName name of the product
      * @return updated with new benefit values sale list
      */
-    public static List<Sale> calculateBenefitsFromSales(List<Purchase> purchaseList,
-                                                        List<Sale> saleList,
-                                                        String productName) {
+    public static List<Sale> calculateProfitsFromSales(List<Purchase> purchaseList,
+                                                       List<Sale> saleList,
+                                                       String productName) {
         /* Filtering input lists by name */
         var purchaseStack = purchaseList.stream()
                 .filter(p -> p.getName().equals(productName))
@@ -100,8 +100,8 @@ public class PurchaseSaleUtil {
 
         /* Setting up sale benefits to zero in order to calculate new values */
         saleStack = saleStack.stream().peek(sale -> {
-            sale.setAbsoluteBenefit(0);
-            sale.setRelativeBenefit(0);
+            sale.setAbsoluteProfit(0);
+            sale.setRelativeProfit(0);
         }).collect(Collectors.toCollection(LinkedList::new));
 
         var saleOriginalValuesList = saleStack.stream().map(Sale::getAmount).toList();
@@ -115,7 +115,7 @@ public class PurchaseSaleUtil {
             while (!saleStack.isEmpty()) {
                 var sale = saleStack.removeFirst();
                 var saleFullPrice = sale.getPrice() - sale.getCommission();
-                var saleCurrentBenefit = sale.getAbsoluteBenefit();
+                var saleCurrentProfit = sale.getAbsoluteProfit();
 
                 var purchaseAmount = purchase.getAmount();
                 var saleAmount = sale.getAmount();
@@ -124,12 +124,12 @@ public class PurchaseSaleUtil {
 
                 if (remainingProductAmount >= 0) {
                     var saleBenefit = (saleFullPrice - purchaseFullPrice) * saleAmount;
-                    sale.setAbsoluteBenefit(saleCurrentBenefit + saleBenefit);
+                    sale.setAbsoluteProfit(saleCurrentProfit + saleBenefit);
                     resultSaleList.add(sale);
                     purchase.setAmount(remainingProductAmount);
                 } else {
                     var saleBenefit = (saleFullPrice - purchaseFullPrice) * purchaseAmount;
-                    sale.setAbsoluteBenefit(saleCurrentBenefit + saleBenefit);
+                    sale.setAbsoluteProfit(saleCurrentProfit + saleBenefit);
                     sale.setAmount(-remainingProductAmount);
                     saleStack.addFirst(sale);
                     break;
@@ -139,18 +139,18 @@ public class PurchaseSaleUtil {
 
         for (int i = 0; i < resultSaleList.size(); i++) {
             var sale = resultSaleList.get(i);
-            var absoluteBenefit = sale.getAbsoluteBenefit();
+            var absoluteProfit = sale.getAbsoluteProfit();
 
             /* Changing affected amounts during while-loop to original ones */
             sale.setAmount(saleOriginalValuesList.get(i));
 
             /* Calculating relative benefit */
             var fullPriceOfSelling = (sale.getPrice() - sale.getCommission()) * sale.getAmount();
-            var relativeBenefit = (fullPriceOfSelling / (fullPriceOfSelling - absoluteBenefit) - 1) * 100;
+            var relativeProfit = (fullPriceOfSelling / (fullPriceOfSelling - absoluteProfit) - 1) * 100;
 
             /* Setting final (for the current calculation) benefit values to the sale */
-            sale.setAbsoluteBenefit(absoluteBenefit);
-            sale.setRelativeBenefit(relativeBenefit);
+            sale.setAbsoluteProfit(absoluteProfit);
+            sale.setRelativeProfit(relativeProfit);
         }
 
         return resultSaleList;

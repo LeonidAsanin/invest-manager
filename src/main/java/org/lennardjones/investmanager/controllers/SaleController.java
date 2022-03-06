@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Comparator;
 import java.util.stream.Collectors;
 
 /**
@@ -45,12 +44,12 @@ public class SaleController {
         }
 
         /* Calculating and setting up benefits to the sale */
-        saleList = PurchaseSaleUtil.calculateBenefitsFromSales(purchaseList, saleList, productName);
+        saleList = PurchaseSaleUtil.calculateProfitsFromSales(purchaseList, saleList, productName);
         var saleWithCalculatedBenefits = saleList.stream()
                 .filter(s -> s.getId() == null)
                 .findFirst().orElseThrow();
-        sale.setAbsoluteBenefit(saleWithCalculatedBenefits.getAbsoluteBenefit());
-        sale.setRelativeBenefit(saleWithCalculatedBenefits.getRelativeBenefit());
+        sale.setAbsoluteProfit(saleWithCalculatedBenefits.getAbsoluteProfit());
+        sale.setRelativeProfit(saleWithCalculatedBenefits.getRelativeProfit());
 
         saleService.save(sale);
 
@@ -86,12 +85,12 @@ public class SaleController {
         }
 
         /* Calculating and setting up benefits to the sale */
-        saleList = PurchaseSaleUtil.calculateBenefitsFromSales(purchaseList, saleList, productName);
+        saleList = PurchaseSaleUtil.calculateProfitsFromSales(purchaseList, saleList, productName);
         var saleWithCalculatedBenefits = saleList.stream()
                 .filter(s -> s.getId().equals(saleId))
                 .findFirst().orElseThrow();
-        sale.setAbsoluteBenefit(saleWithCalculatedBenefits.getAbsoluteBenefit());
-        sale.setRelativeBenefit(saleWithCalculatedBenefits.getRelativeBenefit());
+        sale.setAbsoluteProfit(saleWithCalculatedBenefits.getAbsoluteProfit());
+        sale.setRelativeProfit(saleWithCalculatedBenefits.getRelativeProfit());
 
         sale.setSeller(user);
         saleService.save(sale);

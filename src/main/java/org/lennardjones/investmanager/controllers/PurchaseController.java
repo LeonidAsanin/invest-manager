@@ -50,7 +50,7 @@ public class PurchaseController {
         }
 
         /* Calculating and setting up refreshed benefits to the sales */
-        saleList = PurchaseSaleUtil.calculateBenefitsFromSales(purchaseList, saleList, productName);
+        saleList = PurchaseSaleUtil.calculateProfitsFromSales(purchaseList, saleList, productName);
         for (var sale : saleList) {
             saleService.save(sale);
         }
@@ -82,7 +82,7 @@ public class PurchaseController {
         }
 
         /* Calculating and setting up refreshed benefits to the sales */
-        saleList = PurchaseSaleUtil.calculateBenefitsFromSales(purchaseList, saleList, productName);
+        saleList = PurchaseSaleUtil.calculateProfitsFromSales(purchaseList, saleList, productName);
         for (var sale : saleList) {
             saleService.save(sale);
         }

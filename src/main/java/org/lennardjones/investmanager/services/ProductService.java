@@ -55,10 +55,10 @@ public class ProductService {
             productRepository.save(userId, productName, currentPrice);
 
             var absoluteBenefit = (currentPrice - product.getAveragePrice()) * product.getAmount();
-            product.setAbsoluteBenefit(absoluteBenefit);
+            product.setAbsoluteProfit(absoluteBenefit);
 
             var relativePrice = (currentPrice / product.getAveragePrice() - 1) * 100;
-            product.setRelativeBenefit(relativePrice);
+            product.setRelativeProfit(relativePrice);
 
             productSet.add(product);
         }
@@ -138,10 +138,10 @@ public class ProductService {
                 product.setCurrentPrice(currentPrice);
 
                 var absoluteBenefit = (currentPrice - averagePriceConsideringCommission) * productAmount;
-                product.setAbsoluteBenefit(absoluteBenefit);
+                product.setAbsoluteProfit(absoluteBenefit);
 
                 var relativePrice = (currentPrice / averagePriceConsideringCommission - 1) * 100;
-                product.setRelativeBenefit(relativePrice);
+                product.setRelativeProfit(relativePrice);
             }
 
             /* Adding product to the product set */

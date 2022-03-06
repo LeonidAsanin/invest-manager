@@ -48,8 +48,8 @@
                         <th>Current price</th>
                         <th>Total price</th>
                         <th>Total current price</th>
-                        <th>Current absolute benefit</th>
-                        <th>Current relative benefit</th>
+                        <th>Current absolute profit</th>
+                        <th>Current relative profit</th>
                     </tr>
                 </thead>
 
@@ -76,12 +76,12 @@
                             <span th:text="${#numbers.formatDecimal(product.amount * product.currentPrice, 1, 2)}"></span>
                         </td>
                         <td>
-                            <span th:text="${#numbers.formatDecimal(product.absoluteBenefit, 1, 2)}"
-                                  th:style="${product.absoluteBenefit} >= 0 ? 'color:green' : 'color:red'"></span>
+                            <span th:text="${#numbers.formatDecimal(product.absoluteProfit, 1, 2)}"
+                                  th:style="${product.absoluteProfit} >= 0 ? 'color:green' : 'color:red'"></span>
                         </td>
                         <td>
-                            <span th:text="${#numbers.formatDecimal(product.relativeBenefit, 1, 2)} + '%'"
-                                  th:style="${product.absoluteBenefit} >= 0 ? 'color:green' : 'color:red'"></span>
+                            <span th:text="${#numbers.formatDecimal(product.relativeProfit, 1, 2)} + '%'"
+                                  th:style="${product.relativeProfit} >= 0 ? 'color:green' : 'color:red'"></span>
                         </td>
                     </tr>
                 </tbody>

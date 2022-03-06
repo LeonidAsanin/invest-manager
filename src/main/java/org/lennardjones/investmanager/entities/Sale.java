@@ -46,11 +46,11 @@ public class Sale implements Cloneable {
     @Column(name = "commission")
     private double commission;
 
-    @Column(name = "absolute_benefit")
-    private double absoluteBenefit;
+    @Column(name = "absolute_profit")
+    private double absoluteProfit;
 
-    @Column(name = "relative_benefit")
-    private double relativeBenefit;
+    @Column(name = "relative_profit")
+    private double relativeProfit;
 
     @Override
     public Object clone() throws CloneNotSupportedException {

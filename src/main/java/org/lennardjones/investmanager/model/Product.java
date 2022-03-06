@@ -18,6 +18,6 @@ public class Product {
     private int amount;
     private double averagePrice;
     private double currentPrice;
-    private double absoluteBenefit;
-    private double relativeBenefit;
+    private double absoluteProfit;
+    private double relativeProfit;
 }

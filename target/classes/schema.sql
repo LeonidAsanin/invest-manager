@@ -23,8 +23,8 @@ CREATE TABLE IF NOT EXISTS sale (
     price DOUBLE,
     commission DOUBLE,
     date_time DATETIME,
-    absolute_benefit DOUBLE,
-    relative_benefit DOUBLE,
+    absolute_profit DOUBLE,
+    relative_profit DOUBLE,
     FOREIGN KEY (seller_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
