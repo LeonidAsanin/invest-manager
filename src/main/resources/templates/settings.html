@@ -46,17 +46,28 @@
 
         <div class="settingBlock">
             <form method="post" th:action="@{/settings}">
-                Password:
-                <input type="password" name="password" required minlength="8" placeholder="********"
-                       th:disabled="${editablePassword} == null">
-                <input type="password" name="passwordConfirmation" required minlength="8"
-                       th:if="${editablePassword} != null">
-                <button type="submit" th:if="${editablePassword} == null" th:formaction="@{/settings/editPassword}">
-                    Change password
-                </button>
+                <div>
+                    <span th:if="${editablePassword} == null">Password:</span>
+                    <span th:if="${editablePassword} != null">Enter new password:</span>
+                    <input type="password" name="password" required minlength="8" placeholder="********"
+                           th:disabled="${editablePassword} == null">
+                    <button type="submit" th:if="${editablePassword} == null" th:formaction="@{/settings/editPassword}">
+                        Change password
+                    </button>
+                </div>
+                <div>
+                    <span th:if="${editablePassword} != null">Confirm new password:</span>
+                    <input type="password" name="passwordConfirmation" required minlength="8"
+                           th:if="${editablePassword} != null">
+                </div>
                 <button type="submit" th:if="${editablePassword} != null" th:formaction="@{/settings/saveNewPassword}">
                     Save new password
                 </button>
+                <a th:href="@{/settings}">
+                    <button type="button" th:if="${editablePassword} != null">
+                        Cancel
+                    </button>
+                </a>
             </form>
             <div class="errorMessage" th:if="${error} == 'editPassword'">
                 Please, type in your desired password twice correctly
