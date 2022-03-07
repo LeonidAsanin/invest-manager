@@ -86,11 +86,11 @@
                                    name="amount" th:value="${purchase.amount}"/>
                         </td>
                         <td>
-                            <input type="number" required min="0" step="0.01" th:disabled="${editable_purchase} != ${purchase.id}"
+                            <input type="number" required min="0.0001" step="any" th:disabled="${editable_purchase} != ${purchase.id}"
                                    name="price" th:value="${purchase.price}"/>
                         </td>
                         <td>
-                            <input type="number" required min="0" step="0.01" th:disabled="${editable_purchase} != ${purchase.id}"
+                            <input type="number" required min="0" step="any" th:disabled="${editable_purchase} != ${purchase.id}"
                                    name="commission" th:value="${purchase.commission}"/>
                         </td>
                         <td>
@@ -118,6 +118,26 @@
                     </form>
                 </tr>
             </tbody>
+            <tfoot>
+                <tr>
+                    <th>Total</th>
+                    <th>
+                        <span th:text="${#numbers.formatDecimal(purchaseTotal.amount, 1, 2)}"></span>
+                    </th>
+                    <th>
+                        <span th:text="'-' + ${#numbers.formatDecimal(purchaseTotal.price, 1, 2)}"></span>
+                    </th>
+                    <th>
+                        <span th:text="'-' + ${#numbers.formatDecimal(purchaseTotal.commission, 1, 2)}"></span>
+                    </th>
+                    <th></th>
+                    <th>
+                        <span th:text="'-' + ${#numbers.formatDecimal((purchaseTotal.price + purchaseTotal.commission)
+                        * purchaseTotal.amount, 1, 2)}"></span>
+                    </th>
+                    <th colspan="2"></th>
+                </tr>
+            </tfoot>
         </table>
 
         <br/>
@@ -146,10 +166,10 @@
                 <input type="number" required min="1" step="1" id="purchase_amount" th:field="*{amount}"/>
 
                 <label for="purchase_price">Price of buying</label>
-                <input type="number" required min="0.01" step="0.01" id="purchase_price" th:field="*{price}"/>
+                <input type="number" required min="0.0001" step="any" id="purchase_price" th:field="*{price}"/>
 
                 <label for="purchase_commission">Commission</label>
-                <input type="number" required min="0" step="0.01" id="purchase_commission" th:field="*{commission}"/>
+                <input type="number" required min="0" step="any" id="purchase_commission" th:field="*{commission}"/>
 
                 <label for="purchase_dateTime">Date and time</label>
                 <input type="datetime-local" required id="purchase_dateTime" th:field="*{dateTime}"/>
@@ -160,7 +180,7 @@
             </fieldset>
         </form>
 
-        <br/><br/>
+        <br/><br/><br/>
 
         <table id="saleTable">
             <caption>Sale list</caption>
@@ -191,11 +211,11 @@
                                name="amount" th:value="${sale.amount}"/>
                     </td>
                     <td>
-                        <input type="number" required min="0" step="0.01" th:disabled="${editable_sale} != ${sale.id}"
+                        <input type="number" required min="0" step="any" th:disabled="${editable_sale} != ${sale.id}"
                                name="price" th:value="${sale.price}"/>
                     </td>
                     <td>
-                        <input type="number" required min="0" step="0.01" th:disabled="${editable_sale} != ${sale.id}"
+                        <input type="number" required min="0" step="any" th:disabled="${editable_sale} != ${sale.id}"
                                name="commission" th:value="${sale.commission}"/>
                     </td>
                     <td>
@@ -231,6 +251,34 @@
                 </form>
             </tr>
             </tbody>
+            <tfoot>
+            <tr>
+                <th>Total</th>
+                <th>
+                    <span th:text="${#numbers.formatDecimal(saleTotal.amount, 1, 2)}"></span>
+                </th>
+                <th>
+                    <span th:text="'+' + ${#numbers.formatDecimal(saleTotal.price, 1, 2)}"></span>
+                </th>
+                <th>
+                    <span th:text="'-' + ${#numbers.formatDecimal(saleTotal.commission, 1, 2)}"></span>
+                </th>
+                <th></th>
+                <th>
+                        <span th:text="'+' + ${#numbers.formatDecimal((saleTotal.price - saleTotal.commission)
+                        * saleTotal.amount, 1, 2)}"></span>
+                </th>
+                <th>
+                    <span th:text="${#numbers.formatDecimal(saleTotal.absoluteProfit, 1, 2)}"
+                          th:style="${saleTotal.absoluteProfit} >= 0 ? 'color:green' : 'color:red'"></span>
+                </th>
+                <th>
+                    <span th:text="${#numbers.formatDecimal(saleTotal.relativeProfit, 1, 2)}"
+                          th:style="${saleTotal.relativeProfit} >= 0 ? 'color:green' : 'color:red'"></span>
+                </th>
+                <th colspan="2"></th>
+            </tr>
+            </tfoot>
         </table>
 
         <br/>
@@ -253,10 +301,10 @@
                 <input type="number" required min="1" step="1" id="sale_amount" th:field="*{amount}"/>
 
                 <label for="sale_price">Price of selling</label>
-                <input type="number" required min="0.01" step="0.01" id="sale_price" th:field="*{price}"/>
+                <input type="number" required min="0" step="any" id="sale_price" th:field="*{price}"/>
 
                 <label for="sale_commission">Commission</label>
-                <input type="number" required min="0" step="0.01" id="sale_commission" th:field="*{commission}"/>
+                <input type="number" required min="0" step="any" id="sale_commission" th:field="*{commission}"/>
 
                 <label for="sale_dateTime">Date and time</label>
                 <input type="datetime-local" required id="sale_dateTime" th:field="*{dateTime}"/>

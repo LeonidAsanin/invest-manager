@@ -3,6 +3,8 @@ package org.lennardjones.investmanager.controllers;
 import org.lennardjones.investmanager.entities.User;
 import org.lennardjones.investmanager.entities.Purchase;
 import org.lennardjones.investmanager.entities.Sale;
+import org.lennardjones.investmanager.model.PurchaseTotal;
+import org.lennardjones.investmanager.model.SaleTotal;
 import org.lennardjones.investmanager.services.LoggedUserManagementService;
 import org.lennardjones.investmanager.services.PurchaseService;
 import org.lennardjones.investmanager.services.SaleService;
@@ -83,7 +85,7 @@ public class AccountController {
             model.addAttribute("filterByNameString", loggedUserManagementService.getFilterByNameString());
         }
 
-        /* For purchase table */
+        /* For purchase and sale tables */
         List<Purchase> purchaseList;
         List<Sale> saleList;
         var filterByName = loggedUserManagementService.getFilterByNameString();
@@ -100,6 +102,23 @@ public class AccountController {
         saleList = PurchaseSaleUtil.sortSaleList(saleList, typeOfSort, typeOfSortOrder);
         model.addAttribute("purchaseList", purchaseList);
         model.addAttribute("saleList", saleList);
+
+        /* For purchase totals */
+        var totalPurchaseAmount = purchaseList.stream().mapToInt(Purchase::getAmount).sum();
+        var totalPurchasePrice = purchaseList.stream().mapToDouble(Purchase::getPrice).sum();
+        var totalPurchaseCommission = purchaseList.stream().mapToDouble(Purchase::getCommission).sum();
+        var purchaseTotal = new PurchaseTotal(totalPurchaseAmount, totalPurchasePrice, totalPurchaseCommission);
+        model.addAttribute("purchaseTotal", purchaseTotal);
+
+        /* For sale totals */
+        var totalSaleAmount = saleList.stream().mapToInt(Sale::getAmount).sum();
+        var totalSalePrice = saleList.stream().mapToDouble(Sale::getPrice).sum();
+        var totalSaleCommission = saleList.stream().mapToDouble(Sale::getCommission).sum();
+        var totalSaleAbsoluteProfit = saleList.stream().mapToDouble(Sale::getAbsoluteProfit).sum();
+        var totalSaleRelativeProfit = saleList.stream().mapToDouble(Sale::getRelativeProfit).sum();
+        var saleTotal = new SaleTotal(totalSaleAmount, totalSalePrice, totalSaleCommission,
+                totalSaleAbsoluteProfit, totalSaleRelativeProfit);
+        model.addAttribute("saleTotal", saleTotal);
 
         /* For editing table values */
         model.addAttribute("editable_purchase", editablePurchaseId);

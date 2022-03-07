@@ -62,3 +62,7 @@ td input {
     max-width: 100%;
     width: 95%;
 }
+
+fieldset {
+    border: 1px solid #dddddd;
+}
