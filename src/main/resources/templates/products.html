@@ -85,6 +85,27 @@
                         </td>
                     </tr>
                 </tbody>
+
+                <tfoot>
+                    <tr>
+                        <th>Total</th>
+                        <th colspan="3"></th>
+                        <th>
+                            <span th:text="${#numbers.formatDecimal(productTotal.price, 1, 2)}"></span>
+                        </th>
+                        <th>
+                            <span th:text="${#numbers.formatDecimal(productTotal.currentPrice, 1, 2)}"></span>
+                        </th>
+                        <th>
+                            <span th:text="${#numbers.formatDecimal(productTotal.absoluteProfit, 1, 2)}"
+                                  th:style="${productTotal.absoluteProfit} >= 0 ? 'color:green' : 'color:red'"></span>
+                        </th>
+                        <th>
+                            <span th:text="${#numbers.formatDecimal(productTotal.relativeProfit, 1, 2)} + '%'"
+                                  th:style="${productTotal.relativeProfit} >= 0 ? 'color:green' : 'color:red'"></span>
+                        </th>
+                    </tr>
+                </tfoot>
             </table>
         </form>
     </main>

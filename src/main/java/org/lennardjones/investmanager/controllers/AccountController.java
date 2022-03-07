@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,7 @@ import java.util.List;
  * @author lennardjones
  */
 @Controller
+@RequestMapping("/account")
 public class AccountController {
     private final LoggedUserManagementService loggedUserManagementService;
     private final PurchaseService purchaseService;
@@ -41,7 +43,7 @@ public class AccountController {
         this.saleService = saleService;
     }
 
-    @GetMapping("/account")
+    @GetMapping
     public String getAccountPage(
             @RequestParam(name = "editable_purchase", required = false) Long editablePurchaseId,
             @RequestParam(name = "editable_sale", required = false) Long editableSaleId,
@@ -104,19 +106,19 @@ public class AccountController {
         model.addAttribute("saleList", saleList);
 
         /* For purchase totals */
-        var totalPurchaseAmount = purchaseList.stream().mapToInt(Purchase::getAmount).sum();
-        var totalPurchasePrice = purchaseList.stream().mapToDouble(Purchase::getPrice).sum();
-        var totalPurchaseCommission = purchaseList.stream().mapToDouble(Purchase::getCommission).sum();
-        var purchaseTotal = new PurchaseTotal(totalPurchaseAmount, totalPurchasePrice, totalPurchaseCommission);
+        var totalPurchasePrice = purchaseList.stream().mapToDouble(p -> p.getPrice() * p.getAmount()).sum();
+        var totalPurchaseCommission = purchaseList.stream().mapToDouble(p -> p.getCommission() * p.getAmount())
+                                                                   .sum();
+        var purchaseTotal = new PurchaseTotal(totalPurchasePrice, totalPurchaseCommission);
         model.addAttribute("purchaseTotal", purchaseTotal);
 
         /* For sale totals */
-        var totalSaleAmount = saleList.stream().mapToInt(Sale::getAmount).sum();
-        var totalSalePrice = saleList.stream().mapToDouble(Sale::getPrice).sum();
-        var totalSaleCommission = saleList.stream().mapToDouble(Sale::getCommission).sum();
+        var totalSalePrice = saleList.stream().mapToDouble(s -> s.getPrice() * s.getAmount()).sum();
+        var totalSaleCommission = saleList.stream().mapToDouble(s -> s.getCommission() * s.getAmount()).sum();
         var totalSaleAbsoluteProfit = saleList.stream().mapToDouble(Sale::getAbsoluteProfit).sum();
-        var totalSaleRelativeProfit = saleList.stream().mapToDouble(Sale::getRelativeProfit).sum();
-        var saleTotal = new SaleTotal(totalSaleAmount, totalSalePrice, totalSaleCommission,
+        var fullTotalSalePrice = totalSalePrice - totalSaleCommission;
+        var totalSaleRelativeProfit = (fullTotalSalePrice / (fullTotalSalePrice - totalSaleAbsoluteProfit) - 1) * 100;
+        var saleTotal = new SaleTotal(totalSalePrice, totalSaleCommission,
                 totalSaleAbsoluteProfit, totalSaleRelativeProfit);
         model.addAttribute("saleTotal", saleTotal);
 

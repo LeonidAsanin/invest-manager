@@ -1,6 +1,8 @@
 package org.lennardjones.investmanager.controllers;
 
 import org.lennardjones.investmanager.entities.User;
+import org.lennardjones.investmanager.model.Product;
+import org.lennardjones.investmanager.model.ProductTotal;
 import org.lennardjones.investmanager.services.ProductService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -35,7 +37,16 @@ public class ProductController {
             model.addAttribute("editable", true);
         }
 
-        model.addAttribute("productSet", productService.getAllByUser(user));
+        var productSet = productService.getAllByUser(user);
+        model.addAttribute("productSet", productSet);
+
+        var totalPrice = productSet.stream().mapToDouble(p -> p.getAmount() * p.getAveragePrice()).sum();
+        var totalCurrentPrice = productSet.stream().mapToDouble(p -> p.getAmount() * p.getCurrentPrice()).sum();
+        var totalAbsoluteProfit = productSet.stream().mapToDouble(Product::getAbsoluteProfit).sum();
+        var totalRelativeProfit = (totalPrice / (totalPrice - totalAbsoluteProfit) - 1) * 100;
+        var productTotal = new ProductTotal(totalPrice, totalCurrentPrice, totalAbsoluteProfit, totalRelativeProfit);
+        model.addAttribute(productTotal);
+
         return "products";
     }
 
@@ -44,7 +55,7 @@ public class ProductController {
                                                        @RequestParam List<Double> currentPrice,
                                                        @AuthenticationPrincipal User user) {
         for (int i = 0; i < productName.size(); i++) {
-            productService.calculateBenefits(user.getId(), productName.get(i), currentPrice.get(i));
+            productService.calculateProfits(user.getId(), productName.get(i), currentPrice.get(i));
         }
 
         return "redirect:/product";

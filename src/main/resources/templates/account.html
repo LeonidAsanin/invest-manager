@@ -98,7 +98,7 @@
                                    name="dateTime" th:value="${purchase.dateTime}"/>
                         </td>
                         <td>
-                            <span th:text="'-' + ${#numbers.formatDecimal(purchase.amount * (purchase.price + purchase.commission), 1, 2)}"></span>
+                            <span th:text="${#numbers.formatDecimal(purchase.amount * (purchase.price + purchase.commission), 1, 2)}"></span>
                         </td>
                         <td>
                             <button type="submit" th:formaction="@{'/purchase/edit/' + ${purchase.id}}"
@@ -118,22 +118,20 @@
                     </form>
                 </tr>
             </tbody>
+
             <tfoot>
                 <tr>
                     <th>Total</th>
+                    <th></th>
                     <th>
-                        <span th:text="${#numbers.formatDecimal(purchaseTotal.amount, 1, 2)}"></span>
+                        <span th:text="${#numbers.formatDecimal(purchaseTotal.price, 1, 2)}"></span>
                     </th>
                     <th>
-                        <span th:text="'-' + ${#numbers.formatDecimal(purchaseTotal.price, 1, 2)}"></span>
-                    </th>
-                    <th>
-                        <span th:text="'-' + ${#numbers.formatDecimal(purchaseTotal.commission, 1, 2)}"></span>
+                        <span th:text="${#numbers.formatDecimal(purchaseTotal.commission, 1, 2)}"></span>
                     </th>
                     <th></th>
                     <th>
-                        <span th:text="'-' + ${#numbers.formatDecimal((purchaseTotal.price + purchaseTotal.commission)
-                        * purchaseTotal.amount, 1, 2)}"></span>
+                        <span th:text="${#numbers.formatDecimal(purchaseTotal.price + purchaseTotal.commission, 1, 2)}"></span>
                     </th>
                     <th colspan="2"></th>
                 </tr>
@@ -223,7 +221,7 @@
                                name="dateTime" th:value="${sale.dateTime}"/>
                     </td>
                     <td>
-                        <span th:text="'+' + ${#numbers.formatDecimal(sale.amount * (sale.price - sale.commission), 1, 2)}"></span>
+                        <span th:text="${#numbers.formatDecimal(sale.amount * (sale.price - sale.commission), 1, 2)}"></span>
                     </td>
                     <td>
                         <span th:text="${#numbers.formatDecimal(sale.absoluteProfit, 1, 2)}"
@@ -251,29 +249,27 @@
                 </form>
             </tr>
             </tbody>
+
             <tfoot>
             <tr>
                 <th>Total</th>
+                <th></th>
                 <th>
-                    <span th:text="${#numbers.formatDecimal(saleTotal.amount, 1, 2)}"></span>
+                    <span th:text="${#numbers.formatDecimal(saleTotal.price, 1, 2)}"></span>
                 </th>
                 <th>
-                    <span th:text="'+' + ${#numbers.formatDecimal(saleTotal.price, 1, 2)}"></span>
-                </th>
-                <th>
-                    <span th:text="'-' + ${#numbers.formatDecimal(saleTotal.commission, 1, 2)}"></span>
+                    <span th:text="${#numbers.formatDecimal(saleTotal.commission, 1, 2)}"></span>
                 </th>
                 <th></th>
                 <th>
-                        <span th:text="'+' + ${#numbers.formatDecimal((saleTotal.price - saleTotal.commission)
-                        * saleTotal.amount, 1, 2)}"></span>
+                        <span th:text="${#numbers.formatDecimal(saleTotal.price - saleTotal.commission, 1, 2)}"></span>
                 </th>
                 <th>
                     <span th:text="${#numbers.formatDecimal(saleTotal.absoluteProfit, 1, 2)}"
                           th:style="${saleTotal.absoluteProfit} >= 0 ? 'color:green' : 'color:red'"></span>
                 </th>
                 <th>
-                    <span th:text="${#numbers.formatDecimal(saleTotal.relativeProfit, 1, 2)}"
+                    <span th:text="${#numbers.formatDecimal(saleTotal.relativeProfit, 1, 2)} + '%'"
                           th:style="${saleTotal.relativeProfit} >= 0 ? 'color:green' : 'color:red'"></span>
                 </th>
                 <th colspan="2"></th>

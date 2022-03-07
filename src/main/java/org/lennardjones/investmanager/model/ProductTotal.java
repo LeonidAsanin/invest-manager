@@ -4,16 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * Class that describes total values for all sales.
+ * Class that describes total values for all current user's products.
  *
  * @since 1.4
  * @author lennardjones
  */
 @Getter
 @AllArgsConstructor
-public class SaleTotal {
+public class ProductTotal {
     private double price;
-    private double commission;
+    private double currentPrice;
     private double absoluteProfit;
     private double relativeProfit;
 }

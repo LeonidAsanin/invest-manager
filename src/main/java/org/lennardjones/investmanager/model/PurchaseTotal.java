@@ -12,7 +12,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class PurchaseTotal {
-    private int amount;
     private double price;
     private double commission;
 }

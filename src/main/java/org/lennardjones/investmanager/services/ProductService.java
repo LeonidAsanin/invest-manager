@@ -41,7 +41,7 @@ public class ProductService {
         isDateChanged = true;
     }
 
-    public void calculateBenefits(Long userId, String productName, double currentPrice) {
+    public void calculateProfits(Long userId, String productName, double currentPrice) {
         /* Searching for product by name */
         var optionalProduct = productSet.stream()
                 .filter(p -> p.getName().equals(productName))
@@ -159,6 +159,9 @@ public class ProductService {
             var purchaseList = purchaseService.getListByUsername(user.getUsername());
             var saleList = saleService.getListByUsername(user.getUsername());
             calculateProducts(user.getId(), purchaseList, saleList);
+            for (var product : productSet) {
+                calculateProfits(user.getId(), product.getName(), product.getCurrentPrice());
+            }
             isDateChanged = false;
         }
         return productSet;
