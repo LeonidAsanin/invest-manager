@@ -38,13 +38,13 @@ public class Sale implements Cloneable {
     private String name;
 
     @Column(name = "amount")
-    private int amount;
+    private Integer amount;
 
     @Column(name = "price")
-    private double price;
+    private Double price;
 
     @Column(name = "commission")
-    private double commission;
+    private Double commission;
 
     @Column(name = "absolute_profit")
     private double absoluteProfit;

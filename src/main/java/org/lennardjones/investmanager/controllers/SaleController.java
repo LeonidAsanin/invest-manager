@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.stream.Collectors;
 
@@ -31,7 +32,7 @@ public class SaleController {
     }
 
     @PostMapping("/add")
-    public String add(Sale sale, @AuthenticationPrincipal User user) {
+    public String add(Sale sale, @AuthenticationPrincipal User user, RedirectAttributes redirectAttributes) {
         var username = user.getUsername();
         var productName = sale.getName();
 
@@ -40,6 +41,7 @@ public class SaleController {
         var saleList = saleService.getListByUsername(username);
         saleList.add(sale);
         if (PurchaseSaleUtil.isQueueIncorrect(purchaseList, saleList, productName)) {
+            redirectAttributes.addFlashAttribute("sale", sale);
             return "redirect:/account?error=addSale";
         }
 

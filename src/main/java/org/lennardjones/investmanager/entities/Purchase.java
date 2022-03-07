@@ -38,13 +38,13 @@ public class Purchase implements Cloneable {
     private String name;
 
     @Column(name = "amount")
-    private int amount;
+    private Integer amount;
 
     @Column(name = "price")
-    private double price;
+    private Double price;
 
     @Column(name = "commission")
-    private double commission;
+    private Double commission;
 
     @Override
     public Object clone() throws CloneNotSupportedException {

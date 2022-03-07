@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -48,6 +47,7 @@ public class AccountController {
             @RequestParam(name = "sortOrderType", required = false) String sortOrderType,
             @RequestParam(name = "filter", required = false) String filterByNameString,
             @RequestParam(name = "error", required = false) String error,
+            @ModelAttribute Sale invalidSale, // if a sale entry error occurs, the invalid sale redirected here
             @AuthenticationPrincipal User user,
             Model model
     ) {
@@ -108,24 +108,24 @@ public class AccountController {
         /* For adding error messages */
         model.addAttribute("error", error);
 
+        /* For "Add new sale" button */
+        if (invalidSale.getName() != null) {
+            model.addAttribute("sale", invalidSale);
+        } else {
+            var saleTemplate = new Sale();
+            saleTemplate.setSeller(user);
+            saleTemplate.setDateTime(LocalDateTime.now());
+            model.addAttribute("sale", saleTemplate);
+        }
+
         return "account";
     }
 
-    @ModelAttribute
-    public void addModelAttributes(Model model, @AuthenticationPrincipal User user) {
-
-        /* For "Add new purchase" button */
+    @ModelAttribute("purchase")
+    Purchase addPurchaseTemplate(@AuthenticationPrincipal User user) {
         var purchaseTemplate = new Purchase();
         purchaseTemplate.setOwner(user);
         purchaseTemplate.setDateTime(LocalDateTime.now());
-        purchaseTemplate.setAmount(1);
-        model.addAttribute("purchase", purchaseTemplate);
-
-        /* For "Add new sale" button */
-        var saleTemplate = new Sale();
-        saleTemplate.setSeller(user);
-        saleTemplate.setDateTime(LocalDateTime.now());
-        saleTemplate.setAmount(1);
-        model.addAttribute("sale", saleTemplate);
+        return purchaseTemplate;
     }
 }

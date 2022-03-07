@@ -162,7 +162,7 @@
 
         <br/><br/>
 
-        <table>
+        <table id="saleTable">
             <caption>Sale list</caption>
 
             <thead>
@@ -270,9 +270,9 @@
         <br/>
 
         <div class="errorMessage" th:if="${error} == 'addSale'">
-            <form>
+            <form th:action="@{/account#saleTable}">
                 Sorry, but you cannot add sale with given values and date.
-                <button type="submit">OK</button>
+                <button type="submit">Clear input form</button>
             </form>
         </div>
     </main>
