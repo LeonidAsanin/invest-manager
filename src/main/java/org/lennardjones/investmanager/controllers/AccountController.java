@@ -106,20 +106,27 @@ public class AccountController {
         model.addAttribute("saleList", saleList);
 
         /* For purchase totals */
-        var totalPurchasePrice = purchaseList.stream().mapToDouble(p -> p.getPrice() * p.getAmount()).sum();
-        var totalPurchaseCommission = purchaseList.stream().mapToDouble(p -> p.getCommission() * p.getAmount())
-                                                                   .sum();
-        var purchaseTotal = new PurchaseTotal(totalPurchasePrice, totalPurchaseCommission);
+        var purchaseTotal = new PurchaseTotal(0, 0);
+        if (!purchaseList.isEmpty()) {
+            var totalPurchasePrice = purchaseList.stream().mapToDouble(p -> p.getPrice() * p.getAmount()).sum();
+            var totalPurchaseCommission = purchaseList.stream().mapToDouble(p -> p.getCommission() * p.getAmount())
+                    .sum();
+            purchaseTotal = new PurchaseTotal(totalPurchasePrice, totalPurchaseCommission);
+        }
         model.addAttribute("purchaseTotal", purchaseTotal);
 
+
         /* For sale totals */
-        var totalSalePrice = saleList.stream().mapToDouble(s -> s.getPrice() * s.getAmount()).sum();
-        var totalSaleCommission = saleList.stream().mapToDouble(s -> s.getCommission() * s.getAmount()).sum();
-        var totalSaleAbsoluteProfit = saleList.stream().mapToDouble(Sale::getAbsoluteProfit).sum();
-        var fullTotalSalePrice = totalSalePrice - totalSaleCommission;
-        var totalSaleRelativeProfit = (fullTotalSalePrice / (fullTotalSalePrice - totalSaleAbsoluteProfit) - 1) * 100;
-        var saleTotal = new SaleTotal(totalSalePrice, totalSaleCommission,
-                totalSaleAbsoluteProfit, totalSaleRelativeProfit);
+        var saleTotal = new SaleTotal(0, 0, 0, 0);
+        if (!saleList.isEmpty()) {
+            var totalSalePrice = saleList.stream().mapToDouble(s -> s.getPrice() * s.getAmount()).sum();
+            var totalSaleCommission = saleList.stream().mapToDouble(s -> s.getCommission() * s.getAmount()).sum();
+            var totalSaleAbsoluteProfit = saleList.stream().mapToDouble(Sale::getAbsoluteProfit).sum();
+            var fullTotalSalePrice = totalSalePrice - totalSaleCommission;
+            var totalSaleRelativeProfit = (fullTotalSalePrice / (fullTotalSalePrice - totalSaleAbsoluteProfit) - 1) * 100;
+            saleTotal = new SaleTotal(totalSalePrice, totalSaleCommission,
+                    totalSaleAbsoluteProfit, totalSaleRelativeProfit);
+        }
         model.addAttribute("saleTotal", saleTotal);
 
         /* For editing table values */

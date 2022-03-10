@@ -69,11 +69,17 @@ public class PurchaseSaleUtil {
         /* Filtering input lists by name */
         var purchaseStack = purchaseList.stream()
                 .filter(p -> p.getName().equals(productName))
-                .sorted(Comparator.comparing(Purchase::getDateTime))
+                .sorted(Comparator.comparing(Purchase::getDateTime)
+                        .thenComparing(Purchase::getId))
                 .collect(Collectors.toCollection(LinkedList::new));
         var saleStack = saleList.stream()
                 .filter(s -> s.getName().equals(productName))
-                .sorted(Comparator.comparing(Sale::getDateTime))
+                .sorted(Comparator.comparing(Sale::getDateTime)
+                        .thenComparing(s -> s.getId() == null ? Long.MAX_VALUE : s.getId()))
+                                       /* if it is a new sale with null id
+                                       then id is set to max long value
+                                       so than it is put in the end of
+                                       stack */
                 .collect(Collectors.toCollection(LinkedList::new));
 
         /* Cloning of input list elements in order not to affect them */
@@ -175,10 +181,12 @@ public class PurchaseSaleUtil {
                         .collect(Collectors.toList());
             case NAME -> purchaseList.stream()
                         .sorted(Comparator.comparing(Purchase::getName)
-                                .thenComparing(Purchase::getDateTime))
+                                .thenComparing(Purchase::getDateTime)
+                                .thenComparing(Purchase::getId))
                         .collect(Collectors.toList());
             case DATE -> purchaseList.stream()
                         .sorted(Comparator.comparing(Purchase::getDateTime)
+                                .thenComparing(Purchase::getId)
                                 .thenComparing(Purchase::getName))
                         .collect(Collectors.toList());
         };
@@ -209,10 +217,12 @@ public class PurchaseSaleUtil {
                         .collect(Collectors.toList());
             case NAME -> saleList.stream()
                         .sorted(Comparator.comparing(Sale::getName)
-                                .thenComparing(Sale::getDateTime))
+                                .thenComparing(Sale::getDateTime)
+                                .thenComparing(Sale::getId))
                         .collect(Collectors.toList());
             case DATE -> saleList.stream()
                         .sorted(Comparator.comparing(Sale::getDateTime)
+                                .thenComparing(Sale::getId)
                                 .thenComparing(Sale::getName))
                         .collect(Collectors.toList());
         };
