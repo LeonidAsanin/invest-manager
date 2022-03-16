@@ -23,6 +23,6 @@ public class LoggedUserManagementService {
     private Sort.Direction sortOrderType = Sort.Direction.ASC;
     private String filterByNameString = "";
     private ChosenTableToSee chosenTableToSee = ChosenTableToSee.PURCHASE;
-    private int purchasePage = 1;
-    private int salePage = 1;
+    private int purchasePage = 0;
+    private int salePage = 0;
 }

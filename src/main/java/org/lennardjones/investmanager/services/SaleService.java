@@ -4,6 +4,9 @@ import org.lennardjones.investmanager.entities.Sale;
 import org.lennardjones.investmanager.entities.User;
 import org.lennardjones.investmanager.repositories.UserRepository;
 import org.lennardjones.investmanager.repositories.SaleRepository;
+import org.lennardjones.investmanager.util.SortType;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +33,23 @@ public class SaleService {
         return saleRepository.findBySeller_Username(username);
     }
 
-    public List<Sale> getListByUsernameContainingSubstring(String username, String substring) {
-        return saleRepository.findBySeller_UsernameAndNameContainingIgnoreCase(username, substring);
+    public List<Sale> getListByUsername(String username, int page, SortType sortType, Sort.Direction sortDirection) {
+        var pageRequest = switch (sortType) {
+            case NONE -> PageRequest.of(page, 10, sortDirection, "id");
+            case NAME -> PageRequest.of(page, 10, sortDirection, "name", "dateTime", "id");
+            case DATE -> PageRequest.of(page, 10, sortDirection, "dateTime", "name", "id");
+        };
+        return saleRepository.findBySeller_Username(username, pageRequest);
+    }
+
+    public List<Sale> getListByUsernameContainingSubstring(String username, String substring, int page,
+                                                           SortType sortType, Sort.Direction sortDirection) {
+        var pageRequest = switch (sortType) {
+            case NONE -> PageRequest.of(page, 10, sortDirection, "id");
+            case NAME -> PageRequest.of(page, 10, sortDirection, "name", "dateTime", "id");
+            case DATE -> PageRequest.of(page, 10, sortDirection, "dateTime", "name", "id");
+        };
+        return saleRepository.findBySeller_UsernameAndNameContainingIgnoreCase(username, substring, pageRequest);
     }
 
     public void save(Sale sale) {

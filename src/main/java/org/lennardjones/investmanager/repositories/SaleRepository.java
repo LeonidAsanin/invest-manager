@@ -1,6 +1,7 @@
 package org.lennardjones.investmanager.repositories;
 
 import org.lennardjones.investmanager.entities.Sale;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -23,6 +24,8 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
 
     List<Sale> findBySeller_Username(String username);
 
-    List<Sale> findBySeller_UsernameAndNameContainingIgnoreCase(String username, String name);
+    List<Sale> findBySeller_Username(String username, Pageable pageable);
+
+    List<Sale> findBySeller_UsernameAndNameContainingIgnoreCase(String username, String name, Pageable pageable);
 
 }

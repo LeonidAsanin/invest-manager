@@ -2,8 +2,11 @@ package org.lennardjones.investmanager.services;
 
 import org.lennardjones.investmanager.entities.Purchase;
 import org.lennardjones.investmanager.entities.User;
-import org.lennardjones.investmanager.repositories.UserRepository;
 import org.lennardjones.investmanager.repositories.PurchaseRepository;
+import org.lennardjones.investmanager.util.SortType;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +32,23 @@ public class PurchaseService {
         return purchaseRepository.findByOwner_Username(username);
     }
 
-    public List<Purchase> getListByUsernameContainingSubstring(String username, String substring) {
-        return purchaseRepository.findByOwner_UsernameAndNameContainingIgnoreCase(username, substring);
+    public List<Purchase> getListByUsername(String username, int page, SortType sortType, Sort.Direction sortDirection) {
+        var pageRequest = switch (sortType) {
+            case NONE -> PageRequest.of(page, 10, sortDirection, "id");
+            case NAME -> PageRequest.of(page, 10, sortDirection, "name", "dateTime", "id");
+            case DATE -> PageRequest.of(page, 10, sortDirection, "dateTime", "name", "id");
+        };
+        return purchaseRepository.findByOwner_Username(username, pageRequest);
+    }
+
+    public List<Purchase> getListByUsernameContainingSubstring(String username, String substring, int page,
+                                                               SortType sortType, Sort.Direction sortDirection) {
+        var pageRequest = switch (sortType) {
+            case NONE -> PageRequest.of(page, 10, sortDirection, "id");
+            case NAME -> PageRequest.of(page, 10, sortDirection, "name", "dateTime", "id");
+            case DATE -> PageRequest.of(page, 10, sortDirection, "dateTime", "name", "id");
+        };
+        return purchaseRepository.findByOwner_UsernameAndNameContainingIgnoreCase(username, substring, pageRequest);
     }
 
     public String getNameById(Long id) {

@@ -2,10 +2,8 @@ package org.lennardjones.investmanager.util;
 
 import org.lennardjones.investmanager.entities.Purchase;
 import org.lennardjones.investmanager.entities.Sale;
-import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -158,78 +156,6 @@ public class PurchaseSaleUtil {
             /* Setting final (for the current calculation) benefit values to the sale */
             sale.setAbsoluteProfit(absoluteProfit);
             sale.setRelativeProfit(relativeProfit);
-        }
-
-        return resultSaleList;
-    }
-
-    /**
-     * This method sorts {@link org.lennardjones.investmanager.entities.Purchase purchase} list
-     * by the specified {@link org.lennardjones.investmanager.util.SortType type of sort}
-     * in the specified order type.
-     *
-     * @param purchaseList list to sort
-     * @param sortType type of sort
-     * @param sortOrderType type of order sort
-     * @return sorted purchase list
-     */
-    public static List<Purchase> sortPurchaseList(List<Purchase> purchaseList,
-                                                  SortType sortType,
-                                                  Sort.Direction sortOrderType) {
-        var resultPurchaseList = switch (sortType) {
-            case NONE -> purchaseList.stream()
-                        .sorted(Comparator.comparing(Purchase::getId))
-                        .collect(Collectors.toList());
-            case NAME -> purchaseList.stream()
-                        .sorted(Comparator.comparing(Purchase::getName)
-                                .thenComparing(Purchase::getDateTime)
-                                .thenComparing(Purchase::getId))
-                        .collect(Collectors.toList());
-            case DATE -> purchaseList.stream()
-                        .sorted(Comparator.comparing(Purchase::getDateTime)
-                                .thenComparing(Purchase::getId)
-                                .thenComparing(Purchase::getName))
-                        .collect(Collectors.toList());
-        };
-
-        if (sortOrderType.equals(Sort.Direction.DESC)) {
-            Collections.reverse(resultPurchaseList);
-        }
-
-        return resultPurchaseList;
-    }
-
-    /**
-     * This method sorts {@link org.lennardjones.investmanager.entities.Sale sale} list
-     * by the specified {@link org.lennardjones.investmanager.util.SortType type of sort}
-     * in the specified order type.
-     *
-     * @param saleList list to sort
-     * @param sortType type of sort
-     * @param sortOrderType type of order sort
-     * @return sorted sale list
-     */
-    public static List<Sale> sortSaleList(List<Sale> saleList,
-                                          SortType sortType,
-                                          Sort.Direction sortOrderType) {
-        var resultSaleList = switch (sortType) {
-            case NONE -> saleList.stream()
-                        .sorted(Comparator.comparing(Sale::getId))
-                        .collect(Collectors.toList());
-            case NAME -> saleList.stream()
-                        .sorted(Comparator.comparing(Sale::getName)
-                                .thenComparing(Sale::getDateTime)
-                                .thenComparing(Sale::getId))
-                        .collect(Collectors.toList());
-            case DATE -> saleList.stream()
-                        .sorted(Comparator.comparing(Sale::getDateTime)
-                                .thenComparing(Sale::getId)
-                                .thenComparing(Sale::getName))
-                        .collect(Collectors.toList());
-        };
-
-        if (sortOrderType.equals(Sort.Direction.DESC)) {
-            Collections.reverse(resultSaleList);
         }
 
         return resultSaleList;

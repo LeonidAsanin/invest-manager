@@ -9,7 +9,7 @@ import org.lennardjones.investmanager.services.LoggedUserManagementService;
 import org.lennardjones.investmanager.services.PurchaseService;
 import org.lennardjones.investmanager.services.SaleService;
 import org.lennardjones.investmanager.util.ChosenTableToSee;
-import org.lennardjones.investmanager.util.PurchaseSaleUtil;
+import org.lennardjones.investmanager.util.PageNavigation;
 import org.lennardjones.investmanager.util.SortType;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -100,28 +100,36 @@ public class AccountController {
                                                                                            .toString());
         }
 
+        /* For defining page to see */
+        pageDefining(page, username);
+
         /* For purchase or sale table */
         List<Purchase> purchaseList = Collections.emptyList();
         List<Sale> saleList = Collections.emptyList();
         var filterByName = loggedUserManagementService.getFilterByNameString();
         var typeOfSort = loggedUserManagementService.getSortType();
-        var typeOfSortOrder = loggedUserManagementService.getSortOrderType();
-        switch (loggedUserManagementService.getChosenTableToSee()) {
+        var sortDirection = loggedUserManagementService.getSortOrderType();
+        var chosenTable = loggedUserManagementService.getChosenTableToSee();
+        switch (chosenTable) {
             case PURCHASE -> {
+                var pageToSee = loggedUserManagementService.getPurchasePage();
+                System.out.println(pageToSee);//###
                 if (filterByName.equals("")) {
-                    purchaseList = purchaseService.getListByUsername(username);
+                    purchaseList = purchaseService.getListByUsername(username, pageToSee, typeOfSort, sortDirection);
                 } else {
-                    purchaseList = purchaseService.getListByUsernameContainingSubstring(username, filterByName);
+                    purchaseList = purchaseService.getListByUsernameContainingSubstring(username, filterByName, pageToSee,
+                                                                                        typeOfSort, sortDirection);
                 }
-                purchaseList = PurchaseSaleUtil.sortPurchaseList(purchaseList, typeOfSort, typeOfSortOrder);
             }
             case SALE -> {
+                var pageToSee = loggedUserManagementService.getSalePage();
+                System.out.println(pageToSee);//###
                 if (filterByName.equals("")) {
-                    saleList = saleService.getListByUsername(username);
+                    saleList = saleService.getListByUsername(username, pageToSee, typeOfSort, sortDirection);
                 } else {
-                    saleList = saleService.getListByUsernameContainingSubstring(username, filterByName);
+                    saleList = saleService.getListByUsernameContainingSubstring(username, filterByName, pageToSee,
+                                                                                typeOfSort, sortDirection);
                 }
-                saleList = PurchaseSaleUtil.sortSaleList(saleList, typeOfSort, typeOfSortOrder);
             }
         }
         model.addAttribute("purchaseList", purchaseList);
@@ -129,6 +137,7 @@ public class AccountController {
 
         /* For purchase totals */
         var purchaseTotal = new PurchaseTotal(0, 0);
+        purchaseList = purchaseService.getListByUsername(username);
         if (!purchaseList.isEmpty()) {
             var totalPurchasePrice = purchaseList.stream().mapToDouble(p -> p.getPrice() * p.getAmount()).sum();
             var totalPurchaseCommission = purchaseList.stream().mapToDouble(p -> p.getCommission() * p.getAmount())
@@ -139,6 +148,7 @@ public class AccountController {
 
         /* For sale totals */
         var saleTotal = new SaleTotal(0, 0, 0, 0);
+        saleList = saleService.getListByUsername(username);
         if (!saleList.isEmpty()) {
             var totalSalePrice = saleList.stream().mapToDouble(s -> s.getPrice() * s.getAmount()).sum();
             var totalSaleCommission = saleList.stream().mapToDouble(s -> s.getCommission() * s.getAmount()).sum();
@@ -176,5 +186,51 @@ public class AccountController {
         purchaseTemplate.setOwner(user);
         purchaseTemplate.setDateTime(LocalDateTime.now());
         return purchaseTemplate;
+    }
+
+    private void pageDefining(String page, String username) {
+        var chosenTable = loggedUserManagementService.getChosenTableToSee();
+        if (page != null) {
+            switch (chosenTable) {
+                case PURCHASE -> {
+                    var maxPurchasePage = (int) Math.ceil(
+                            (double) purchaseService.getListByUsername(username).size() / 10 - 1);
+
+                    var purchasePage = loggedUserManagementService.getPurchasePage();
+                    if (page.equals(PageNavigation.FIRST.toString())) {
+                        loggedUserManagementService.setPurchasePage(0);
+                    } else if (page.equals(PageNavigation.LAST.toString())) {
+                        loggedUserManagementService.setPurchasePage(maxPurchasePage);
+                    } else if (page.equals(PageNavigation.NEXT.toString())) {
+                        if (purchasePage != maxPurchasePage) {
+                            loggedUserManagementService.setPurchasePage(purchasePage + 1);
+                        }
+                    } else if (page.equals(PageNavigation.PREVIOUS.toString())) {
+                        if (purchasePage != 0) {
+                            loggedUserManagementService.setPurchasePage(purchasePage - 1);
+                        }
+                    }
+                }
+                case SALE -> {
+                    var maxSalePage = (int) Math.ceil(
+                            (double) saleService.getListByUsername(username).size() / 10 - 1);
+
+                    var salePage = loggedUserManagementService.getSalePage();
+                    if (page.equals(PageNavigation.FIRST.toString())) {
+                        loggedUserManagementService.setSalePage(0);
+                    } else if (page.equals(PageNavigation.LAST.toString())) {
+                        loggedUserManagementService.setSalePage(maxSalePage);
+                    } else if (page.equals(PageNavigation.NEXT.toString())) {
+                        if (salePage != maxSalePage) {
+                            loggedUserManagementService.setSalePage(salePage + 1);
+                        }
+                    } else if (page.equals(PageNavigation.PREVIOUS.toString())) {
+                        if (salePage != 0) {
+                            loggedUserManagementService.setSalePage(salePage - 1);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

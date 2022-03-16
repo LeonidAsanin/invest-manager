@@ -52,7 +52,7 @@
                            th:checked="${sortOrderType} == 'ASC'" onclick="javascript:this.form.submit()"/>
                     <label for="asc_order">Ascending order</label>
 
-                    <input type="radio" id="dec_order" name="sortOrderType" value="DEC"
+                    <input type="radio" id="dec_order" name="sortOrderType" value="DESC"
                            th:checked="${sortOrderType} == 'DESC'" onclick="javascript:this.form.submit()"/>
                     <label for="dec_order">Decreasing order</label>
                 </span>
@@ -139,7 +139,7 @@
 
             <tfoot>
                 <tr>
-                    <th>Total</th>
+                    <th>Total<sup><acronym title="for all pages">*</acronym></sup></th>
                     <th></th>
                     <th>
                         <span th:text="${#numbers.formatDecimal(purchaseTotal.price, 1, 2)}"></span>
@@ -228,7 +228,7 @@
 
             <tfoot>
             <tr>
-                <th>Total</th>
+                <th>Total<sup><acronym title="for all pages">*</acronym></sup></th>
                 <th></th>
                 <th>
                     <span th:text="${#numbers.formatDecimal(saleTotal.price, 1, 2)}"></span>

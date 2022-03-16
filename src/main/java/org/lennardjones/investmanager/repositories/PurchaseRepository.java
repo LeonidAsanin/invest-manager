@@ -1,6 +1,8 @@
 package org.lennardjones.investmanager.repositories;
 
 import org.lennardjones.investmanager.entities.Purchase;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -23,6 +25,8 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
 
     List<Purchase> findByOwner_Username(String username);
 
-    List<Purchase> findByOwner_UsernameAndNameContainingIgnoreCase(String username, String name);
+    List<Purchase> findByOwner_Username(String username, Pageable pageable);
+
+    List<Purchase> findByOwner_UsernameAndNameContainingIgnoreCase(String username, String name, Pageable pageable);
 
 }
