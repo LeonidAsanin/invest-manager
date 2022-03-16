@@ -1,8 +1,14 @@
-#greeting {
+#greeting, #selectTableToSee {
     text-align: center;
 }
 
 #sortType, #filterByName {
+    width: 95%;
+    margin: auto;
+}
+
+#pageChoosing {
+    text-align: right;
     width: 95%;
     margin: auto;
 }

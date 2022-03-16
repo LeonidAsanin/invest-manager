@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>My Account</title>
-    <link rel="stylesheet" th:href="@{/styles/account-styles.css}" href="/../static/styles/account-styles.css">
-    <link rel="stylesheet" th:href="@{/styles/common-styles.css}" href="/../static/styles/common-styles.css">
-    <link rel="stylesheet" th:href="@{/styles/scrollable-table-body.css}">
+    <link rel="stylesheet" th:href="@{/styles/account-styles.css}" href="/../static/styles/account-styles.css"/>
+    <link rel="stylesheet" th:href="@{/styles/common-styles.css}" href="/../static/styles/common-styles.css"/>
 </head>
 <body>
     <header>
@@ -26,6 +25,18 @@
         </nav>
     </header>
     <main>
+        <div id="selectTableToSee">
+            <br/>
+            Select table to see
+            <form>
+                <select name="chosenTableToSee" onchange="javascript:this.form.submit()">
+                    <option value="PURCHASE" th:selected="${chosenTableToSee} == 'PURCHASE'">Purchase table</option>
+                    <option value="SALE" th:selected="${chosenTableToSee} == 'SALE'">Sale table</option>
+                </select>
+            </form>
+            <br/>
+        </div>
+
         <div id="sortType">
             <form>
                 Sort by
@@ -42,7 +53,7 @@
                     <label for="asc_order">Ascending order</label>
 
                     <input type="radio" id="dec_order" name="sortOrderType" value="DEC"
-                           th:checked="${sortOrderType} == 'DEC'" onclick="javascript:this.form.submit()"/>
+                           th:checked="${sortOrderType} == 'DESC'" onclick="javascript:this.form.submit()"/>
                     <label for="dec_order">Decreasing order</label>
                 </span>
             </form>
@@ -59,7 +70,14 @@
             </form>
         </div>
 
-        <table>
+        <div id="pageChoosing">
+            <a th:href="@{/account?page=FIRST}">First</a>
+            <a th:href="@{/account?page=PREVIOUS}">Previous</a>
+            <a th:href="@{/account?page=NEXT}">Next</a>
+            <a th:href="@{/account?page=LAST}">Last</a>
+        </div>
+
+        <table id="purchaseTable" th:if="${chosenTableToSee} == 'PURCHASE'">
             <caption>Purchase list</caption>
 
             <thead>
@@ -138,49 +156,7 @@
             </tfoot>
         </table>
 
-        <br/>
-
-        <div class="errorMessage" th:if="${error} == 'editPurchase'">
-            Sorry, but you cannot update the purchase with given values and date
-            <a th:href="@{/account}">
-                <button type="button">OK</button>
-            </a>
-        </div>
-        <div class="errorMessage" th:if="${error} == 'deletePurchase'">
-            Sorry, but you cannot delete this purchase
-            <a th:href="@{/account}">
-                <button type="button">OK</button>
-            </a>
-        </div>
-
-        <br/>
-
-        <form class="addForm" method="post" th:action="@{/purchase/add}" th:object="${purchase}">
-            <fieldset>
-                <label for="purchase_name">Name</label>
-                <input type="text" required id="purchase_name" th:field="*{name}"/>
-
-                <label for="purchase_amount">Amount</label>
-                <input type="number" required min="1" step="1" id="purchase_amount" th:field="*{amount}"/>
-
-                <label for="purchase_price">Price of buying</label>
-                <input type="number" required min="0.0001" step="any" id="purchase_price" th:field="*{price}"/>
-
-                <label for="purchase_commission">Commission</label>
-                <input type="number" required min="0" step="any" id="purchase_commission" th:field="*{commission}"/>
-
-                <label for="purchase_dateTime">Date and time</label>
-                <input type="datetime-local" required id="purchase_dateTime" th:field="*{dateTime}"/>
-
-                <input hidden th:field="*{owner}"/>
-
-                <button type="submit">Add new purchase</button>
-            </fieldset>
-        </form>
-
-        <br/><br/><br/>
-
-        <table id="saleTable">
+        <table id="saleTable" th:if="${chosenTableToSee} == 'SALE'">
             <caption>Sale list</caption>
 
             <thead>
@@ -279,6 +255,19 @@
 
         <br/>
 
+        <div class="errorMessage" th:if="${error} == 'editPurchase'">
+            Sorry, but you cannot update the purchase with given values and date
+            <a th:href="@{/account}">
+                <button type="button">OK</button>
+            </a>
+        </div>
+        <div class="errorMessage" th:if="${error} == 'deletePurchase'">
+            Sorry, but you cannot delete this purchase
+            <a th:href="@{/account}">
+                <button type="button">OK</button>
+            </a>
+        </div>
+
         <div class="errorMessage" th:if="${error} == 'editSale'">
             Sorry, but you cannot update the sale with given values and date
             <a th:href="@{/account}">
@@ -288,7 +277,32 @@
 
         <br/>
 
-        <form class="addForm" method="post" th:action="@{/sale/add}" th:object="${sale}">
+        <form id="addPurchaseForm" class="addForm" method="post" th:action="@{/purchase/add}" th:object="${purchase}"
+              th:if="${chosenTableToSee} == 'PURCHASE'">
+            <fieldset>
+                <label for="purchase_name">Name</label>
+                <input type="text" required id="purchase_name" th:field="*{name}"/>
+
+                <label for="purchase_amount">Amount</label>
+                <input type="number" required min="1" step="1" id="purchase_amount" th:field="*{amount}"/>
+
+                <label for="purchase_price">Price of buying</label>
+                <input type="number" required min="0.0001" step="any" id="purchase_price" th:field="*{price}"/>
+
+                <label for="purchase_commission">Commission</label>
+                <input type="number" required min="0" step="any" id="purchase_commission" th:field="*{commission}"/>
+
+                <label for="purchase_dateTime">Date and time</label>
+                <input type="datetime-local" required id="purchase_dateTime" th:field="*{dateTime}"/>
+
+                <input hidden th:field="*{owner}"/>
+
+                <button type="submit">Add new purchase</button>
+            </fieldset>
+        </form>
+
+        <form id="addSaleForm" class="addForm" method="post" th:action="@{/sale/add}" th:object="${sale}"
+              th:if="${chosenTableToSee} == 'SALE'">
             <fieldset>
                 <label for="sale_name">Name</label>
                 <input type="text" required id="sale_name" name="name" th:field="*{name}"/>
@@ -314,7 +328,7 @@
         <br/>
 
         <div class="errorMessage" th:if="${error} == 'addSale'">
-            <form th:action="@{/account#saleTable}">
+            <form th:action="@{/account}">
                 Sorry, but you cannot add sale with given values and date.
                 <button type="submit">Clear input form</button>
             </form>

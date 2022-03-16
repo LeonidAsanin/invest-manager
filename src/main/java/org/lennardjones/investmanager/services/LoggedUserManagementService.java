@@ -2,8 +2,9 @@ package org.lennardjones.investmanager.services;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.lennardjones.investmanager.util.SortOrderType;
+import org.lennardjones.investmanager.util.ChosenTableToSee;
 import org.lennardjones.investmanager.util.SortType;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
@@ -19,6 +20,9 @@ import org.springframework.web.context.annotation.SessionScope;
 @Setter
 public class LoggedUserManagementService {
     private SortType sortType = SortType.NONE;
-    private SortOrderType sortOrderType = SortOrderType.ASC;
+    private Sort.Direction sortOrderType = Sort.Direction.ASC;
     private String filterByNameString = "";
+    private ChosenTableToSee chosenTableToSee = ChosenTableToSee.PURCHASE;
+    private int purchasePage = 1;
+    private int salePage = 1;
 }

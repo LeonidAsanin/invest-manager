@@ -7,7 +7,6 @@ import org.lennardjones.investmanager.repositories.PurchaseRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,23 +18,15 @@ import java.util.List;
 @Service
 public class PurchaseService {
     private final PurchaseRepository purchaseRepository;
-    private final UserRepository userRepository;
     private final ProductService productService;
 
-    public PurchaseService(PurchaseRepository purchaseRepository,
-                           UserRepository userRepository,
-                           ProductService productService) {
+    public PurchaseService(PurchaseRepository purchaseRepository, ProductService productService) {
         this.purchaseRepository = purchaseRepository;
-        this.userRepository = userRepository;
         this.productService = productService;
     }
 
     public List<Purchase> getListByUsername(String username) {
-        var accountOptional = userRepository.findByUsername(username);
-        if (accountOptional.isPresent()) {
-            return accountOptional.get().getPurchaseList();
-        }
-        return Collections.emptyList();
+        return purchaseRepository.findByOwner_Username(username);
     }
 
     public List<Purchase> getListByUsernameContainingSubstring(String username, String substring) {

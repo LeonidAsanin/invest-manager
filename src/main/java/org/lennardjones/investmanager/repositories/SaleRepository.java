@@ -21,6 +21,8 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
     @Query("delete from Sale where id = :id")
     void deleteById(Long id);
 
+    List<Sale> findBySeller_Username(String username);
+
     List<Sale> findBySeller_UsernameAndNameContainingIgnoreCase(String username, String name);
 
 }

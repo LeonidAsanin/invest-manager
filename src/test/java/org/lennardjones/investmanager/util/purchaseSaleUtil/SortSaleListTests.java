@@ -5,10 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.lennardjones.investmanager.entities.Sale;
 import org.lennardjones.investmanager.util.PurchaseSaleUtil;
-import org.lennardjones.investmanager.util.SortOrderType;
 import org.lennardjones.investmanager.util.SortType;
+import org.springframework.data.domain.Sort;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -34,7 +33,7 @@ class SortSaleListTests {
         sale3.setId(3L);
 
         Collections.addAll(saleList, sale2, sale3, sale1);
-        saleList = PurchaseSaleUtil.sortSaleList(saleList, SortType.NONE, SortOrderType.ASC);
+        saleList = PurchaseSaleUtil.sortSaleList(saleList, SortType.NONE, Sort.Direction.ASC);
         Assertions.assertEquals(saleList.get(0), sale1);
         Assertions.assertEquals(saleList.get(1), sale2);
         Assertions.assertEquals(saleList.get(2), sale3);
@@ -53,7 +52,7 @@ class SortSaleListTests {
         sale3.setId(3L);
 
         Collections.addAll(saleList, sale1, sale3, sale2);
-        saleList = PurchaseSaleUtil.sortSaleList(saleList, SortType.NONE, SortOrderType.DEC);
+        saleList = PurchaseSaleUtil.sortSaleList(saleList, SortType.NONE, Sort.Direction.DESC);
         Assertions.assertEquals(saleList.get(0), sale3);
         Assertions.assertEquals(saleList.get(1), sale2);
         Assertions.assertEquals(saleList.get(2), sale1);
@@ -74,7 +73,7 @@ class SortSaleListTests {
         sale3.setName("b");
 
         Collections.addAll(saleList, sale2, sale1, sale3);
-        saleList = PurchaseSaleUtil.sortSaleList(saleList, SortType.NAME, SortOrderType.ASC);
+        saleList = PurchaseSaleUtil.sortSaleList(saleList, SortType.NAME, Sort.Direction.ASC);
         Assertions.assertEquals(saleList.get(0), sale1);
         Assertions.assertEquals(saleList.get(1), sale3);
         Assertions.assertEquals(saleList.get(2), sale2);
@@ -95,7 +94,7 @@ class SortSaleListTests {
         sale3.setName("b");
 
         Collections.addAll(saleList, sale1, sale2, sale3);
-        saleList = PurchaseSaleUtil.sortSaleList(saleList, SortType.NAME, SortOrderType.DEC);
+        saleList = PurchaseSaleUtil.sortSaleList(saleList, SortType.NAME, Sort.Direction.DESC);
         Assertions.assertEquals(saleList.get(0), sale2);
         Assertions.assertEquals(saleList.get(1), sale3);
         Assertions.assertEquals(saleList.get(2), sale1);
@@ -104,19 +103,22 @@ class SortSaleListTests {
     @Test
     void shouldSortByDateAscendingOrder() {
         var sale1 = new Sale();
+        sale1.setId(1L);
         sale1.setDateTime(LocalDateTime.MIN);
         sale1.setName("b");
 
         var sale2 = new Sale();
+        sale2.setId(2L);
         sale2.setDateTime(LocalDateTime.MIN);
         sale2.setName("c");
 
         var sale3 = new Sale();
+        sale3.setId(3L);
         sale3.setDateTime(LocalDateTime.MAX);
         sale3.setName("a");
 
         Collections.addAll(saleList, sale2, sale3, sale1);
-        saleList = PurchaseSaleUtil.sortSaleList(saleList, SortType.DATE, SortOrderType.ASC);
+        saleList = PurchaseSaleUtil.sortSaleList(saleList, SortType.DATE, Sort.Direction.ASC);
         Assertions.assertEquals(saleList.get(0), sale1);
         Assertions.assertEquals(saleList.get(1), sale2);
         Assertions.assertEquals(saleList.get(2), sale3);
@@ -125,19 +127,22 @@ class SortSaleListTests {
     @Test
     void shouldSortByDateDecreasingOrder() {
         var sale1 = new Sale();
+        sale1.setId(1L);
         sale1.setDateTime(LocalDateTime.MIN);
         sale1.setName("b");
 
         var sale2 = new Sale();
+        sale2.setId(2L);
         sale2.setDateTime(LocalDateTime.MIN);
         sale2.setName("c");
 
         var sale3 = new Sale();
+        sale3.setId(3L);
         sale3.setDateTime(LocalDateTime.MAX);
         sale3.setName("a");
 
         Collections.addAll(saleList, sale2, sale1, sale3);
-        saleList = PurchaseSaleUtil.sortSaleList(saleList, SortType.DATE, SortOrderType.DEC);
+        saleList = PurchaseSaleUtil.sortSaleList(saleList, SortType.DATE, Sort.Direction.DESC);
         Assertions.assertEquals(saleList.get(0), sale3);
         Assertions.assertEquals(saleList.get(1), sale2);
         Assertions.assertEquals(saleList.get(2), sale1);

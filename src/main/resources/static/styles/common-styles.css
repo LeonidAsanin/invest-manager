@@ -15,9 +15,14 @@ main {
 }
 
 footer {
+    color: silver;
     text-align: center;
     flex-shrink: 0;
     padding: 20px;
+}
+
+a {
+    color: gray;
 }
 
 button {

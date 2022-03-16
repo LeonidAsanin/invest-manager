@@ -29,6 +29,7 @@ class CalculateBenefitsFromSalesTests {
         var purchase1 = new Purchase();
         purchase1.setAmount(1);
         purchase1.setPrice(100.001);
+        purchase1.setCommission(0.);
         purchase1.setName(productName);
         var purchase2 = new Purchase();
         purchase2.setAmount(1);
@@ -41,10 +42,12 @@ class CalculateBenefitsFromSalesTests {
         sale1.setName(productName);
         sale1.setAmount(1);
         sale1.setPrice(200.);
+        sale1.setCommission(0.);
         var sale2 = new Sale();
         sale2.setName(otherProductName);
         sale2.setAmount(1);
         sale2.setPrice(2000.);
+        sale2.setCommission(0.);
         saleList.add(sale1);
         saleList.add(sale2);
 
@@ -249,6 +252,7 @@ class CalculateBenefitsFromSalesTests {
     @Test
     void oneSaleWithAmountGreaterThanPurchaseAmount() {
         var purchase1 = new Purchase();
+        purchase1.setId(1L);
         purchase1.setName(productName);
         purchase1.setAmount(5);
         purchase1.setPrice(10.);
@@ -256,6 +260,7 @@ class CalculateBenefitsFromSalesTests {
         purchase1.setDateTime(LocalDateTime.MIN);
 
         var purchase2 = new Purchase();
+        purchase2.setId(2L);
         purchase2.setName(productName);
         purchase2.setAmount(5);
         purchase2.setPrice(20.);
@@ -266,6 +271,7 @@ class CalculateBenefitsFromSalesTests {
         purchaseList.add(purchase2);
 
         var sale = new Sale();
+        sale.setId(1L);
         sale.setName(productName);
         sale.setAmount(7);
         sale.setPrice(22.);

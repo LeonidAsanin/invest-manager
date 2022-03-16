@@ -8,7 +8,6 @@ CREATE TABLE IF NOT EXISTS purchase (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     owner_id BIGINT NOT NULL,
     name VARCHAR(255) NOT NULL,
-    industry VARCHAR(255),
     amount INT,
     price DOUBLE,
     commission DOUBLE,

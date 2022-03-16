@@ -8,9 +8,10 @@ import org.lennardjones.investmanager.model.SaleTotal;
 import org.lennardjones.investmanager.services.LoggedUserManagementService;
 import org.lennardjones.investmanager.services.PurchaseService;
 import org.lennardjones.investmanager.services.SaleService;
+import org.lennardjones.investmanager.util.ChosenTableToSee;
 import org.lennardjones.investmanager.util.PurchaseSaleUtil;
-import org.lennardjones.investmanager.util.SortOrderType;
 import org.lennardjones.investmanager.util.SortType;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -45,6 +47,8 @@ public class AccountController {
 
     @GetMapping
     public String getAccountPage(
+            @RequestParam(name = "chosenTableToSee", required = false) String chosenTableToSee,
+            @RequestParam(name = "page", required = false) String page,
             @RequestParam(name = "editable_purchase", required = false) Long editablePurchaseId,
             @RequestParam(name = "editable_sale", required = false) Long editableSaleId,
             @RequestParam(name = "sortType", required = false) String sortType,
@@ -69,7 +73,7 @@ public class AccountController {
         }
         if (sortOrderType != null) {
             model.addAttribute("sortOrderType", sortOrderType);
-            loggedUserManagementService.setSortOrderType(SortOrderType.valueOf(sortOrderType));
+            loggedUserManagementService.setSortOrderType(Sort.Direction.valueOf(sortOrderType));
         } else {
             model.addAttribute("sortOrderType", loggedUserManagementService.getSortOrderType().toString());
         }
@@ -87,21 +91,39 @@ public class AccountController {
             model.addAttribute("filterByNameString", loggedUserManagementService.getFilterByNameString());
         }
 
-        /* For purchase and sale tables */
-        List<Purchase> purchaseList;
-        List<Sale> saleList;
-        var filterByName = loggedUserManagementService.getFilterByNameString();
-        if (filterByName.equals("")) {
-            purchaseList = purchaseService.getListByUsername(username);
-            saleList = saleService.getListByUsername(username);
+        /* For choosing table to see */
+        if (chosenTableToSee != null) {
+            model.addAttribute("chosenTableToSee", chosenTableToSee);
+            loggedUserManagementService.setChosenTableToSee(ChosenTableToSee.valueOf(chosenTableToSee));
         } else {
-            purchaseList = purchaseService.getListByUsernameContainingSubstring(username, filterByName);
-            saleList = saleService.getListByUsernameContainingSubstring(username, filterByName);
+            model.addAttribute("chosenTableToSee", loggedUserManagementService.getChosenTableToSee()
+                                                                                           .toString());
         }
+
+        /* For purchase or sale table */
+        List<Purchase> purchaseList = Collections.emptyList();
+        List<Sale> saleList = Collections.emptyList();
+        var filterByName = loggedUserManagementService.getFilterByNameString();
         var typeOfSort = loggedUserManagementService.getSortType();
         var typeOfSortOrder = loggedUserManagementService.getSortOrderType();
-        purchaseList = PurchaseSaleUtil.sortPurchaseList(purchaseList, typeOfSort, typeOfSortOrder);
-        saleList = PurchaseSaleUtil.sortSaleList(saleList, typeOfSort, typeOfSortOrder);
+        switch (loggedUserManagementService.getChosenTableToSee()) {
+            case PURCHASE -> {
+                if (filterByName.equals("")) {
+                    purchaseList = purchaseService.getListByUsername(username);
+                } else {
+                    purchaseList = purchaseService.getListByUsernameContainingSubstring(username, filterByName);
+                }
+                purchaseList = PurchaseSaleUtil.sortPurchaseList(purchaseList, typeOfSort, typeOfSortOrder);
+            }
+            case SALE -> {
+                if (filterByName.equals("")) {
+                    saleList = saleService.getListByUsername(username);
+                } else {
+                    saleList = saleService.getListByUsernameContainingSubstring(username, filterByName);
+                }
+                saleList = PurchaseSaleUtil.sortSaleList(saleList, typeOfSort, typeOfSortOrder);
+            }
+        }
         model.addAttribute("purchaseList", purchaseList);
         model.addAttribute("saleList", saleList);
 
@@ -114,7 +136,6 @@ public class AccountController {
             purchaseTotal = new PurchaseTotal(totalPurchasePrice, totalPurchaseCommission);
         }
         model.addAttribute("purchaseTotal", purchaseTotal);
-
 
         /* For sale totals */
         var saleTotal = new SaleTotal(0, 0, 0, 0);

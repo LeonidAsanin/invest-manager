@@ -21,6 +21,8 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
     @Query("delete from Purchase where id = :id")
     void deleteById(Long id);
 
+    List<Purchase> findByOwner_Username(String username);
+
     List<Purchase> findByOwner_UsernameAndNameContainingIgnoreCase(String username, String name);
 
 }

@@ -2,6 +2,7 @@ package org.lennardjones.investmanager.util;
 
 import org.lennardjones.investmanager.entities.Purchase;
 import org.lennardjones.investmanager.entities.Sale;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -165,7 +166,7 @@ public class PurchaseSaleUtil {
     /**
      * This method sorts {@link org.lennardjones.investmanager.entities.Purchase purchase} list
      * by the specified {@link org.lennardjones.investmanager.util.SortType type of sort}
-     * in the specified {@link org.lennardjones.investmanager.util.SortOrderType order type}
+     * in the specified order type.
      *
      * @param purchaseList list to sort
      * @param sortType type of sort
@@ -174,7 +175,7 @@ public class PurchaseSaleUtil {
      */
     public static List<Purchase> sortPurchaseList(List<Purchase> purchaseList,
                                                   SortType sortType,
-                                                  SortOrderType sortOrderType) {
+                                                  Sort.Direction sortOrderType) {
         var resultPurchaseList = switch (sortType) {
             case NONE -> purchaseList.stream()
                         .sorted(Comparator.comparing(Purchase::getId))
@@ -191,7 +192,7 @@ public class PurchaseSaleUtil {
                         .collect(Collectors.toList());
         };
 
-        if (sortOrderType.equals(SortOrderType.DEC)) {
+        if (sortOrderType.equals(Sort.Direction.DESC)) {
             Collections.reverse(resultPurchaseList);
         }
 
@@ -201,7 +202,7 @@ public class PurchaseSaleUtil {
     /**
      * This method sorts {@link org.lennardjones.investmanager.entities.Sale sale} list
      * by the specified {@link org.lennardjones.investmanager.util.SortType type of sort}
-     * in the specified {@link org.lennardjones.investmanager.util.SortOrderType order type}
+     * in the specified order type.
      *
      * @param saleList list to sort
      * @param sortType type of sort
@@ -210,7 +211,7 @@ public class PurchaseSaleUtil {
      */
     public static List<Sale> sortSaleList(List<Sale> saleList,
                                           SortType sortType,
-                                          SortOrderType sortOrderType) {
+                                          Sort.Direction sortOrderType) {
         var resultSaleList = switch (sortType) {
             case NONE -> saleList.stream()
                         .sorted(Comparator.comparing(Sale::getId))
@@ -227,7 +228,7 @@ public class PurchaseSaleUtil {
                         .collect(Collectors.toList());
         };
 
-        if (sortOrderType.equals(SortOrderType.DEC)) {
+        if (sortOrderType.equals(Sort.Direction.DESC)) {
             Collections.reverse(resultSaleList);
         }
 

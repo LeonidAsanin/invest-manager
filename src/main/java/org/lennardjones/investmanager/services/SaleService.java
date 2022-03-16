@@ -19,23 +19,15 @@ import java.util.List;
 @Service
 public class SaleService {
     private final SaleRepository saleRepository;
-    private final UserRepository userRepository;
     private final ProductService productService;
 
-    public SaleService(SaleRepository saleRepository,
-                       UserRepository userRepository,
-                       ProductService productService) {
+    public SaleService(SaleRepository saleRepository, ProductService productService) {
         this.saleRepository = saleRepository;
-        this.userRepository = userRepository;
         this.productService = productService;
     }
 
     public List<Sale> getListByUsername(String username) {
-        var accountOptional = userRepository.findByUsername(username);
-        if (accountOptional.isPresent()) {
-            return accountOptional.get().getSaleList();
-        }
-        return Collections.emptyList();
+        return saleRepository.findBySeller_Username(username);
     }
 
     public List<Sale> getListByUsernameContainingSubstring(String username, String substring) {

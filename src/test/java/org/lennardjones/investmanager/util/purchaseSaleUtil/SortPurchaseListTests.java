@@ -5,8 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.lennardjones.investmanager.entities.Purchase;
 import org.lennardjones.investmanager.util.PurchaseSaleUtil;
-import org.lennardjones.investmanager.util.SortOrderType;
 import org.lennardjones.investmanager.util.SortType;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -33,7 +33,7 @@ class SortPurchaseListTests {
         purchase3.setId(3L);
 
         Collections.addAll(purchaseList, purchase2, purchase3, purchase1);
-        purchaseList = PurchaseSaleUtil.sortPurchaseList(purchaseList, SortType.NONE, SortOrderType.ASC);
+        purchaseList = PurchaseSaleUtil.sortPurchaseList(purchaseList, SortType.NONE, Sort.Direction.ASC);
         Assertions.assertEquals(purchaseList.get(0), purchase1);
         Assertions.assertEquals(purchaseList.get(1), purchase2);
         Assertions.assertEquals(purchaseList.get(2), purchase3);
@@ -52,7 +52,7 @@ class SortPurchaseListTests {
         purchase3.setId(3L);
 
         Collections.addAll(purchaseList, purchase1, purchase3, purchase2);
-        purchaseList = PurchaseSaleUtil.sortPurchaseList(purchaseList, SortType.NONE, SortOrderType.DEC);
+        purchaseList = PurchaseSaleUtil.sortPurchaseList(purchaseList, SortType.NONE, Sort.Direction.DESC);
         Assertions.assertEquals(purchaseList.get(0), purchase3);
         Assertions.assertEquals(purchaseList.get(1), purchase2);
         Assertions.assertEquals(purchaseList.get(2), purchase1);
@@ -73,7 +73,7 @@ class SortPurchaseListTests {
         purchase3.setName("b");
 
         Collections.addAll(purchaseList, purchase2, purchase1, purchase3);
-        purchaseList = PurchaseSaleUtil.sortPurchaseList(purchaseList, SortType.NAME, SortOrderType.ASC);
+        purchaseList = PurchaseSaleUtil.sortPurchaseList(purchaseList, SortType.NAME, Sort.Direction.ASC);
         Assertions.assertEquals(purchaseList.get(0), purchase1);
         Assertions.assertEquals(purchaseList.get(1), purchase3);
         Assertions.assertEquals(purchaseList.get(2), purchase2);
@@ -94,7 +94,7 @@ class SortPurchaseListTests {
         purchase3.setName("b");
 
         Collections.addAll(purchaseList, purchase1, purchase2, purchase3);
-        purchaseList = PurchaseSaleUtil.sortPurchaseList(purchaseList, SortType.NAME, SortOrderType.DEC);
+        purchaseList = PurchaseSaleUtil.sortPurchaseList(purchaseList, SortType.NAME, Sort.Direction.DESC);
         Assertions.assertEquals(purchaseList.get(0), purchase2);
         Assertions.assertEquals(purchaseList.get(1), purchase3);
         Assertions.assertEquals(purchaseList.get(2), purchase1);
@@ -103,19 +103,22 @@ class SortPurchaseListTests {
     @Test
     void shouldSortByDateAscendingOrder() {
         var purchase1 = new Purchase();
+        purchase1.setId(1L);
         purchase1.setDateTime(LocalDateTime.MIN);
         purchase1.setName("b");
 
         var purchase2 = new Purchase();
+        purchase2.setId(2L);
         purchase2.setDateTime(LocalDateTime.MIN);
         purchase2.setName("c");
 
         var purchase3 = new Purchase();
+        purchase3.setId(3L);
         purchase3.setDateTime(LocalDateTime.MAX);
         purchase3.setName("a");
 
         Collections.addAll(purchaseList, purchase2, purchase3, purchase1);
-        purchaseList = PurchaseSaleUtil.sortPurchaseList(purchaseList, SortType.DATE, SortOrderType.ASC);
+        purchaseList = PurchaseSaleUtil.sortPurchaseList(purchaseList, SortType.DATE, Sort.Direction.ASC);
         Assertions.assertEquals(purchaseList.get(0), purchase1);
         Assertions.assertEquals(purchaseList.get(1), purchase2);
         Assertions.assertEquals(purchaseList.get(2), purchase3);
@@ -124,19 +127,22 @@ class SortPurchaseListTests {
     @Test
     void shouldSortByDateDecreasingOrder() {
         var purchase1 = new Purchase();
+        purchase1.setId(1L);
         purchase1.setDateTime(LocalDateTime.MIN);
         purchase1.setName("b");
 
         var purchase2 = new Purchase();
+        purchase2.setId(2L);
         purchase2.setDateTime(LocalDateTime.MIN);
         purchase2.setName("c");
 
         var purchase3 = new Purchase();
+        purchase3.setId(3L);
         purchase3.setDateTime(LocalDateTime.MAX);
         purchase3.setName("a");
 
         Collections.addAll(purchaseList, purchase2, purchase1, purchase3);
-        purchaseList = PurchaseSaleUtil.sortPurchaseList(purchaseList, SortType.DATE, SortOrderType.DEC);
+        purchaseList = PurchaseSaleUtil.sortPurchaseList(purchaseList, SortType.DATE, Sort.Direction.DESC);
         Assertions.assertEquals(purchaseList.get(0), purchase3);
         Assertions.assertEquals(purchaseList.get(1), purchase2);
         Assertions.assertEquals(purchaseList.get(2), purchase1);
