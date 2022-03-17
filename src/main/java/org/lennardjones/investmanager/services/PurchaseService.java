@@ -41,6 +41,10 @@ public class PurchaseService {
         return purchaseRepository.findByOwner_Username(username, pageRequest);
     }
 
+    public List<Purchase> getListByUsernameContainingSubstring(String username, String substring) {
+        return purchaseRepository.findByOwner_UsernameAndNameContainingIgnoreCase(username, substring);
+    }
+
     public List<Purchase> getListByUsernameContainingSubstring(String username, String substring, int page,
                                                                SortType sortType, Sort.Direction sortDirection) {
         var pageRequest = switch (sortType) {

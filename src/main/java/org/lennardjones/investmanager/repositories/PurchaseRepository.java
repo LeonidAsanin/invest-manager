@@ -27,6 +27,8 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
 
     List<Purchase> findByOwner_Username(String username, Pageable pageable);
 
+    List<Purchase> findByOwner_UsernameAndNameContainingIgnoreCase(String username, String name);
+
     List<Purchase> findByOwner_UsernameAndNameContainingIgnoreCase(String username, String name, Pageable pageable);
 
 }

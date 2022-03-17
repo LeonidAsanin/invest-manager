@@ -73,6 +73,7 @@
         <div id="pageChoosing">
             <a th:href="@{/account?page=FIRST}">First</a>
             <a th:href="@{/account?page=PREVIOUS}">Previous</a>
+            <span th:text="'[' + ${currentPage} + '/' + ${lastPage} + ']'">[XX/XX]</span>
             <a th:href="@{/account?page=NEXT}">Next</a>
             <a th:href="@{/account?page=LAST}">Last</a>
         </div>

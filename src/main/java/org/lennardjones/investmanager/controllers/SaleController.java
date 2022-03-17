@@ -55,13 +55,13 @@ public class SaleController {
 
         saleService.save(sale);
 
-        return "redirect:/account";
+        return "redirect:/account?page=LAST";
     }
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         saleService.deleteById(id);
-        return "redirect:/account";
+        return "redirect:/account?page=CURRENT";
     }
 
     @PostMapping("/edit/{id}")

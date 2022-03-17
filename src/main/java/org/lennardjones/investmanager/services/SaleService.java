@@ -42,6 +42,10 @@ public class SaleService {
         return saleRepository.findBySeller_Username(username, pageRequest);
     }
 
+    public List<Sale> getListByUsernameContainingSubstring(String username, String substring) {
+        return saleRepository.findBySeller_UsernameAndNameContainingIgnoreCase(username, substring);
+    }
+
     public List<Sale> getListByUsernameContainingSubstring(String username, String substring, int page,
                                                            SortType sortType, Sort.Direction sortDirection) {
         var pageRequest = switch (sortType) {

@@ -31,7 +31,7 @@ public class PurchaseController {
     @PostMapping("/add")
     public String add(Purchase purchase) {
         purchaseService.save(purchase);
-        return "redirect:/account";
+        return "redirect:/account?page=LAST";
     }
 
     @PostMapping("/delete/{id}")
@@ -56,7 +56,7 @@ public class PurchaseController {
         }
 
         purchaseService.deleteById(id);
-        return "redirect:/account";
+        return "redirect:/account?page=CURRENT";
     }
 
     @PostMapping("/edit/{id}")
