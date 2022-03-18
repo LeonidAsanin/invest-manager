@@ -64,7 +64,51 @@ public class AccountController {
         /* For greeting message */
         model.addAttribute("username", username);
 
-        /* For sort type chooser */
+        setSortingParameters(sortType, sortOrderType, model);
+        setFilterParameter(filterByNameString, model);
+        setChosenTable(chosenTableToSee, model);
+
+        var chosenTable = loggedUserManagementService.getChosenTableToSee();
+        var filterByName = loggedUserManagementService.getFilterByNameString();
+
+        definePage(username, page, chosenTable, filterByName);
+        defineTable(username, chosenTable, filterByName, model);
+        defineTotals(username, chosenTable, model);
+        defineCurrentAndLastPages(username, chosenTable, filterByName, model);
+
+        /* For editing table values */
+        model.addAttribute("editable_purchase", editablePurchaseId);
+        model.addAttribute("editable_sale", editableSaleId);
+
+        /* For adding error messages */
+        model.addAttribute("error", error);
+
+        addSaleTemplate(invalidSale, user, model);
+        addPurchaseTemplate(user, model);
+
+        return "account";
+    }
+
+    private void setChosenTable(String chosenTableToSee, Model model) {
+        if (chosenTableToSee != null) {
+            model.addAttribute("chosenTableToSee", chosenTableToSee);
+            loggedUserManagementService.setChosenTableToSee(ChosenTableToSee.valueOf(chosenTableToSee));
+        } else {
+            model.addAttribute("chosenTableToSee", loggedUserManagementService.getChosenTableToSee()
+                    .toString());
+        }
+    }
+
+    private void setFilterParameter(String filterByNameString, Model model) {
+        if (filterByNameString != null) {
+            model.addAttribute("filterByNameString", filterByNameString);
+            loggedUserManagementService.setFilterByNameString(filterByNameString);
+        } else {
+            model.addAttribute("filterByNameString", loggedUserManagementService.getFilterByNameString());
+        }
+    }
+
+    private void setSortingParameters(String sortType, String sortOrderType, Model model) {
         if (sortType != null) {
             model.addAttribute("sortType", sortType);
             loggedUserManagementService.setSortType(SortType.valueOf(sortType));
@@ -77,140 +121,16 @@ public class AccountController {
         } else {
             model.addAttribute("sortOrderType", loggedUserManagementService.getSortOrderType().toString());
         }
-
-        /* For filtering by name */
-        if (filterByNameString != null) {
-            model.addAttribute("filterByNameString", filterByNameString);
-            loggedUserManagementService.setFilterByNameString(filterByNameString);
-        } else {
-            model.addAttribute("filterByNameString", loggedUserManagementService.getFilterByNameString());
-        }
-
-        /* For choosing table to see */
-        if (chosenTableToSee != null) {
-            model.addAttribute("chosenTableToSee", chosenTableToSee);
-            loggedUserManagementService.setChosenTableToSee(ChosenTableToSee.valueOf(chosenTableToSee));
-        } else {
-            model.addAttribute("chosenTableToSee", loggedUserManagementService.getChosenTableToSee()
-                                                                                           .toString());
-        }
-
-        /* For defining page to see */
-        pageDefining(page, username);
-
-        /* For purchase or sale table */
-        List<Purchase> purchaseList = Collections.emptyList();
-        List<Sale> saleList = Collections.emptyList();
-        var filterByName = loggedUserManagementService.getFilterByNameString();
-        var typeOfSort = loggedUserManagementService.getSortType();
-        var sortDirection = loggedUserManagementService.getSortOrderType();
-        var chosenTable = loggedUserManagementService.getChosenTableToSee();
-        switch (chosenTable) {
-            case PURCHASE -> {
-                var pageToSee = loggedUserManagementService.getPurchasePage();
-                if (filterByName.equals("")) {
-                    purchaseList = purchaseService.getListByUsername(username, pageToSee, typeOfSort, sortDirection);
-                } else {
-                    purchaseList = purchaseService.getListByUsernameContainingSubstring(username, filterByName, pageToSee,
-                                                                                        typeOfSort, sortDirection);
-                }
-            }
-            case SALE -> {
-                var pageToSee = loggedUserManagementService.getSalePage();
-                if (filterByName.equals("")) {
-                    saleList = saleService.getListByUsername(username, pageToSee, typeOfSort, sortDirection);
-                } else {
-                    saleList = saleService.getListByUsernameContainingSubstring(username, filterByName, pageToSee,
-                                                                                typeOfSort, sortDirection);
-                }
-            }
-        }
-        model.addAttribute("purchaseList", purchaseList);
-        model.addAttribute("saleList", saleList);
-
-        /* For purchase totals */
-        var purchaseTotal = new PurchaseTotal(0, 0);
-        purchaseList = purchaseService.getListByUsername(username);
-        if (!purchaseList.isEmpty()) {
-            var totalPurchasePrice = purchaseList.stream().mapToDouble(p -> p.getPrice() * p.getAmount()).sum();
-            var totalPurchaseCommission = purchaseList.stream().mapToDouble(p -> p.getCommission() * p.getAmount())
-                    .sum();
-            purchaseTotal = new PurchaseTotal(totalPurchasePrice, totalPurchaseCommission);
-        }
-        model.addAttribute("purchaseTotal", purchaseTotal);
-
-        /* For sale totals */
-        var saleTotal = new SaleTotal(0, 0, 0, 0);
-        saleList = saleService.getListByUsername(username);
-        if (!saleList.isEmpty()) {
-            var totalSalePrice = saleList.stream().mapToDouble(s -> s.getPrice() * s.getAmount()).sum();
-            var totalSaleCommission = saleList.stream().mapToDouble(s -> s.getCommission() * s.getAmount()).sum();
-            var totalSaleAbsoluteProfit = saleList.stream().mapToDouble(Sale::getAbsoluteProfit).sum();
-            var fullTotalSalePrice = totalSalePrice - totalSaleCommission;
-            var totalSaleRelativeProfit = (fullTotalSalePrice / (fullTotalSalePrice - totalSaleAbsoluteProfit) - 1) * 100;
-            saleTotal = new SaleTotal(totalSalePrice, totalSaleCommission,
-                    totalSaleAbsoluteProfit, totalSaleRelativeProfit);
-        }
-        model.addAttribute("saleTotal", saleTotal);
-
-        /* Setting the current and last page values */
-        filterByName = loggedUserManagementService.getFilterByNameString();
-        switch (chosenTable) {
-            case PURCHASE -> {
-                model.addAttribute("currentPage", loggedUserManagementService.getPurchasePage() + 1);
-
-                if (!filterByName.equals("")) {
-                    purchaseList = purchaseService.getListByUsernameContainingSubstring(username, filterByName);
-                }
-                model.addAttribute("lastPage", (int) Math.ceil((double) purchaseList.size() / 10 - 1) + 1);
-            }
-            case SALE -> {
-                model.addAttribute("currentPage", loggedUserManagementService.getSalePage() + 1);
-                if (!filterByName.equals("")) {
-                    saleList = saleService.getListByUsernameContainingSubstring(username, filterByName);
-                }
-                model.addAttribute("lastPage", (int) Math.ceil((double) saleList.size() / 10 - 1) + 1);
-            }
-        }
-
-        /* For editing table values */
-        model.addAttribute("editable_purchase", editablePurchaseId);
-        model.addAttribute("editable_sale", editableSaleId);
-
-        /* For adding error messages */
-        model.addAttribute("error", error);
-
-        /* For "Add new sale" button */
-        if (invalidSale.getName() != null) {
-            model.addAttribute("sale", invalidSale);
-        } else {
-            var saleTemplate = new Sale();
-            saleTemplate.setSeller(user);
-            saleTemplate.setDateTime(LocalDateTime.now());
-            model.addAttribute("sale", saleTemplate);
-        }
-
-        return "account";
     }
 
-    @ModelAttribute("purchase")
-    Purchase addPurchaseTemplate(@AuthenticationPrincipal User user) {
-        var purchaseTemplate = new Purchase();
-        purchaseTemplate.setOwner(user);
-        purchaseTemplate.setDateTime(LocalDateTime.now());
-        return purchaseTemplate;
-    }
-
-    private void pageDefining(String page, String username) {
-        var chosenTable = loggedUserManagementService.getChosenTableToSee();
-        var filterByNameString  =loggedUserManagementService.getFilterByNameString();
+    private void definePage(String username, String page, ChosenTableToSee chosenTable, String filterByName) {
         if (page != null) {
             var pageNavigation = PageNavigation.valueOf(page);
             switch (chosenTable) {
                 case PURCHASE -> {
                     List<Purchase> purchaseList;
-                    if (filterByNameString != null) {
-                        purchaseList = purchaseService.getListByUsernameContainingSubstring(username, filterByNameString);
+                    if (filterByName != null) {
+                        purchaseList = purchaseService.getListByUsernameContainingSubstring(username, filterByName);
                     } else {
                         purchaseList = purchaseService.getListByUsername(username);
                     }
@@ -233,8 +153,8 @@ public class AccountController {
                 }
                 case SALE -> {
                     List<Sale> saleList;
-                    if (filterByNameString != null) {
-                        saleList = saleService.getListByUsernameContainingSubstring(username, filterByNameString);
+                    if (filterByName != null) {
+                        saleList = saleService.getListByUsernameContainingSubstring(username, filterByName);
                     } else {
                         saleList = saleService.getListByUsername(username);
                     }
@@ -257,5 +177,106 @@ public class AccountController {
                 }
             }
         }
+    }
+
+    private void defineTable(String username, ChosenTableToSee chosenTable, String filterByName, Model model) {
+        List<Purchase> purchaseList = Collections.emptyList();
+        List<Sale> saleList = Collections.emptyList();
+        var typeOfSort = loggedUserManagementService.getSortType();
+        var sortDirection = loggedUserManagementService.getSortOrderType();
+        switch (chosenTable) {
+            case PURCHASE -> {
+                var pageToSee = loggedUserManagementService.getPurchasePage();
+                if (filterByName.equals("")) {
+                    purchaseList = purchaseService.getListByUsername(username, pageToSee, typeOfSort, sortDirection);
+                } else {
+                    purchaseList = purchaseService.getListByUsernameContainingSubstring(username, filterByName, pageToSee,
+                            typeOfSort, sortDirection);
+                }
+            }
+            case SALE -> {
+                var pageToSee = loggedUserManagementService.getSalePage();
+                if (filterByName.equals("")) {
+                    saleList = saleService.getListByUsername(username, pageToSee, typeOfSort, sortDirection);
+                } else {
+                    saleList = saleService.getListByUsernameContainingSubstring(username, filterByName, pageToSee,
+                            typeOfSort, sortDirection);
+                }
+            }
+        }
+        model.addAttribute("purchaseList", purchaseList);
+        model.addAttribute("saleList", saleList);
+    }
+
+    private void defineTotals(String username, ChosenTableToSee chosenTable, Model model) {
+        var purchaseList = purchaseService.getListByUsername(username);
+        var saleList = saleService.getListByUsername(username);
+        var purchaseTotal = new PurchaseTotal(0, 0);
+        var saleTotal = new SaleTotal(0, 0, 0, 0);
+        switch (chosenTable) {
+            case PURCHASE -> {
+                if (!purchaseList.isEmpty()) {
+                    var totalPurchasePrice = purchaseList.stream().mapToDouble(p -> p.getPrice() * p.getAmount()).sum();
+                    var totalPurchaseCommission = purchaseList.stream().mapToDouble(p -> p.getCommission() * p.getAmount())
+                            .sum();
+                    purchaseTotal = new PurchaseTotal(totalPurchasePrice, totalPurchaseCommission);
+                }
+            }
+            case SALE -> {
+                if (!saleList.isEmpty()) {
+                    var totalSalePrice = saleList.stream().mapToDouble(s -> s.getPrice() * s.getAmount()).sum();
+                    var totalSaleCommission = saleList.stream().mapToDouble(s -> s.getCommission() * s.getAmount()).sum();
+                    var totalSaleAbsoluteProfit = saleList.stream().mapToDouble(Sale::getAbsoluteProfit).sum();
+                    var fullTotalSalePrice = totalSalePrice - totalSaleCommission;
+                    var totalSaleRelativeProfit = (fullTotalSalePrice / (fullTotalSalePrice - totalSaleAbsoluteProfit) - 1) * 100;
+                    saleTotal = new SaleTotal(totalSalePrice, totalSaleCommission,
+                            totalSaleAbsoluteProfit, totalSaleRelativeProfit);
+                }
+            }
+        }
+        model.addAttribute("purchaseTotal", purchaseTotal);
+        model.addAttribute("saleTotal", saleTotal);
+    }
+
+    private void defineCurrentAndLastPages(String username, ChosenTableToSee chosenTable, String filterByName, Model model) {
+        /* Setting the current and last page values */
+        switch (chosenTable) {
+            case PURCHASE -> {
+                model.addAttribute("currentPage", loggedUserManagementService.getPurchasePage() + 1);
+
+                var purchaseList = purchaseService.getListByUsername(username);
+                if (!filterByName.equals("")) {
+                    purchaseList = purchaseService.getListByUsernameContainingSubstring(username, filterByName);
+                }
+                model.addAttribute("lastPage", (int) Math.ceil((double) purchaseList.size() / 10 - 1) + 1);
+            }
+            case SALE -> {
+                model.addAttribute("currentPage", loggedUserManagementService.getSalePage() + 1);
+
+                var saleList = saleService.getListByUsername(username);
+                if (!filterByName.equals("")) {
+                    saleList = saleService.getListByUsernameContainingSubstring(username, filterByName);
+                }
+                model.addAttribute("lastPage", (int) Math.ceil((double) saleList.size() / 10 - 1) + 1);
+            }
+        }
+    }
+
+    private void addSaleTemplate(Sale invalidSale, User user, Model model) {
+        if (invalidSale.getName() != null) {
+            model.addAttribute("sale", invalidSale);
+        } else {
+            var saleTemplate = new Sale();
+            saleTemplate.setSeller(user);
+            saleTemplate.setDateTime(LocalDateTime.now());
+            model.addAttribute("sale", saleTemplate);
+        }
+    }
+
+    private void addPurchaseTemplate(User user, Model model) {
+        var purchaseTemplate = new Purchase();
+        purchaseTemplate.setOwner(user);
+        purchaseTemplate.setDateTime(LocalDateTime.now());
+        model.addAttribute("purchase", purchaseTemplate);
     }
 }
