@@ -45,6 +45,8 @@
                         <option value="NONE" th:selected="${sortType} == 'NONE'">none</option>
                         <option value="NAME" th:selected="${sortType} == 'NAME'">name</option>
                         <option value="DATE" th:selected="${sortType} == 'DATE'">date</option>
+                        <option value="TAG_NAME" th:selected="${sortType} == 'TAG_NAME'">tag, then name</option>
+                        <option value="TAG_DATE" th:selected="${sortType} == 'TAG_DATE'">tag, then date</option>
                     </select>
                 </span>
                 <span>
@@ -59,14 +61,27 @@
             </form>
         </div>
 
-        <div id="filterByName">
+        <div class="filter">
             <form>
-                <input type="text" name="filter" th:value="${filterByNameString}" placeholder="Filter by name"/>
+                <input type="text" name="filterName" th:value="${filterByNameString}" placeholder="Filter by name"/>
+                <sup><acronym title="search by substring ignoring case">*</acronym></sup>
                 <button type="submit">Apply</button>
             </form>
             <form>
-                <input type="text" name="filter" value="" hidden/>
+                <input type="text" name="filterName" value="" hidden/>
                 <button type="submit" th:if="${filterByNameString} != ''">Cancel</button>
+            </form>
+        </div>
+
+        <div class="filter">
+            <form>
+                <input type="text" name="filterTag" th:value="${filterByTagString}" placeholder="Filter by tag"/>
+                <sup><acronym title="precise values is required">*</acronym></sup>
+                <button type="submit">Apply</button>
+            </form>
+            <form>
+                <input type="text" name="filterTag" value="" hidden/>
+                <button type="submit" th:if="${filterByTagString} != ''">Cancel</button>
             </form>
         </div>
 
@@ -84,6 +99,7 @@
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Tag</th>
                     <th>Amount</th>
                     <th>Price of buying</th>
                     <th>Commission</th>
@@ -99,6 +115,10 @@
                         <td>
                             <input type="text" required th:disabled="${editable_purchase} != ${purchase.id}"
                                    name="name" th:value="${purchase.name}"/>
+                        </td>
+                        <td>
+                            <input type="text" th:disabled="${editable_purchase} != ${purchase.id}"
+                                   name="tag" th:value="${purchase.tag}"/>
                         </td>
                         <td>
                             <input type="number" required min="1" step="1" th:disabled="${editable_purchase} != ${purchase.id}"
@@ -152,7 +172,7 @@
                     <th>
                         <span th:text="${#numbers.formatDecimal(purchaseTotal.price + purchaseTotal.commission, 1, 2)}"></span>
                     </th>
-                    <th colspan="2"></th>
+                    <th colspan="3"></th>
                 </tr>
             </tfoot>
         </table>
@@ -163,6 +183,7 @@
             <thead>
             <tr>
                 <th>Name</th>
+                <th>Tag</th>
                 <th>Amount</th>
                 <th>Price of selling</th>
                 <th>Commission</th>
@@ -180,6 +201,10 @@
                     <td>
                         <input type="text" required th:disabled="${editable_sale} != ${sale.id}"
                                name="name" th:value="${sale.name}"/>
+                    </td>
+                    <td>
+                        <input type="text" th:disabled="${editable_sale} != ${sale.id}"
+                               name="tag" th:value="${sale.tag}"/>
                     </td>
                     <td>
                         <input type="number" required min="1" step="1" th:disabled="${editable_sale} != ${sale.id}"
@@ -249,7 +274,7 @@
                     <span th:text="${#numbers.formatDecimal(saleTotal.relativeProfit, 1, 2)} + '%'"
                           th:style="${saleTotal.relativeProfit} >= 0 ? 'color:green' : 'color:red'"></span>
                 </th>
-                <th colspan="2"></th>
+                <th colspan="3"></th>
             </tr>
             </tfoot>
         </table>

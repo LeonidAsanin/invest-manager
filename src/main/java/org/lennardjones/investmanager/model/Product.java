@@ -15,6 +15,7 @@ import lombok.ToString;
 @ToString
 public class Product {
     private String name;
+    private String tag;
     private int amount;
     private double averagePrice;
     private double currentPrice;

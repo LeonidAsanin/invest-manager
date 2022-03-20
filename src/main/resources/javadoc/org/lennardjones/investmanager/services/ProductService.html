@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="dc.created" content="2022-03-18">
-<meta name="description" content="declaration: package: org.lennardjones.investmanager.services, class: ProductService">
+<meta name="description" content="declaration: package: org.lennardjones.investmanager.service, class: ProductService">
 <meta name="generator" content="javadoc/ClassWriterImpl">
 <link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../script-dir/jquery-ui.min.css" title="Style">
@@ -69,11 +69,11 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">org.lennardjones.investmanager.services</a></div>
+<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">org.lennardjones.investmanager.service</a></div>
 <h1 title="Class ProductService" class="title">Class ProductService</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance">org.lennardjones.investmanager.services.ProductService</div>
+<div class="inheritance">org.lennardjones.investmanager.service.ProductService</div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
@@ -99,9 +99,9 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.lennardjones.investmanager.services.PurchaseService,org.lennardjones.investmanager.services.SaleService,org.lennardjones.investmanager.repositories.ProductRepository)" class="member-name-link">ProductService</a><wbr>(<a href="PurchaseService.html" title="class in org.lennardjones.investmanager.services">PurchaseService</a>&nbsp;purchaseService,
- <a href="SaleService.html" title="class in org.lennardjones.investmanager.services">SaleService</a>&nbsp;saleService,
- <a href="../repositories/ProductRepository.html" title="interface in org.lennardjones.investmanager.repositories">ProductRepository</a>&nbsp;productRepository)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.lennardjones.investmanager.service.PurchaseService,org.lennardjones.investmanager.service.SaleService,org.lennardjones.investmanager.repository.ProductRepository)" class="member-name-link">ProductService</a><wbr>(<a href="PurchaseService.html" title="class in org.lennardjones.investmanager.service">PurchaseService</a>&nbsp;purchaseService,
+ <a href="SaleService.html" title="class in org.lennardjones.investmanager.service">SaleService</a>&nbsp;saleService,
+ <a href="../repositories/ProductRepository.html" title="interface in org.lennardjones.investmanager.repository">ProductRepository</a>&nbsp;productRepository)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
@@ -123,7 +123,7 @@ loadScripts(document, 'script');</script>
  double&nbsp;currentPrice)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../model/Product.html" title="class in org.lennardjones.investmanager.model">Product</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAllByUser(org.lennardjones.investmanager.entities.User)" class="member-name-link">getAllByUser</a><wbr>(<a href="../entities/User.html" title="class in org.lennardjones.investmanager.entities">User</a>&nbsp;user)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAllByUser(org.lennardjones.investmanager.entity.User)" class="member-name-link">getAllByUser</a><wbr>(<a href="../entities/User.html" title="class in org.lennardjones.investmanager.entity">User</a>&nbsp;user)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDateChanged()" class="member-name-link">setDateChanged</a>()</code></div>
@@ -146,11 +146,11 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.lennardjones.investmanager.services.PurchaseService,org.lennardjones.investmanager.services.SaleService,org.lennardjones.investmanager.repositories.ProductRepository)">
+<section class="detail" id="&lt;init&gt;(org.lennardjones.investmanager.service.PurchaseService,org.lennardjones.investmanager.service.SaleService,org.lennardjones.investmanager.repository.ProductRepository)">
 <h3>ProductService</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ProductService</span><wbr><span class="parameters">(<a href="PurchaseService.html" title="class in org.lennardjones.investmanager.services">PurchaseService</a>&nbsp;purchaseService,
- <a href="SaleService.html" title="class in org.lennardjones.investmanager.services">SaleService</a>&nbsp;saleService,
- <a href="../repositories/ProductRepository.html" title="interface in org.lennardjones.investmanager.repositories">ProductRepository</a>&nbsp;productRepository)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ProductService</span><wbr><span class="parameters">(<a href="PurchaseService.html" title="class in org.lennardjones.investmanager.service">PurchaseService</a>&nbsp;purchaseService,
+ <a href="SaleService.html" title="class in org.lennardjones.investmanager.service">SaleService</a>&nbsp;saleService,
+ <a href="../repositories/ProductRepository.html" title="interface in org.lennardjones.investmanager.repository">ProductRepository</a>&nbsp;productRepository)</span></div>
 </section>
 </li>
 </ul>
@@ -176,9 +176,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAllByUser(org.lennardjones.investmanager.entities.User)">
+<section class="detail" id="getAllByUser(org.lennardjones.investmanager.entity.User)">
 <h3>getAllByUser</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../model/Product.html" title="class in org.lennardjones.investmanager.model">Product</a>&gt;</span>&nbsp;<span class="element-name">getAllByUser</span><wbr><span class="parameters">(<a href="../entities/User.html" title="class in org.lennardjones.investmanager.entities">User</a>&nbsp;user)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../model/Product.html" title="class in org.lennardjones.investmanager.model">Product</a>&gt;</span>&nbsp;<span class="element-name">getAllByUser</span><wbr><span class="parameters">(<a href="../entities/User.html" title="class in org.lennardjones.investmanager.entity">User</a>&nbsp;user)</span></div>
 </section>
 </li>
 </ul>

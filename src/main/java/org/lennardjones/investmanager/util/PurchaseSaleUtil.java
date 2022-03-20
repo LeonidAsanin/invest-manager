@@ -1,7 +1,9 @@
 package org.lennardjones.investmanager.util;
 
-import org.lennardjones.investmanager.entities.Purchase;
-import org.lennardjones.investmanager.entities.Sale;
+import org.lennardjones.investmanager.entity.Purchase;
+import org.lennardjones.investmanager.entity.Sale;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -23,8 +25,8 @@ public class PurchaseSaleUtil {
 
     /**
      *  This method validates presence of enough amount products to sell considering
-     *  {@link org.lennardjones.investmanager.entities.Purchase purchase} and
-     *  {@link org.lennardjones.investmanager.entities.Sale sale} dates.
+     *  {@link org.lennardjones.investmanager.entity.Purchase purchase} and
+     *  {@link org.lennardjones.investmanager.entity.Sale sale} dates.
      *
      * @param purchaseList list of purchases that were made by user
      * @param saleList list of sales that were made by user
@@ -55,7 +57,7 @@ public class PurchaseSaleUtil {
 
     /**
      * This method calculates absolute and relative benefits from
-     * {@link org.lennardjones.investmanager.entities.Sale sales}.
+     * {@link org.lennardjones.investmanager.entity.Sale sales}.
      *
      * @param purchaseList list of purchases that were made by user
      * @param saleList list of sales that were made by user
@@ -159,5 +161,15 @@ public class PurchaseSaleUtil {
         }
 
         return resultSaleList;
+    }
+
+    public static PageRequest createPageRequestByParameters(int page, SortType sortType, Sort.Direction sortDirection) {
+        return switch (sortType) {
+            case NONE -> PageRequest.of(page, 10, sortDirection, "id");
+            case NAME -> PageRequest.of(page, 10, sortDirection, "name", "dateTime", "id");
+            case DATE -> PageRequest.of(page, 10, sortDirection, "dateTime", "name", "id");
+            case TAG_NAME -> PageRequest.of(page, 10, sortDirection, "tag", "name", "dateTime", "id");
+            case TAG_DATE -> PageRequest.of(page, 10, sortDirection, "tag", "dateTime", "name", "id");
+        };
     }
 }

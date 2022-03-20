@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="dc.created" content="2022-03-18">
-<meta name="description" content="declaration: package: org.lennardjones.investmanager.controllers, class: SaleController">
+<meta name="description" content="declaration: package: org.lennardjones.investmanager.controller, class: SaleController">
 <meta name="generator" content="javadoc/ClassWriterImpl">
 <link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../script-dir/jquery-ui.min.css" title="Style">
@@ -69,11 +69,11 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">org.lennardjones.investmanager.controllers</a></div>
+<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">org.lennardjones.investmanager.controller</a></div>
 <h1 title="Class SaleController" class="title">Class SaleController</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance">org.lennardjones.investmanager.controllers.SaleController</div>
+<div class="inheritance">org.lennardjones.investmanager.controller.SaleController</div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
@@ -81,7 +81,7 @@ loadScripts(document, 'script');</script>
 @RequestMapping("/sale")
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">SaleController</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">Controller for working with <a href="../entities/Sale.html" title="class in org.lennardjones.investmanager.entities"><code>sales</code></a>.</div>
+<div class="block">Controller for working with <a href="../entities/Sale.html" title="class in org.lennardjones.investmanager.entity"><code>sales</code></a>.</div>
 <dl class="notes">
 <dt>Since:</dt>
 <dd>1.0</dd>
@@ -99,8 +99,8 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.lennardjones.investmanager.services.SaleService,org.lennardjones.investmanager.services.PurchaseService)" class="member-name-link">SaleController</a><wbr>(<a href="../services/SaleService.html" title="class in org.lennardjones.investmanager.services">SaleService</a>&nbsp;saleService,
- <a href="../services/PurchaseService.html" title="class in org.lennardjones.investmanager.services">PurchaseService</a>&nbsp;purchaseService)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.lennardjones.investmanager.service.SaleService,org.lennardjones.investmanager.service.PurchaseService)" class="member-name-link">SaleController</a><wbr>(<a href="../services/SaleService.html" title="class in org.lennardjones.investmanager.service">SaleService</a>&nbsp;saleService,
+ <a href="../services/PurchaseService.html" title="class in org.lennardjones.investmanager.service">PurchaseService</a>&nbsp;purchaseService)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
@@ -117,8 +117,8 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#add(org.lennardjones.investmanager.entities.Sale,org.lennardjones.investmanager.entities.User,org.springframework.web.servlet.mvc.support.RedirectAttributes)" class="member-name-link">add</a><wbr>(<a href="../entities/Sale.html" title="class in org.lennardjones.investmanager.entities">Sale</a>&nbsp;sale,
- <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entities">User</a>&nbsp;user,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#add(org.lennardjones.investmanager.entity.Sale,org.lennardjones.investmanager.entity.User,org.springframework.web.servlet.mvc.support.RedirectAttributes)" class="member-name-link">add</a><wbr>(<a href="../entities/Sale.html" title="class in org.lennardjones.investmanager.entity">Sale</a>&nbsp;sale,
+ <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entity">User</a>&nbsp;user,
  org.springframework.web.servlet.mvc.support.RedirectAttributes&nbsp;redirectAttributes)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
@@ -128,8 +128,8 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#edit(java.lang.Long)" class="member-name-link">edit</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;id)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#save(org.lennardjones.investmanager.entities.Sale,org.lennardjones.investmanager.entities.User)" class="member-name-link">save</a><wbr>(<a href="../entities/Sale.html" title="class in org.lennardjones.investmanager.entities">Sale</a>&nbsp;sale,
- <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entities">User</a>&nbsp;user)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#save(org.lennardjones.investmanager.entity.Sale,org.lennardjones.investmanager.entity.User)" class="member-name-link">save</a><wbr>(<a href="../entities/Sale.html" title="class in org.lennardjones.investmanager.entity">Sale</a>&nbsp;sale,
+ <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entity">User</a>&nbsp;user)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -149,10 +149,10 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.lennardjones.investmanager.services.SaleService,org.lennardjones.investmanager.services.PurchaseService)">
+<section class="detail" id="&lt;init&gt;(org.lennardjones.investmanager.service.SaleService,org.lennardjones.investmanager.service.PurchaseService)">
 <h3>SaleController</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SaleController</span><wbr><span class="parameters">(<a href="../services/SaleService.html" title="class in org.lennardjones.investmanager.services">SaleService</a>&nbsp;saleService,
- <a href="../services/PurchaseService.html" title="class in org.lennardjones.investmanager.services">PurchaseService</a>&nbsp;purchaseService)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SaleController</span><wbr><span class="parameters">(<a href="../services/SaleService.html" title="class in org.lennardjones.investmanager.service">SaleService</a>&nbsp;saleService,
+ <a href="../services/PurchaseService.html" title="class in org.lennardjones.investmanager.service">PurchaseService</a>&nbsp;purchaseService)</span></div>
 </section>
 </li>
 </ul>
@@ -164,12 +164,12 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="add(org.lennardjones.investmanager.entities.Sale,org.lennardjones.investmanager.entities.User,org.springframework.web.servlet.mvc.support.RedirectAttributes)">
+<section class="detail" id="add(org.lennardjones.investmanager.entity.Sale,org.lennardjones.investmanager.entity.User,org.springframework.web.servlet.mvc.support.RedirectAttributes)">
 <h3>add</h3>
 <div class="member-signature"><span class="annotations">@PostMapping("/add")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">add</span><wbr><span class="parameters">(<a href="../entities/Sale.html" title="class in org.lennardjones.investmanager.entities">Sale</a>&nbsp;sale,
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">add</span><wbr><span class="parameters">(<a href="../entities/Sale.html" title="class in org.lennardjones.investmanager.entity">Sale</a>&nbsp;sale,
  @AuthenticationPrincipal
- <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entities">User</a>&nbsp;user,
+ <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entity">User</a>&nbsp;user,
  org.springframework.web.servlet.mvc.support.RedirectAttributes&nbsp;redirectAttributes)</span></div>
 </section>
 </li>
@@ -190,12 +190,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="save(org.lennardjones.investmanager.entities.Sale,org.lennardjones.investmanager.entities.User)">
+<section class="detail" id="save(org.lennardjones.investmanager.entity.Sale,org.lennardjones.investmanager.entity.User)">
 <h3>save</h3>
 <div class="member-signature"><span class="annotations">@PostMapping("/save/{id}")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">save</span><wbr><span class="parameters">(<a href="../entities/Sale.html" title="class in org.lennardjones.investmanager.entities">Sale</a>&nbsp;sale,
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">save</span><wbr><span class="parameters">(<a href="../entities/Sale.html" title="class in org.lennardjones.investmanager.entity">Sale</a>&nbsp;sale,
  @AuthenticationPrincipal
- <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entities">User</a>&nbsp;user)</span></div>
+ <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entity">User</a>&nbsp;user)</span></div>
 </section>
 </li>
 </ul>

@@ -2,7 +2,7 @@
     text-align: center;
 }
 
-#sortType, #filterByName {
+#sortType {
     width: 95%;
     margin: auto;
 }
@@ -34,7 +34,7 @@
     width: 4%;
 }
 
-.addForm, .editForm {
+.addForm, .editForm, .filter {
     width: 95%;
     margin: auto;
 }

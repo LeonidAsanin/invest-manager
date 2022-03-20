@@ -7,5 +7,5 @@ package org.lennardjones.investmanager.util;
  * @author lennardjones
  */
 public enum SortType {
-    NONE, NAME, DATE
+    NONE, NAME, DATE, TAG_NAME, TAG_DATE
 }

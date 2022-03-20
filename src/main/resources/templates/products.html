@@ -43,6 +43,7 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Tag</th>
                         <th>Amount</th>
                         <th>Average price<sup><acronym title="considering commission">*</acronym></sup></th>
                         <th>Current price</th>
@@ -57,6 +58,9 @@
                     <tr th:each="product : ${productSet}">
                         <td>
                             <span th:text="${product.name}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${product.tag}"></span>
                         </td>
                         <td>
                             <span th:text="${product.amount}"></span>
@@ -89,7 +93,7 @@
                 <tfoot>
                     <tr>
                         <th>Total</th>
-                        <th colspan="3"></th>
+                        <th colspan="4"></th>
                         <th>
                             <span th:text="${#numbers.formatDecimal(productTotal.price, 1, 2)}"></span>
                         </th>

@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="dc.created" content="2022-03-18">
-<meta name="description" content="declaration: package: org.lennardjones.investmanager.controllers, class: SettingsController">
+<meta name="description" content="declaration: package: org.lennardjones.investmanager.controller, class: SettingsController">
 <meta name="generator" content="javadoc/ClassWriterImpl">
 <link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../script-dir/jquery-ui.min.css" title="Style">
@@ -69,11 +69,11 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">org.lennardjones.investmanager.controllers</a></div>
+<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">org.lennardjones.investmanager.controller</a></div>
 <h1 title="Class SettingsController" class="title">Class SettingsController</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance">org.lennardjones.investmanager.controllers.SettingsController</div>
+<div class="inheritance">org.lennardjones.investmanager.controller.SettingsController</div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
@@ -99,7 +99,7 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.lennardjones.investmanager.services.UserService,org.springframework.security.crypto.password.PasswordEncoder)" class="member-name-link">SettingsController</a><wbr>(<a href="../services/UserService.html" title="class in org.lennardjones.investmanager.services">UserService</a>&nbsp;userService,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.lennardjones.investmanager.service.UserService,org.springframework.security.crypto.password.PasswordEncoder)" class="member-name-link">SettingsController</a><wbr>(<a href="../services/UserService.html" title="class in org.lennardjones.investmanager.service">UserService</a>&nbsp;userService,
  org.springframework.security.crypto.password.PasswordEncoder&nbsp;passwordEncoder)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
@@ -117,8 +117,8 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteAccount(java.lang.String,org.lennardjones.investmanager.entities.User)" class="member-name-link">deleteAccount</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;confirmation,
- <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entities">User</a>&nbsp;user)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteAccount(java.lang.String,org.lennardjones.investmanager.entity.User)" class="member-name-link">deleteAccount</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;confirmation,
+ <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entity">User</a>&nbsp;user)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#editPassword()" class="member-name-link">editPassword</a>()</code></div>
@@ -127,21 +127,21 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#editUsername()" class="member-name-link">editUsername</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPage(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.lennardjones.investmanager.entities.User,org.springframework.ui.Model)" class="member-name-link">getPage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;editableUsername,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPage(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.lennardjones.investmanager.entity.User,org.springframework.ui.Model)" class="member-name-link">getPage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;editableUsername,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;editablePassword,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;intentionToDeleteAccount,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;error,
- <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entities">User</a>&nbsp;user,
+ <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entity">User</a>&nbsp;user,
  org.springframework.ui.Model&nbsp;model)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveNewPassword(java.lang.String,java.lang.String,org.lennardjones.investmanager.entities.User)" class="member-name-link">saveNewPassword</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveNewPassword(java.lang.String,java.lang.String,org.lennardjones.investmanager.entity.User)" class="member-name-link">saveNewPassword</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;passwordConfirmation,
- <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entities">User</a>&nbsp;user)</code></div>
+ <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entity">User</a>&nbsp;user)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveNewUsername(java.lang.String,org.lennardjones.investmanager.entities.User)" class="member-name-link">saveNewUsername</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;username,
- <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entities">User</a>&nbsp;user)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveNewUsername(java.lang.String,org.lennardjones.investmanager.entity.User)" class="member-name-link">saveNewUsername</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;username,
+ <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entity">User</a>&nbsp;user)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -161,9 +161,9 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.lennardjones.investmanager.services.UserService,org.springframework.security.crypto.password.PasswordEncoder)">
+<section class="detail" id="&lt;init&gt;(org.lennardjones.investmanager.service.UserService,org.springframework.security.crypto.password.PasswordEncoder)">
 <h3>SettingsController</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SettingsController</span><wbr><span class="parameters">(<a href="../services/UserService.html" title="class in org.lennardjones.investmanager.services">UserService</a>&nbsp;userService,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SettingsController</span><wbr><span class="parameters">(<a href="../services/UserService.html" title="class in org.lennardjones.investmanager.service">UserService</a>&nbsp;userService,
  org.springframework.security.crypto.password.PasswordEncoder&nbsp;passwordEncoder)</span></div>
 </section>
 </li>
@@ -176,7 +176,7 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getPage(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.lennardjones.investmanager.entities.User,org.springframework.ui.Model)">
+<section class="detail" id="getPage(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.lennardjones.investmanager.entity.User,org.springframework.ui.Model)">
 <h3>getPage</h3>
 <div class="member-signature"><span class="annotations">@GetMapping
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getPage</span><wbr><span class="parameters">(@RequestParam(required=false)
@@ -188,7 +188,7 @@ loadScripts(document, 'script');</script>
  @RequestParam(required=false)
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;error,
  @AuthenticationPrincipal
- <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entities">User</a>&nbsp;user,
+ <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entity">User</a>&nbsp;user,
  org.springframework.ui.Model&nbsp;model)</span></div>
 </section>
 </li>
@@ -200,13 +200,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="saveNewUsername(java.lang.String,org.lennardjones.investmanager.entities.User)">
+<section class="detail" id="saveNewUsername(java.lang.String,org.lennardjones.investmanager.entity.User)">
 <h3>saveNewUsername</h3>
 <div class="member-signature"><span class="annotations">@PostMapping("/saveNewUsername")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">saveNewUsername</span><wbr><span class="parameters">(@RequestParam
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;username,
  @AuthenticationPrincipal
- <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entities">User</a>&nbsp;user)</span></div>
+ <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entity">User</a>&nbsp;user)</span></div>
 </section>
 </li>
 <li>
@@ -217,7 +217,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="saveNewPassword(java.lang.String,java.lang.String,org.lennardjones.investmanager.entities.User)">
+<section class="detail" id="saveNewPassword(java.lang.String,java.lang.String,org.lennardjones.investmanager.entity.User)">
 <h3>saveNewPassword</h3>
 <div class="member-signature"><span class="annotations">@PostMapping("/saveNewPassword")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">saveNewPassword</span><wbr><span class="parameters">(@RequestParam
@@ -225,17 +225,17 @@ loadScripts(document, 'script');</script>
  @RequestParam
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;passwordConfirmation,
  @AuthenticationPrincipal
- <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entities">User</a>&nbsp;user)</span></div>
+ <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entity">User</a>&nbsp;user)</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="deleteAccount(java.lang.String,org.lennardjones.investmanager.entities.User)">
+<section class="detail" id="deleteAccount(java.lang.String,org.lennardjones.investmanager.entity.User)">
 <h3>deleteAccount</h3>
 <div class="member-signature"><span class="annotations">@GetMapping("/deleteAccount")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">deleteAccount</span><wbr><span class="parameters">(@RequestParam(required=false)
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;confirmation,
  @AuthenticationPrincipal
- <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entities">User</a>&nbsp;user)</span></div>
+ <a href="../entities/User.html" title="class in org.lennardjones.investmanager.entity">User</a>&nbsp;user)</span></div>
 </section>
 </li>
 </ul>
