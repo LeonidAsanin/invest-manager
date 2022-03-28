@@ -40,14 +40,15 @@ public class LoggingAspect {
     @Around("allMethodsFromControllerServiceUtil()")
     public Object log(ProceedingJoinPoint proceedingJoinPoint) {
         var signature = proceedingJoinPoint.getSignature();
-        var declaringType = signature.getDeclaringType();
+        var className = signature.getDeclaringType().getName();
+        var methodName = signature.getName();
 
-        var logger = Logger.getLogger(declaringType.getName());
+        var logger = Logger.getLogger(className);
 
         var user = new User();
-        user.setUsername("Unknown");
-        if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof User) {
-            user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            user.setUsername("Unknown");
+        if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof User userObject) {
+            user = userObject;
         }
 
         /* Creating directory and file to write logs */
@@ -65,12 +66,37 @@ public class LoggingAspect {
 
         /* Logging of method entering */
         var pattern = "%h/investmanager/" + user.getUsername() + "/" + LocalDate.now() + ".log";
+        logToFileAndConsole(logger, pattern, className, methodName,
+                            proceedingJoinPoint.getArgs(), null ,null);
+
+        /* Logging of method exiting and optionally throwing of exception */
+        Object returnedValue = null;
+        try {
+            returnedValue = proceedingJoinPoint.proceed();
+
+            logToFileAndConsole(logger, pattern, className, methodName,
+                    null, returnedValue,null);
+        } catch (Throwable thrown) {
+            logToFileAndConsole(logger, pattern, className, methodName,
+                    null, null,thrown);
+        }
+        return returnedValue;
+    }
+
+    private void logToFileAndConsole(Logger logger, String fileDirectoryPattern, String sourceClass, String sourceMethod,
+                                     Object[] params, Object result, Throwable thrown) {
         FileHandler fileHandler = null;
         try {
-            fileHandler = new FileHandler(pattern, true);
+            fileHandler = new FileHandler(fileDirectoryPattern, true);
             fileHandler.setFormatter(new SimpleFormatter());
             logger.addHandler(fileHandler);
-            logger.entering(declaringType.getName(), signature.getName(), proceedingJoinPoint.getArgs());
+            if (params != null) {
+                logger.entering(sourceClass, sourceMethod, params);
+            } else if (result != null) {
+                logger.exiting(sourceClass, sourceMethod, result);
+            } else if (thrown != null) {
+                logger.throwing(sourceClass, sourceMethod, thrown);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -78,38 +104,5 @@ public class LoggingAspect {
                 fileHandler.close();
             }
         }
-
-        /* Logging of method exiting and optionally throwing of exception */
-        Object returnedValue = null;
-        try {
-            returnedValue = proceedingJoinPoint.proceed();
-
-            try {
-                fileHandler = new FileHandler(pattern, true);
-                fileHandler.setFormatter(new SimpleFormatter());
-                logger.addHandler(fileHandler);
-                logger.exiting(declaringType.getName(), signature.getName(), returnedValue);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (fileHandler != null) {
-                    fileHandler.close();
-                }
-            }
-        } catch (Throwable thrown) {
-            try {
-                fileHandler = new FileHandler(pattern, true);
-                fileHandler.setFormatter(new SimpleFormatter());
-                logger.addHandler(fileHandler);
-                logger.throwing(declaringType.getName(), signature.getName(), thrown);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (fileHandler != null) {
-                    fileHandler.close();
-                }
-            }
-        }
-        return returnedValue;
     }
 }

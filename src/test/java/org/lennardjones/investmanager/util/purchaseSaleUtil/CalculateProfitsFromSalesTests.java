@@ -155,13 +155,6 @@ class CalculateProfitsFromSalesTests {
         var methodResult = PurchaseSaleUtil
                 .calculateProfitsFromSales(purchaseList, saleList, productName);
 
-        assertEquals(1, methodResult.size());
-        assertAll(
-            () -> assertEquals(productName, methodResult.get(0).getName()),
-            () -> assertEquals(sale.getAmount(), methodResult.get(0).getAmount()),
-            () -> assertEquals(sale.getCommission(), methodResult.get(0).getCommission())
-        );
-
         var absoluteProfit = sale.getAmount() * (sale.getPrice() - sale.getCommission()) -
                 sale.getAmount() * (purchase.getPrice() + purchase.getCommission());
         assertEquals(absoluteProfit , methodResult.get(0).getAbsoluteProfit(), 0.01);
@@ -175,13 +168,15 @@ class CalculateProfitsFromSalesTests {
     @DisplayName("Two sales with amount less than product amount")
     void twoSalesWithAmountLessThanProductAmount() {
         var purchase = new Purchase();
-        purchase.setName(productName);
-        purchase.setAmount(5);
-        purchase.setPrice(10.);
-        purchase.setCommission(1.);
+            purchase.setId(1L);
+            purchase.setName(productName);
+            purchase.setAmount(5);
+            purchase.setPrice(10.);
+            purchase.setCommission(1.);
         purchaseList.add(purchase);
 
         var sale1 = new Sale();
+            sale1.setId(1L);
             sale1.setName(productName);
             sale1.setAmount(3);
             sale1.setPrice(22.003);
@@ -189,9 +184,10 @@ class CalculateProfitsFromSalesTests {
             sale1.setDateTime(LocalDateTime.MAX);
 
         var sale2 = new Sale();
+            sale2.setId(2L);
             sale2.setName(productName);
             sale2.setAmount(1);
-            sale2.setPrice(22.004);
+            sale2.setPrice(12.004);
             sale2.setCommission(1.);
             sale2.setDateTime(LocalDateTime.MAX);
 
@@ -200,32 +196,24 @@ class CalculateProfitsFromSalesTests {
 
         var methodResult = PurchaseSaleUtil
                 .calculateProfitsFromSales(purchaseList, saleList, productName);
-
-        assertEquals(2, methodResult.size());
-        assertAll(
-            () -> assertEquals(productName, methodResult.get(0).getName()),
-            () -> assertEquals(productName, methodResult.get(1).getName()),
-            () -> assertEquals(sale1.getAmount(), methodResult.get(0).getAmount()),
-            () -> assertEquals(sale1.getAmount(), methodResult.get(0).getAmount()),
-            () -> assertEquals(sale2.getCommission(), methodResult.get(1).getCommission()),
-            () -> assertEquals(sale2.getCommission(), methodResult.get(1).getCommission())
-        );
+        var newSale1 = methodResult.stream().filter(s -> s.getId().equals(1L)).findAny().orElseThrow();
+        var newSale2 = methodResult.stream().filter(s -> s.getId().equals(2L)).findAny().orElseThrow();
 
         var absoluteProfit = sale1.getAmount() * (sale1.getPrice() - sale1.getCommission()) -
                 sale1.getAmount() * (purchase.getPrice() + purchase.getCommission());
-        assertEquals(absoluteProfit, methodResult.get(0).getAbsoluteProfit(), 0.01);
+        assertEquals(absoluteProfit, newSale1.getAbsoluteProfit(), 0.01);
 
         var fullPriceOfSelling = (sale1.getPrice() - sale1.getCommission()) * sale1.getAmount();
         var relativeProfit = (fullPriceOfSelling / (fullPriceOfSelling - absoluteProfit) - 1) * 100;
-        assertEquals(relativeProfit, methodResult.get(0).getRelativeProfit(), 0.01);
+        assertEquals(relativeProfit, newSale1.getRelativeProfit(), 0.01);
 
         absoluteProfit = sale2.getAmount() * (sale2.getPrice() - sale2.getCommission()) -
                 sale2.getAmount() * (purchase.getPrice() + purchase.getCommission());
-        assertEquals(absoluteProfit, methodResult.get(1).getAbsoluteProfit(), 0.01);
+        assertEquals(absoluteProfit, newSale2.getAbsoluteProfit(), 0.01);
 
         fullPriceOfSelling = (sale2.getPrice() - sale2.getCommission()) * sale2.getAmount();
         relativeProfit = (fullPriceOfSelling / (fullPriceOfSelling - absoluteProfit) - 1) * 100;
-        assertEquals(relativeProfit, methodResult.get(0).getRelativeProfit(), 0.01);
+        assertEquals(relativeProfit, newSale2.getRelativeProfit(), 0.01);
     }
 
     @Test
@@ -248,13 +236,6 @@ class CalculateProfitsFromSalesTests {
         var methodResult = PurchaseSaleUtil
                 .calculateProfitsFromSales(purchaseList, saleList, productName);
 
-        assertEquals(1, methodResult.size());
-        assertAll(
-            () -> assertEquals(productName, methodResult.get(0).getName()),
-            () -> assertEquals(sale.getAmount(), methodResult.get(0).getAmount()),
-            () -> assertEquals(sale.getCommission(), methodResult.get(0).getCommission())
-        );
-
         var absoluteProfit = sale.getAmount() * (sale.getPrice() - sale.getCommission()) -
                 sale.getAmount() * (purchase.getPrice() + purchase.getCommission());
         assertEquals(absoluteProfit, methodResult.get(0).getAbsoluteProfit(), 0.01);
@@ -262,6 +243,57 @@ class CalculateProfitsFromSalesTests {
         var fullPriceOfSelling = (sale.getPrice() - sale.getCommission()) * sale.getAmount();
         var relativeProfit = (fullPriceOfSelling / (fullPriceOfSelling - absoluteProfit) - 1) * 100;
         assertEquals(relativeProfit, methodResult.get(0).getRelativeProfit(), 0.01);
+    }
+
+    @Test
+    @DisplayName("Two sales with amount equal to product amount")
+    void twoSalesWithAmountEqualToProductAmount() {
+        var purchase = new Purchase();
+            purchase.setId(1L);
+            purchase.setName(productName);
+            purchase.setAmount(5);
+            purchase.setPrice(10.);
+            purchase.setCommission(1.);
+            purchase.setDateTime(LocalDateTime.MIN);
+        purchaseList.add(purchase);
+
+        var sale1 = new Sale();
+            sale1.setId(1L);
+            sale1.setName(productName);
+            sale1.setAmount(2);
+            sale1.setPrice(22.);
+            sale1.setCommission(1.);
+            sale1.setDateTime(LocalDateTime.MAX);
+        var sale2 = new Sale();
+            sale2.setId(2L);
+            sale2.setName(productName);
+            sale2.setAmount(3);
+            sale2.setPrice(12.);
+            sale2.setCommission(1.);
+            sale2.setDateTime(LocalDateTime.MAX);
+        saleList.add(sale1);
+        saleList.add(sale2);
+
+        var methodResult = PurchaseSaleUtil
+                .calculateProfitsFromSales(purchaseList, saleList, productName);
+        var newSale1 = methodResult.stream().filter(s -> s.getId().equals(1L)).findAny().orElseThrow();
+        var newSale2 = methodResult.stream().filter(s -> s.getId().equals(2L)).findAny().orElseThrow();
+
+        var absoluteProfit = sale1.getAmount() * (sale1.getPrice() - sale1.getCommission()) -
+                sale1.getAmount() * (purchase.getPrice() + purchase.getCommission());
+        assertEquals(absoluteProfit, newSale1.getAbsoluteProfit(), 0.01);
+
+        var fullPriceOfSelling = (sale1.getPrice() - sale1.getCommission()) * sale1.getAmount();
+        var relativeProfit = (fullPriceOfSelling / (fullPriceOfSelling - absoluteProfit) - 1) * 100;
+        assertEquals(relativeProfit, newSale1.getRelativeProfit(), 0.01);
+
+        absoluteProfit = sale2.getAmount() * (sale2.getPrice() - sale2.getCommission()) -
+                sale2.getAmount() * (purchase.getPrice() + purchase.getCommission());
+        assertEquals(absoluteProfit, newSale2.getAbsoluteProfit(), 0.01);
+
+        fullPriceOfSelling = (sale2.getPrice() - sale2.getCommission()) * sale2.getAmount();
+        relativeProfit = (fullPriceOfSelling / (fullPriceOfSelling - absoluteProfit) - 1) * 100;
+        assertEquals(relativeProfit, newSale2.getRelativeProfit(), 0.01);
     }
 
     @Test
@@ -297,13 +329,6 @@ class CalculateProfitsFromSalesTests {
         var methodResult = PurchaseSaleUtil
                 .calculateProfitsFromSales(purchaseList, saleList, productName);
 
-        assertEquals(1, methodResult.size());
-        assertAll(
-            () -> assertEquals(productName, methodResult.get(0).getName()),
-            () -> assertEquals(sale.getAmount(), methodResult.get(0).getAmount()),
-            () -> assertEquals(sale.getCommission(), methodResult.get(0).getCommission())
-        );
-
         var absoluteProfit = sale.getAmount() * (sale.getPrice() - sale.getCommission()) -
                 purchase1.getAmount() * (purchase1.getPrice() + purchase1.getCommission()) -
                 (sale.getAmount() - purchase1.getAmount()) * (purchase2.getPrice() + purchase2.getCommission());
@@ -312,5 +337,67 @@ class CalculateProfitsFromSalesTests {
         var fullPriceOfSelling = (sale.getPrice() - sale.getCommission()) * sale.getAmount();
         var relativeProfit = (fullPriceOfSelling / (fullPriceOfSelling - absoluteProfit) - 1) * 100;
         assertEquals(relativeProfit, methodResult.get(0).getRelativeProfit(), 0.01);
+    }
+
+    @Test
+    @DisplayName("Two sales with amount greater than product amount")
+    void twoSalesWithAmountGreaterThanProductAmount() {
+        var purchase1 = new Purchase();
+            purchase1.setId(1L);
+            purchase1.setName(productName);
+            purchase1.setAmount(5);
+            purchase1.setPrice(10.);
+            purchase1.setCommission(1.);
+            purchase1.setDateTime(LocalDateTime.MIN);
+
+        var purchase2 = new Purchase();
+            purchase2.setId(2L);
+            purchase2.setName(productName);
+            purchase2.setAmount(5);
+            purchase2.setPrice(20.);
+            purchase2.setCommission(2.);
+            purchase2.setDateTime(LocalDateTime.MIN);
+        purchaseList.add(purchase1);
+        purchaseList.add(purchase2);
+
+        var sale1 = new Sale();
+            sale1.setId(1L);
+            sale1.setName(productName);
+            sale1.setAmount(4);
+            sale1.setPrice(22.);
+            sale1.setCommission(1.);
+            sale1.setDateTime(LocalDateTime.MAX);
+        var sale2 = new Sale();
+            sale2.setId(2L);
+            sale2.setName(productName);
+            sale2.setAmount(4);
+            sale2.setPrice(12.);
+            sale2.setCommission(1.);
+            sale2.setDateTime(LocalDateTime.MAX);
+        saleList.add(sale1);
+        saleList.add(sale2);
+
+        var methodResult = PurchaseSaleUtil
+                .calculateProfitsFromSales(purchaseList, saleList, productName);
+        var newSale1 = methodResult.stream().filter(s -> s.getId().equals(1L)).findAny().orElseThrow();
+        var newSale2 = methodResult.stream().filter(s -> s.getId().equals(2L)).findAny().orElseThrow();
+
+        var absoluteProfit = sale1.getAmount() * (sale1.getPrice() - sale1.getCommission()) -
+                sale1.getAmount() * (purchase1.getPrice() + purchase1.getCommission());
+        assertEquals(absoluteProfit, newSale1.getAbsoluteProfit(), 0.01);
+
+        var fullPriceOfSelling = (sale1.getPrice() - sale1.getCommission()) * sale1.getAmount();
+        var relativeProfit = (fullPriceOfSelling / (fullPriceOfSelling - absoluteProfit) - 1) * 100;
+        assertEquals(relativeProfit, newSale1.getRelativeProfit(), 0.01);
+
+        absoluteProfit = sale2.getAmount() * (sale2.getPrice() - sale2.getCommission()) -
+                (purchase1.getAmount() - sale1.getAmount()) * (purchase1.getPrice() + purchase1.getCommission()) -
+                (sale2.getAmount() - (purchase1.getAmount() - sale1.getAmount())) *
+                        (purchase2.getPrice() + purchase2.getCommission());
+        assertEquals(absoluteProfit, newSale2.getAbsoluteProfit(), 0.01);
+
+        fullPriceOfSelling = (sale2.getPrice() - sale2.getCommission()) * sale2.getAmount();
+        relativeProfit = (fullPriceOfSelling / (fullPriceOfSelling - absoluteProfit) - 1) * 100;
+        assertEquals(relativeProfit, newSale2.getRelativeProfit(), 0.01);
     }
 }
