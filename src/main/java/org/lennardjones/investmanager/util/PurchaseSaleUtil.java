@@ -12,7 +12,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * This util class is supposed to help to work with purchase and sale lists.
+ * This util class is supposed to help to work with
+ * {@link org.lennardjones.investmanager.entity.Purchase purchase} and
+ * {@link org.lennardjones.investmanager.entity.Sale sale} lists.
  *
  * @since 1.0
  * @author lennardjones
@@ -164,8 +166,10 @@ public class PurchaseSaleUtil {
     }
 
     /**
-     * Fabric method for creating of PageRequest object for displaying sale and purchase tables with given page,
-     * sort type and direction of sorting.
+     * Fabric method for creating of PageRequest object for displaying
+     * {@link org.lennardjones.investmanager.entity.Purchase purchase} and
+     * {@link org.lennardjones.investmanager.entity.Sale sale} tables with given page,
+     * {@link org.lennardjones.investmanager.util.SortType sort type} and direction of sorting.
      *
      * @param page number of page beginning with 0
      * @param sortType type of sort
