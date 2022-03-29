@@ -163,6 +163,15 @@ public class PurchaseSaleUtil {
         return resultSaleList;
     }
 
+    /**
+     * Fabric method for creating of PageRequest object for displaying sale and purchase tables with given page,
+     * sort type and direction of sorting.
+     *
+     * @param page number of page beginning with 0
+     * @param sortType type of sort
+     * @param sortDirection order of sorting
+     * @return PageRequest object created by input parameters.
+     */
     public static PageRequest createPageRequestByParameters(int page, SortType sortType, Sort.Direction sortDirection) {
         return switch (sortType) {
             case NONE -> PageRequest.of(page, 10, sortDirection, "id");

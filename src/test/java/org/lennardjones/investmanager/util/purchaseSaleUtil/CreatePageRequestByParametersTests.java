@@ -10,7 +10,7 @@ import org.springframework.data.domain.Sort;
 import java.util.List;
 
 @DisplayName("Creating PageRequest object by input parameters")
-public class CreatePageRequestByParametersTests {
+class CreatePageRequestByParametersTests {
 
     @Test
     @DisplayName("Number of page")
