@@ -26,4 +26,28 @@ public class LoggedUserManagementService {
     private ChosenTableToSee chosenTableToSee = ChosenTableToSee.PURCHASE;
     private int purchasePage = 0;
     private int salePage = 0;
+
+    public void setChosenTableIfNotNull(String chosenTableToSee) {
+        if (chosenTableToSee != null) {
+            this.chosenTableToSee = ChosenTableToSee.valueOf(chosenTableToSee);
+        }
+    }
+
+    public void setFilterParametersIfNotNull(String filterByNameString, String filterByTagString) {
+        if (filterByNameString != null) {
+            this.filterByNameString = filterByNameString;
+        }
+        if (filterByTagString != null) {
+            this.filterByTagString = filterByTagString;
+        }
+    }
+
+    public void setSortingParametersIfNotNull(String sortType, String sortOrderType) {
+        if (sortType != null) {
+            this.sortType = SortType.valueOf(sortType);
+        }
+        if (sortOrderType != null) {
+            this.sortOrderType = Sort.Direction.valueOf(sortOrderType);
+        }
+    }
 }

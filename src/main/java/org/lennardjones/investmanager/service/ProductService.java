@@ -25,7 +25,7 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     private Set<Product> productSet;
-    private boolean isDateChanged;
+    private boolean isDataChanged;
 
     public ProductService(PurchaseService purchaseService,
                           SaleService saleService,
@@ -34,11 +34,12 @@ public class ProductService {
         this.saleService = saleService;
         this.productRepository = productRepository;
 
-        isDateChanged = true;
+        productSet = new HashSet<>();
+        isDataChanged = true;
     }
 
-    public void setDateChanged() {
-        isDateChanged = true;
+    public void setDataChanged() {
+        isDataChanged = true;
     }
 
     public void calculateProfits(Long userId, String productName, double currentPrice) {
@@ -93,6 +94,28 @@ public class ProductService {
                     .sorted(Comparator.comparing(Sale::getDateTime))
                     .collect(Collectors.toCollection(LinkedList::new));
 
+            /* Cloning of input list elements in order not to affect them */
+            for (int i = 0; i < purchaseStack.size(); i++) {
+                var purchase = purchaseStack.get(i);
+                Purchase purchaseClone = null;
+                try {
+                    purchaseClone = (Purchase) purchase.clone();
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
+                purchaseStack.set(i, purchaseClone);
+            }
+            for (int i = 0; i < saleStack.size(); i++) {
+                var sale = saleStack.get(i);
+                Sale saleClone = null;
+                try {
+                    saleClone = (Sale) sale.clone();
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
+                saleStack.set(i, saleClone);
+            }
+
             /* Calculating resulting purchaseStack */
             while (!saleStack.isEmpty()) {
                 var purchase = purchaseStack.removeFirst();
@@ -119,18 +142,16 @@ public class ProductService {
                     .sum();
             if (productAmount == 0) continue; // If there is no product with given name, then go to the next iteration
             var averagePriceConsideringCommission = purchaseStack.stream()
-                    .mapToDouble(p -> p.getPrice() + p.getCommission())
-                    .average()
-                    .orElse(0);
+                    .mapToDouble(p -> (p.getPrice() + p.getCommission()) * p.getAmount())
+                    .sum() / productAmount;
 
             /* Filling in fields of the product */
             var product = new Product();
-            product.setName(productName);
-            product.setAmount(productAmount);
-            product.setAveragePrice(averagePriceConsideringCommission);
+                product.setName(productName);
+                product.setAmount(productAmount);
+                product.setAveragePrice(averagePriceConsideringCommission);
             var tag = purchaseStack.stream().findAny().orElseThrow().getTag();
-            product.setTag(tag);
-
+                product.setTag(tag);
 
             /* Setting current price and calculating current benefits if corresponding data exists */
             var optionalCurrentPrice = productRepository
@@ -158,14 +179,14 @@ public class ProductService {
     }
 
     public Set<Product> getAllByUser(User user) {
-        if (isDateChanged) {
+        if (isDataChanged) {
             var purchaseList = purchaseService.getListByUsername(user.getUsername());
             var saleList = saleService.getListByUsername(user.getUsername());
             calculateProducts(user.getId(), purchaseList, saleList);
             for (var product : productSet) {
                 calculateProfits(user.getId(), product.getName(), product.getCurrentPrice());
             }
-            isDateChanged = false;
+            isDataChanged = false;
         }
         return productSet;
     }

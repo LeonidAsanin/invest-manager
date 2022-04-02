@@ -10,8 +10,6 @@ import org.lennardjones.investmanager.service.PurchaseService;
 import org.lennardjones.investmanager.service.SaleService;
 import org.lennardjones.investmanager.util.ChosenTableToSee;
 import org.lennardjones.investmanager.util.PageNavigation;
-import org.lennardjones.investmanager.util.SortType;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Controller for working with Account page.
@@ -66,9 +63,9 @@ public class AccountController {
         /* For greeting message */
         model.addAttribute("username", username);
 
-        setSortingParameters(sortType, sortOrderType, model);
-        setFilterParameters(filterByNameString, filterByTagString, model);
-        setChosenTable(chosenTableToSee, model);
+        updateSortingParametersAndAddItToModel(sortType, sortOrderType, model);
+        updateFilterParametersAndAddItToModel(filterByNameString, filterByTagString, model);
+        updateChosenTableAndAddItToModel(chosenTableToSee, model);
 
         var chosenTable = loggedUserManagementService.getChosenTableToSee();
         var filterByName = loggedUserManagementService.getFilterByNameString();
@@ -92,44 +89,24 @@ public class AccountController {
         return "account";
     }
 
-    private void setChosenTable(String chosenTableToSee, Model model) {
-        if (chosenTableToSee != null) {
-            model.addAttribute("chosenTableToSee", chosenTableToSee);
-            loggedUserManagementService.setChosenTableToSee(ChosenTableToSee.valueOf(chosenTableToSee));
-        } else {
-            model.addAttribute("chosenTableToSee", loggedUserManagementService.getChosenTableToSee()
-                    .toString());
-        }
+    private void updateSortingParametersAndAddItToModel(String sortType, String sortOrderType, Model model) {
+        loggedUserManagementService.setSortingParametersIfNotNull(sortType, sortOrderType);
+        model.addAttribute("sortType", loggedUserManagementService.getSortType().toString());
+        model.addAttribute("sortOrderType", loggedUserManagementService.getSortOrderType().toString());
     }
 
-    private void setFilterParameters(String filterByNameString, String filterByTagString, Model model) {
+    private void updateFilterParametersAndAddItToModel(String filterByNameString, String filterByTagString, Model model) {
+        loggedUserManagementService.setFilterParametersIfNotNull(filterByNameString, filterByTagString);
         var filterByName = loggedUserManagementService.getFilterByNameString();
         var filterByTag = loggedUserManagementService.getFilterByTagString();
-        if (filterByNameString != null) {
-            filterByName = filterByNameString;
-            loggedUserManagementService.setFilterByNameString(filterByNameString);
-        }
-        if (filterByTagString != null) {
-            filterByTag = filterByTagString;
-            loggedUserManagementService.setFilterByTagString(filterByTagString);
-        }
         model.addAttribute("filterByNameString", filterByName);
         model.addAttribute("filterByTagString", filterByTag);
     }
 
-    private void setSortingParameters(String sortType, String sortOrderType, Model model) {
-        if (sortType != null) {
-            model.addAttribute("sortType", sortType);
-            loggedUserManagementService.setSortType(SortType.valueOf(sortType));
-        } else {
-            model.addAttribute("sortType", loggedUserManagementService.getSortType().toString());
-        }
-        if (sortOrderType != null) {
-            model.addAttribute("sortOrderType", sortOrderType);
-            loggedUserManagementService.setSortOrderType(Sort.Direction.valueOf(sortOrderType));
-        } else {
-            model.addAttribute("sortOrderType", loggedUserManagementService.getSortOrderType().toString());
-        }
+    private void updateChosenTableAndAddItToModel(String chosenTableToSee, Model model) {
+        loggedUserManagementService.setChosenTableIfNotNull(chosenTableToSee);
+        model.addAttribute("chosenTableToSee",
+                loggedUserManagementService.getChosenTableToSee().toString());
     }
 
     private void definePage(String username, String page, ChosenTableToSee chosenTable, String filterByName,

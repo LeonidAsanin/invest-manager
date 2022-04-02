@@ -57,7 +57,7 @@ public class SaleService {
         var sellerId = sale.getSeller().getId();
         if (userId != null && userId.equals(sellerId)) {
             saleRepository.save(sale);
-            productService.setDateChanged();
+            productService.setDataChanged();
         } else {
             throw new RuntimeException("Attempt to save sale to someone else's account");
         }
@@ -69,7 +69,7 @@ public class SaleService {
         var sellerId = saleRepository.findById(id).orElseThrow().getSeller().getId();
         if (userId != null && userId.equals(sellerId)) {
             saleRepository.deleteById(id);
-            productService.setDateChanged();
+            productService.setDataChanged();
         } else {
             throw new RuntimeException("Attempt to delete someone else's sale");
         }

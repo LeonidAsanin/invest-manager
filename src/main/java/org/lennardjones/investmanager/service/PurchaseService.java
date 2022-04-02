@@ -61,7 +61,7 @@ public class PurchaseService {
         var ownerId = purchase.getOwner().getId();
         if (userId != null && userId.equals(ownerId)) {
             purchaseRepository.save(purchase);
-            productService.setDateChanged();
+            productService.setDataChanged();
         } else {
             throw new RuntimeException("Attempt to save purchase to someone else's account");
         }
@@ -73,7 +73,7 @@ public class PurchaseService {
         var ownerId = purchaseRepository.findById(id).orElseThrow().getOwner().getId();
         if (userId != null && userId.equals(ownerId)) {
             purchaseRepository.deleteById(id);
-            productService.setDateChanged();
+            productService.setDataChanged();
         } else {
             throw new RuntimeException("Attempt to delete someone else's purchase");
         }
