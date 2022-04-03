@@ -436,6 +436,46 @@ class ProductServiceTests {
         assertEquals((0 / (averagePrice2) - 1) * 100, product2.getRelativeProfit(), 0.01);
     }
 
+    @Test
+    void deletingExistingProduct() {
+        List<Purchase> purchaseList = new ArrayList<>();
+        var purchase1 = new Purchase();
+            purchase1.setName(productName);
+            purchase1.setTag(tag);
+            purchase1.setAmount(1);
+            purchase1.setPrice(0.9);
+            purchase1.setCommission(0.1);
+            purchase1.setDateTime(LocalDateTime.now());
+        var purchase2 = new Purchase();
+            purchase2.setName(otherProductName);
+            purchase2.setTag(otherTag);
+            purchase2.setAmount(2);
+            purchase2.setPrice(2.8);
+            purchase2.setCommission(0.2);
+            purchase2.setDateTime(LocalDateTime.now());
+        purchaseList.add(purchase1);
+        purchaseList.add(purchase2);
+
+        Mockito.when(purchaseServiceMock.getListByUsername(user.getUsername()))
+                .thenReturn(purchaseList);
+
+        var productSet = productService.getAllByUser(user);
+        assertEquals(2, productSet.size());
+        assertEquals(2, productRepositoryMock.getAllNamesByUserId(user.getId()).size());
+
+        /* Deleting one of the product => no effect before invocation of setDataChanged() */
+        purchaseList.remove(1);
+        productSet = productService.getAllByUser(user);
+        assertEquals(2, productSet.size());
+        assertEquals(2, productRepositoryMock.getAllNamesByUserId(user.getId()).size());
+
+        /* Recalculation of profits after invocation of setDataChanged() */
+        productService.setDataChanged();
+        productSet = productService.getAllByUser(user);
+        assertEquals(1, productSet.size());
+        assertEquals(1, productRepositoryMock.getAllNamesByUserId(user.getId()).size());
+    }
+
     static class ProductRepositoryMock implements ProductRepository {
         private List<TestableProduct> productList = new ArrayList<>();
 
@@ -451,14 +491,14 @@ class ProductServiceTests {
         public void save(Long userId, String productName, double currentPrice) {
             /* Deleting old version of product */
             productList = productList.stream()
-                    .filter(p -> !p.getOwnerId().equals(userId) && !p.getName().equals(productName))
+                    .filter(p -> !(p.getOwnerId().equals(userId) && p.getName().equals(productName)))
                     .collect(Collectors.toList());
 
             /* Adding new version of product */
             var product = new TestableProduct();
-            product.setOwnerId(userId);
-            product.setName(productName);
-            product.setCurrentPrice(currentPrice);
+                product.setOwnerId(userId);
+                product.setName(productName);
+                product.setCurrentPrice(currentPrice);
             productList.add(product);
         }
 
@@ -473,7 +513,7 @@ class ProductServiceTests {
         @Override
         public void removeByUserIdAndProductName(Long userId, String productName) {
             productList = productList.stream()
-                    .filter(p -> !p.getOwnerId().equals(userId) && !p.getName().equals(productName))
+                    .filter(p -> !(p.getOwnerId().equals(userId) && p.getName().equals(productName)))
                     .collect(Collectors.toList());
         }
 
