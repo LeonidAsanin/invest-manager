@@ -1,5 +1,6 @@
 package org.lennardjones.investmanager.entity;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode
 public class Sale implements Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,13 +52,17 @@ public class Sale implements Cloneable {
     private Double commission;
 
     @Column(name = "absolute_profit")
-    private double absoluteProfit;
+    private Double absoluteProfit;
 
     @Column(name = "relative_profit")
-    private double relativeProfit;
+    private Double relativeProfit;
 
     @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("CloneNotSupportedException");
+        }
     }
 }

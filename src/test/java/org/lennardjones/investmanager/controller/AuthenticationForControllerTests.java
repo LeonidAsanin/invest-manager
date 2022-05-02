@@ -1,4 +1,4 @@
-package org.lennardjones.investmanager.service;
+package org.lennardjones.investmanager.controller;
 
 import org.lennardjones.investmanager.entity.User;
 import org.springframework.security.core.Authentication;
@@ -6,16 +6,14 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
-class AuthenticationForTest implements Authentication {
-    User user;
+class AuthenticationForControllerTests implements Authentication {
+    private User user;
 
-    AuthenticationForTest(User user) {
-        this.user = user;
+    public AuthenticationForControllerTests() {
     }
 
-    @Override
-    public String getName() {
-        return null;
+    public AuthenticationForControllerTests(User user) {
+        this.user = user;
     }
 
     @Override
@@ -40,10 +38,15 @@ class AuthenticationForTest implements Authentication {
 
     @Override
     public boolean isAuthenticated() {
-        return false;
+        return true;
     }
 
     @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
+    }
+
+    @Override
+    public String getName() {
+        return user.getUsername();
     }
 }

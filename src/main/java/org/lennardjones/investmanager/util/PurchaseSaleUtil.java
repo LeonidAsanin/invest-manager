@@ -88,29 +88,19 @@ public class PurchaseSaleUtil {
         /* Cloning of input list elements in order not to affect them */
         for (int i = 0; i < purchaseStack.size(); i++) {
             var purchase = purchaseStack.get(i);
-            Purchase purchaseClone = null;
-            try {
-                purchaseClone = (Purchase) purchase.clone();
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-            }
+            var purchaseClone = (Purchase) purchase.clone();
             purchaseStack.set(i, purchaseClone);
         }
         for (int i = 0; i < saleStack.size(); i++) {
             var sale = saleStack.get(i);
-            Sale saleClone = null;
-            try {
-                saleClone = (Sale) sale.clone();
-            } catch (CloneNotSupportedException e) {
-                e.printStackTrace();
-            }
+            var saleClone = (Sale) sale.clone();
             saleStack.set(i, saleClone);
         }
 
         /* Setting up sale benefits to zero in order to calculate new values */
         saleStack = saleStack.stream().peek(sale -> {
-            sale.setAbsoluteProfit(0);
-            sale.setRelativeProfit(0);
+            sale.setAbsoluteProfit(0.);
+            sale.setRelativeProfit(0.);
         }).collect(Collectors.toCollection(LinkedList::new));
 
         var saleOriginalValuesList = saleStack.stream().map(Sale::getAmount).toList();

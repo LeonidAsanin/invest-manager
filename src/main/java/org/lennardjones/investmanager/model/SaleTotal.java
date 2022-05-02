@@ -1,7 +1,9 @@
 package org.lennardjones.investmanager.model;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 /**
  * Class that describes total values for all sales.
@@ -11,6 +13,8 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class SaleTotal {
     private double price;
     private double commission;

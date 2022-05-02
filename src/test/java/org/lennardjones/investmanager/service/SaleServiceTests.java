@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,12 +28,14 @@ class SaleServiceTests {
     SaleRepository saleRepositoryMock;
     @Mock
     ProductService productServiceMock;
+    @Mock
+    PurchaseService purchaseServiceMock;
 
     SaleService saleService;
 
     @BeforeEach
     void before() {
-        saleService = new SaleService(saleRepositoryMock, productServiceMock);
+        saleService = new SaleService(saleRepositoryMock, productServiceMock, purchaseServiceMock);
     }
 
     @Test
@@ -271,7 +274,7 @@ class SaleServiceTests {
         var sale = new Sale();
         sale.setSeller(user);
 
-        var authentication = new AuthenticationForTest(user);
+        var authentication = new AuthenticationForServiceTests(user);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         saleService.save(sale);
@@ -286,6 +289,59 @@ class SaleServiceTests {
     }
 
     @Test
+    void updateAllByNameTest() {
+        var user = new User();
+        user.setId(1L);
+        user.setUsername("username");
+
+        var sale = new Sale();
+        sale.setId(1L);
+        sale.setSeller(user);
+        sale.setName("productName");
+        sale.setTag("tag");
+        sale.setDateTime(LocalDateTime.MAX);
+        sale.setAmount(1);
+        sale.setPrice(4.0);
+        sale.setCommission(1.0);
+        sale.setAbsoluteProfit(0.);
+        sale.setRelativeProfit(0.);
+
+        var purchase = new Purchase();
+        purchase.setId(1L);
+        purchase.setOwner(user);
+        purchase.setName("productName");
+        purchase.setTag("tag");
+        purchase.setDateTime(LocalDateTime.MIN);
+        purchase.setAmount(1);
+        purchase.setPrice(1.0);
+        purchase.setCommission(.5);
+
+        List<Sale> saleList = new ArrayList<>();
+        saleList.add(sale);
+
+        List<Purchase> purchaseList = new ArrayList<>();
+        purchaseList.add(purchase);
+
+        var authentication = new AuthenticationForServiceTests(user);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        Mockito.when(purchaseServiceMock.getListByUsernameAndProductName(user.getUsername(), "productName"))
+                .thenReturn(purchaseList);
+        Mockito.when(saleRepositoryMock.findBySeller_UsernameAndName(user.getUsername(), "productName"))
+                .thenReturn(saleList);
+
+        saleService.updateProfitsByName("productName");
+
+        var updatedSale = (Sale) sale.clone();
+        updatedSale.setAbsoluteProfit(1.5);
+        updatedSale.setRelativeProfit(100.);
+
+        Mockito.verify(saleRepositoryMock).save(updatedSale);
+
+        Mockito.verify(productServiceMock).setDataChanged();
+    }
+
+    @Test
     void deleteByIdTest() {
         var user1 = new User();
         user1.setId(1L);
@@ -297,7 +353,7 @@ class SaleServiceTests {
         var sale2 = new Sale();
         sale2.setSeller(user2);
 
-        var authentication = new AuthenticationForTest(user1);
+        var authentication = new AuthenticationForServiceTests(user1);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         Mockito.when(saleRepositoryMock.findById(1L))
@@ -318,12 +374,14 @@ class SaleServiceTests {
         user.setId(1L);
         user.setUsername("username");
 
-        var authentication = new AuthenticationForTest(user);
+        var authentication = new AuthenticationForServiceTests(user);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         List<Sale> saleList = new ArrayList<>();
         var sale1 = new Sale();
         var sale2 = new Sale();
+        sale1.setId(1L);
+        sale2.setId(2L);
         sale1.setName("productName");
         sale2.setName("productName");
         sale1.setTag("");

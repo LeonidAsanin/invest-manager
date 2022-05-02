@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 /**
  * Service for calculating and interacting with products that user currently have.
  *
- * @author lennardjones
  * @since 1.1
+ * @author lennardjones
  */
 @Service
 @SessionScope
@@ -48,20 +48,18 @@ public class ProductService {
                 .filter(p -> p.getName().equals(productName))
                 .findFirst();
 
-        /* Updating current price and calculating current benefits if product exists */
+        /* Updating current price and calculating current profits if product exists */
         if (optionalProduct.isPresent()) {
             var product = optionalProduct.get();
 
             product.setCurrentPrice(currentPrice);
             productRepository.save(userId, productName, currentPrice);
 
-            var absoluteBenefit = (currentPrice - product.getAveragePrice()) * product.getAmount();
-            product.setAbsoluteProfit(absoluteBenefit);
+            var absoluteProfit = (currentPrice - product.getAveragePrice()) * product.getAmount();
+            product.setAbsoluteProfit(absoluteProfit);
 
             var relativePrice = (currentPrice / product.getAveragePrice() - 1) * 100;
             product.setRelativeProfit(relativePrice);
-
-            productSet.add(product);
         }
     }
 
@@ -97,22 +95,12 @@ public class ProductService {
             /* Cloning of input list elements in order not to affect them */
             for (int i = 0; i < purchaseStack.size(); i++) {
                 var purchase = purchaseStack.get(i);
-                Purchase purchaseClone = null;
-                try {
-                    purchaseClone = (Purchase) purchase.clone();
-                } catch (CloneNotSupportedException e) {
-                    e.printStackTrace();
-                }
+                var purchaseClone = (Purchase) purchase.clone();
                 purchaseStack.set(i, purchaseClone);
             }
             for (int i = 0; i < saleStack.size(); i++) {
                 var sale = saleStack.get(i);
-                Sale saleClone = null;
-                try {
-                    saleClone = (Sale) sale.clone();
-                } catch (CloneNotSupportedException e) {
-                    e.printStackTrace();
-                }
+                var saleClone = (Sale) sale.clone();
                 saleStack.set(i, saleClone);
             }
 
@@ -153,7 +141,7 @@ public class ProductService {
             var tag = purchaseStack.stream().findAny().orElseThrow().getTag();
                 product.setTag(tag);
 
-            /* Setting current price and calculating current benefits if corresponding data exists */
+            /* Setting current price and calculating current profits if corresponding data exists */
             var optionalCurrentPrice = productRepository
                     .getCurrentPriceByUserIdAndProductName(userId, productName);
             if (optionalCurrentPrice.isPresent()) {
@@ -171,7 +159,6 @@ public class ProductService {
             /* Adding product to the product set */
             productSet.add(product);
         }
-
         /* Sorting current product set by name */
         productSet = productSet.stream()
                 .sorted(Comparator.comparing(Product::getName))

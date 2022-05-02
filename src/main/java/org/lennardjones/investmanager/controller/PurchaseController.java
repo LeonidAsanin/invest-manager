@@ -37,6 +37,8 @@ public class PurchaseController {
 
         purchaseService.save(purchase);
 
+        saleService.updateProfitsByName(purchase.getName());
+
         return "redirect:/account?page=LAST";
     }
 
@@ -46,22 +48,19 @@ public class PurchaseController {
         var productName = purchaseService.getNameById(id);
 
         /* Validating presence of enough amount products to sell considering purchase and sale dates */
-        var purchaseList = purchaseService.getListByUsername(username)
+        var purchaseList = purchaseService.getListByUsernameAndProductName(username, productName)
                 .stream()
                 .filter(p -> !p.getId().equals(id))
                 .toList();
-        var saleList = saleService.getListByUsername(username);
+        var saleList = saleService.getListByUsernameAndProductName(username, productName);
         if (PurchaseSaleUtil.isQueueIncorrect(purchaseList, saleList, productName)) {
             return "redirect:/account?error=deletePurchase";
         }
 
-        /* Calculating and setting up refreshed benefits to the sales */
-        saleList = PurchaseSaleUtil.calculateProfitsFromSales(purchaseList, saleList, productName);
-        for (var sale : saleList) {
-            saleService.save(sale);
-        }
-
         purchaseService.deleteById(id);
+
+        saleService.updateProfitsByName(productName);
+
         return "redirect:/account?page=CURRENT";
     }
 
@@ -74,23 +73,22 @@ public class PurchaseController {
     public String save(Purchase purchase, @AuthenticationPrincipal User user) {
         var username = user.getUsername();
         var purchaseId = purchase.getId();
-        var productName = purchase.getName();
+        var productName = purchase.getName(); //product name can be changed
 
         /* Validating presence of enough amount products to sell considering purchase and sale dates */
-        var purchaseList = purchaseService.getListByUsername(username)
-                .stream()
+        var previousPurchaseList = purchaseService.getListByUsername(username);
+        var purchaseList = previousPurchaseList.stream()
                 .filter(p -> !p.getId().equals(purchaseId))
                 .collect(Collectors.toList());
         purchaseList.add(purchase);
         var saleList = saleService.getListByUsername(username);
-        if (PurchaseSaleUtil.isQueueIncorrect(purchaseList, saleList, productName)) {
+        var unchangedProductName = previousPurchaseList.stream()
+                .filter(p -> p.getId().equals(purchaseId))
+                .map(Purchase::getName)
+                .findFirst().orElseThrow();
+        if (PurchaseSaleUtil.isQueueIncorrect(purchaseList, saleList, productName) ||
+            PurchaseSaleUtil.isQueueIncorrect(purchaseList, saleList, unchangedProductName)) {
             return "redirect:/account?error=editPurchase";
-        }
-
-        /* Calculating and setting up refreshed benefits to the sales */
-        saleList = PurchaseSaleUtil.calculateProfitsFromSales(purchaseList, saleList, productName);
-        for (var sale : saleList) {
-            saleService.save(sale);
         }
 
         /* Tags updating */
@@ -98,8 +96,16 @@ public class PurchaseController {
         purchaseService.updateTagsByUsernameAndProductName(username, productName, tag);
         saleService.updateTagsByUsernameAndProductName(username, productName, tag);
 
+        /* Saving of edited purchase */
         purchase.setOwner(user);
         purchaseService.save(purchase);
+
+        /* Calculating and setting up refreshed profits to the sales */
+        saleService.updateProfitsByName(productName);
+        if (!unchangedProductName.equals(productName)) {
+            saleService.updateProfitsByName(unchangedProductName);
+        }
+
         return "redirect:/account";
     }
 }

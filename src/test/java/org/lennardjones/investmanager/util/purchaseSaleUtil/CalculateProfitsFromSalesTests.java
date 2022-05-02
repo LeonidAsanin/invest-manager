@@ -86,7 +86,7 @@ class CalculateProfitsFromSalesTests {
         var defaultSalePrice = 22.;
         var defaultSaleAmount = 3;
         var defaultSaleCommission = 2.;
-        var defaultSaleAbsoluteProfit = 100;
+        var defaultSaleAbsoluteProfit = 100.;
         var defaultSaleRelativeProfit = 0.5;
 
         var purchase = new Purchase();

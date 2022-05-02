@@ -51,6 +51,7 @@ public class ProductController {
         var totalCurrentPrice = productSet.stream().mapToDouble(p -> p.getAmount() * p.getCurrentPrice()).sum();
         var totalAbsoluteProfit = productSet.stream().mapToDouble(Product::getAbsoluteProfit).sum();
         var totalRelativeProfit = (totalPrice / (totalPrice - totalAbsoluteProfit) - 1) * 100;
+        totalRelativeProfit = Double.isNaN(totalRelativeProfit) ? 0 : totalRelativeProfit;
         var productTotal = new ProductTotal(totalPrice, totalCurrentPrice, totalAbsoluteProfit, totalRelativeProfit);
         model.addAttribute(productTotal);
 
@@ -58,9 +59,9 @@ public class ProductController {
     }
 
     @PostMapping("/calculate")
-    public String setCurrentPricesAndCalculateBenefits(@RequestParam List<String> productName,
-                                                       @RequestParam List<Double> currentPrice,
-                                                       @AuthenticationPrincipal User user) {
+    public String setCurrentPricesAndCalculateProfits(@RequestParam List<String> productName,
+                                                      @RequestParam List<Double> currentPrice,
+                                                      @AuthenticationPrincipal User user) {
         for (int i = 0; i < productName.size(); i++) {
             productService.calculateProfits(user.getId(), productName.get(i), currentPrice.get(i));
         }

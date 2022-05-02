@@ -22,10 +22,12 @@ import java.util.Optional;
 public class SaleService {
     private final SaleRepository saleRepository;
     private final ProductService productService;
+    private final PurchaseService purchaseService;
 
-    public SaleService(SaleRepository saleRepository, ProductService productService) {
+    public SaleService(SaleRepository saleRepository, ProductService productService, PurchaseService purchaseService) {
         this.saleRepository = saleRepository;
         this.productService = productService;
+        this.purchaseService = purchaseService;
     }
 
     public List<Sale> getListByUsername(String username) {
@@ -60,6 +62,16 @@ public class SaleService {
             productService.setDataChanged();
         } else {
             throw new RuntimeException("Attempt to save sale to someone else's account");
+        }
+    }
+
+    public void updateProfitsByName(String productName) {
+        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var purchaseList = purchaseService.getListByUsernameAndProductName(user.getUsername(), productName);
+        var saleList = getListByUsernameAndProductName(user.getUsername(), productName);
+        saleList = PurchaseSaleUtil.calculateProfitsFromSales(purchaseList, saleList, productName);
+        for (var sale : saleList) {
+            save(sale);
         }
     }
 

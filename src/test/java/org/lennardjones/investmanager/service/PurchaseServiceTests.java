@@ -280,7 +280,7 @@ class PurchaseServiceTests {
         var purchase = new Purchase();
         purchase.setOwner(user);
 
-        var authentication = new AuthenticationForTest(user);
+        var authentication = new AuthenticationForServiceTests(user);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         purchaseService.save(purchase);
@@ -306,7 +306,7 @@ class PurchaseServiceTests {
         var purchase2 = new Purchase();
         purchase2.setOwner(user2);
 
-        var authentication = new AuthenticationForTest(user1);
+        var authentication = new AuthenticationForServiceTests(user1);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         Mockito.when(purchaseRepositoryMock.findById(1L))
@@ -327,7 +327,7 @@ class PurchaseServiceTests {
         user.setId(1L);
         user.setUsername("username");
 
-        var authentication = new AuthenticationForTest(user);
+        var authentication = new AuthenticationForServiceTests(user);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         List<Purchase> purchaseList = new ArrayList<>();
@@ -349,8 +349,8 @@ class PurchaseServiceTests {
 
         purchase1.setTag("tag");
         purchase2.setTag("tag");
-        Mockito.verify(purchaseRepositoryMock).save(purchase1);
-        Mockito.verify(purchaseRepositoryMock).save(purchase2);
+        Mockito.verify(purchaseRepositoryMock, Mockito.times(2)).save(purchase1);
+        Mockito.verify(purchaseRepositoryMock, Mockito.times(2)).save(purchase2);
         Mockito.verify(productServiceMock, Mockito.times(2)).setDataChanged();
     }
 
