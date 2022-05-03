@@ -40,6 +40,7 @@ public class SecurityConfig {
         return httpSecurity
                 .authorizeRequests()
                     .antMatchers("/account", "/product").authenticated()
+                    .antMatchers("/product/calculate", "/product/edit").authenticated()
                     .antMatchers("/purchase/delete/*", "/purchase/edit/*",
                             "/purchase/save/*", "/purchase/add").authenticated()
                     .antMatchers("/sale/delete/*", "/sale/edit/*",

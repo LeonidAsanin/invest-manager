@@ -1,4 +1,5 @@
 org.lennardjones.investmanager
+org.lennardjones.investmanager.aspect
 org.lennardjones.investmanager.configuration
 org.lennardjones.investmanager.controller
 org.lennardjones.investmanager.entity

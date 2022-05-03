@@ -6,7 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
-class AuthenticationForControllerTests implements Authentication {
+public class AuthenticationForControllerTests implements Authentication {
     private User user;
 
     public AuthenticationForControllerTests() {
