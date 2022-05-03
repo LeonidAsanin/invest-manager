@@ -1,12 +1,13 @@
 package org.lennardjones.investmanager.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.lennardjones.investmanager.util.ChosenTableToSee;
 import org.lennardjones.investmanager.util.SortType;
 import org.springframework.data.domain.Sort;
+
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LoggedUserManagementServiceTests {
     LoggedUserManagementService loggedUserManagementService;

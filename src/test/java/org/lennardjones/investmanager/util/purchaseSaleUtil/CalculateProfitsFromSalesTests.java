@@ -1,17 +1,19 @@
 package org.lennardjones.investmanager.util.purchaseSaleUtil;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.lennardjones.investmanager.entity.User;
 import org.lennardjones.investmanager.entity.Purchase;
 import org.lennardjones.investmanager.entity.Sale;
+import org.lennardjones.investmanager.entity.User;
 import org.lennardjones.investmanager.util.PurchaseSaleUtil;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Calculation of profits from sales")
 class CalculateProfitsFromSalesTests {

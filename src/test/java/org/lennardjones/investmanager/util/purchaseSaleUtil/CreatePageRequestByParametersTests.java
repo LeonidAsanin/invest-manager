@@ -1,6 +1,5 @@
 package org.lennardjones.investmanager.util.purchaseSaleUtil;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.lennardjones.investmanager.util.PurchaseSaleUtil;
@@ -8,6 +7,9 @@ import org.lennardjones.investmanager.util.SortType;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("Creating PageRequest object by input parameters")
 class CreatePageRequestByParametersTests {

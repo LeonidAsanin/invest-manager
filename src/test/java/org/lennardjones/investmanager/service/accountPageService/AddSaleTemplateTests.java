@@ -19,7 +19,6 @@ import org.springframework.ui.Model;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class AddSaleTemplateTests {

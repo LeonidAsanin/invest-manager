@@ -21,9 +21,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @SpringBootTest
 class ProductControllerTests {

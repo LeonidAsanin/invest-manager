@@ -1,16 +1,9 @@
 package org.lennardjones.investmanager.controller;
 
-import org.lennardjones.investmanager.entity.User;
-import org.lennardjones.investmanager.entity.Purchase;
 import org.lennardjones.investmanager.entity.Sale;
-import org.lennardjones.investmanager.model.PurchaseTotal;
-import org.lennardjones.investmanager.model.SaleTotal;
+import org.lennardjones.investmanager.entity.User;
 import org.lennardjones.investmanager.service.AccountPageService;
 import org.lennardjones.investmanager.service.LoggedUserManagementService;
-import org.lennardjones.investmanager.service.PurchaseService;
-import org.lennardjones.investmanager.service.SaleService;
-import org.lennardjones.investmanager.util.ChosenTableToSee;
-import org.lennardjones.investmanager.util.PageNavigation;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,9 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 /**
