@@ -61,7 +61,8 @@ public class SaleService {
             saleRepository.save(sale);
             productService.setDataChanged();
         } else {
-            throw new RuntimeException("Attempt to save sale to someone else's account");
+            throw new RuntimeException("Attempt to save sale " + sale +
+                                       " to someone else's account with id " + sellerId);
         }
     }
 
@@ -83,7 +84,8 @@ public class SaleService {
             saleRepository.deleteById(id);
             productService.setDataChanged();
         } else {
-            throw new RuntimeException("Attempt to delete someone else's sale");
+            throw new RuntimeException("Attempt to delete sale with id " + id +
+                                       "which belongs to someone else's account with id " + sellerId);
         }
     }
 
@@ -96,6 +98,8 @@ public class SaleService {
     }
 
     public Optional<Sale> getAnyByUsernameAndProductName(String username, String name) {
-        return saleRepository.findBySeller_UsernameAndName(username, name).stream().findAny();
+        return saleRepository.findBySeller_UsernameAndName(username, name)
+                .stream()
+                .findAny();
     }
 }

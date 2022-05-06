@@ -27,11 +27,8 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService(UserRepository userRepository) {
         return username -> {
             var optionalAccount = userRepository.findByUsername(username);
-
-            if (optionalAccount.isPresent())
-                return optionalAccount.get();
-
-            throw new UsernameNotFoundException("User '" + username + "' not found");
+            return optionalAccount
+                    .orElseThrow(() -> new UsernameNotFoundException("User '" + username + "' not found"));
         };
     }
 

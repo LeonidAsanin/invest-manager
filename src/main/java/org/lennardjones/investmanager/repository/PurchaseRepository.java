@@ -17,7 +17,7 @@ import java.util.List;
  */
 public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
 
-    @Override
+    @Override // for force deleting
     @Modifying
     @Query("delete from Purchase where id = :id")
     void deleteById(Long id);

@@ -35,20 +35,14 @@ public class SettingsController {
                           @RequestParam(required = false) String intentionToDeleteAccount,
                           @RequestParam(required = false) String error,
                           @AuthenticationPrincipal User user, Model model) {
-        if (editableUsername != null) {
-            model.addAttribute("editableUsername", true);
-        }
-        if (editablePassword != null) {
-            model.addAttribute("editablePassword", true);
-        }
-        if (intentionToDeleteAccount != null) {
-            model.addAttribute("intentionToDeleteAccount", true);
-        }
-        if (error != null) {
-            model.addAttribute("error", error);
-        }
+        if (editableUsername != null) model.addAttribute("editableUsername", true);
+        if (editablePassword != null) model.addAttribute("editablePassword", true);
+        if (intentionToDeleteAccount != null) model.addAttribute("intentionToDeleteAccount",
+                                                                 true);
+        if (error != null) model.addAttribute("error", error);
 
         model.addAttribute("username", user.getUsername());
+
         return "settings";
     }
 
@@ -59,15 +53,12 @@ public class SettingsController {
 
     @PostMapping("/saveNewUsername")
     public String saveNewUsername(@RequestParam String username, @AuthenticationPrincipal User user) {
-        if (username.equals(user.getUsername())) {
-            return "redirect:/settings";
-        }
-        if (userService.existsByUsername(username)) {
-            return "redirect:/settings?error=editUsername";
-        }
+        if (username.equals(user.getUsername())) return "redirect:/settings";
+        if (userService.existsByUsername(username)) return "redirect:/settings?error=editUsername";
 
         user.setUsername(username);
         userService.update(user);
+
         return "redirect:/settings";
     }
 
@@ -80,22 +71,22 @@ public class SettingsController {
     public String saveNewPassword(@RequestParam String password,
                                   @RequestParam String passwordConfirmation,
                                   @AuthenticationPrincipal User user) {
-        if (!password.equals(passwordConfirmation)) {
-            return "redirect:/settings?error=editPassword";
-        }
+        if (!password.equals(passwordConfirmation)) return "redirect:/settings?error=editPassword";
 
         user.setPassword(passwordEncoder.encode(password));
         userService.update(user);
+
         return "redirect:/settings";
     }
 
     @GetMapping("/deleteAccount")
-    public String deleteAccount(@RequestParam(required = false) String confirmation, @AuthenticationPrincipal User user) {
-        if (confirmation == null) {
-            return "redirect:/settings?intentionToDeleteAccount";
-        }
+    public String deleteAccount(@RequestParam(required = false) String confirmation,
+                                @AuthenticationPrincipal User user) {
+        if (confirmation == null) return "redirect:/settings?intentionToDeleteAccount";
+
         userService.deleteById(user.getId());
         SecurityContextHolder.clearContext();
+
         return "redirect:/login";
     }
 }

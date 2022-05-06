@@ -36,9 +36,7 @@ public class ProductController {
     public String getProductPage(@RequestParam(required = false) String editable,
                                  @AuthenticationPrincipal User user,
                                  Model model) {
-        if (editable != null) {
-            model.addAttribute("editable", true);
-        }
+        if (editable != null) model.addAttribute("editable", true);
 
         var productSet = productService.getAllByUser(user);
         var sortedProductSet = productSet.stream()

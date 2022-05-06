@@ -63,7 +63,8 @@ public class PurchaseService {
             purchaseRepository.save(purchase);
             productService.setDataChanged();
         } else {
-            throw new RuntimeException("Attempt to save purchase to someone else's account");
+            throw new RuntimeException("Attempt to save purchase " + purchase +
+                                       " to someone else's account with id " + ownerId);
         }
     }
 
@@ -75,7 +76,8 @@ public class PurchaseService {
             purchaseRepository.deleteById(id);
             productService.setDataChanged();
         } else {
-            throw new RuntimeException("Attempt to delete someone else's purchase");
+            throw new RuntimeException("Attempt to delete purchase with id " + id +
+                                       "which belongs to someone else's account with id " + ownerId);
         }
     }
 
@@ -88,6 +90,8 @@ public class PurchaseService {
     }
 
     public Optional<Purchase> getAnyByUsernameAndProductName(String username, String productName) {
-        return purchaseRepository.findByOwner_UsernameAndName(username, productName).stream().findAny();
+        return purchaseRepository.findByOwner_UsernameAndName(username, productName)
+                .stream()
+                .findAny();
     }
 }
