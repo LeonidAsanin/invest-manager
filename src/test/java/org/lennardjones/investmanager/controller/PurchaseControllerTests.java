@@ -271,7 +271,8 @@ class PurchaseControllerTests {
                                 .post("/purchase/edit/" + id)
                                 .with(SecurityMockMvcRequestPostProcessors.csrf())
                                 .with(SecurityMockMvcRequestPostProcessors
-                                        .authentication(new AuthenticationForControllerTests())))
+                                        .authentication(new AuthenticationForControllerTests()))
+                )
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/account?editable_purchase=" + id))
                 .andExpect(SecurityMockMvcResultMatchers.authenticated());
     }

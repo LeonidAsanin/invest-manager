@@ -102,6 +102,7 @@ class ProductControllerTests {
         var totalRelativeProfit = (totalPrice / (totalPrice - totalAbsoluteProfit) - 1) * 100;
         var productTotal = new ProductTotal(totalPrice, totalCurrentPrice,
                 totalAbsoluteProfit, totalRelativeProfit);
+
         assertAll(
                 () -> {
                     Mockito.when(productServiceMock.getAllByUser(user))

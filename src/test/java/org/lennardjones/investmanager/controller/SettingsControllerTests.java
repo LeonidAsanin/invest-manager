@@ -50,62 +50,54 @@ class SettingsControllerTests {
         user.setPassword("password");
 
         assertAll(
-                () -> {
-                    mockMvc.perform(
-                                    MockMvcRequestBuilders
-                                            .get("/settings")
-                                            .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                            .with(SecurityMockMvcRequestPostProcessors
-                                                    .authentication(new AuthenticationForControllerTests(user)))
-                            )
-                            .andExpect(MockMvcResultMatchers.status().isOk())
-                            .andExpect(MockMvcResultMatchers.content().contentType("text/html;charset=UTF-8"))
-                            .andExpect(MockMvcResultMatchers.view().name("settings"))
-                            .andExpect(MockMvcResultMatchers.model().attribute("username", user.getUsername()))
-                            .andExpect(SecurityMockMvcResultMatchers.authenticated());
-                },
-                () -> {
-                    mockMvc.perform(
-                                    MockMvcRequestBuilders
-                                            .get("/settings")
-                                            .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                            .with(SecurityMockMvcRequestPostProcessors
-                                                    .authentication(new AuthenticationForControllerTests(user)))
-                                            .param("editableUsername", "")
-                            )
-                            .andExpect(MockMvcResultMatchers.view().name("settings"))
-                            .andExpect(MockMvcResultMatchers.model().attribute("username", user.getUsername()))
-                            .andExpect(MockMvcResultMatchers.model().attribute("editableUsername", true))
-                            .andExpect(SecurityMockMvcResultMatchers.authenticated());
-                },
-                () -> {
-                    mockMvc.perform(
-                                    MockMvcRequestBuilders
-                                            .get("/settings")
-                                            .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                            .with(SecurityMockMvcRequestPostProcessors
-                                                    .authentication(new AuthenticationForControllerTests(user)))
-                                            .param("editablePassword", "")
-                            )
-                            .andExpect(MockMvcResultMatchers.view().name("settings"))
-                            .andExpect(MockMvcResultMatchers.model().attribute("username", user.getUsername()))
-                            .andExpect(MockMvcResultMatchers.model().attribute("editablePassword", true))
-                            .andExpect(SecurityMockMvcResultMatchers.authenticated());
-                },
-                () -> {
-                    mockMvc.perform(
-                                    MockMvcRequestBuilders
-                                            .get("/settings")
-                                            .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                            .with(SecurityMockMvcRequestPostProcessors
-                                                    .authentication(new AuthenticationForControllerTests(user)))
-                                            .param("intentionToDeleteAccount", "")
-                            )
-                            .andExpect(MockMvcResultMatchers.view().name("settings"))
-                            .andExpect(MockMvcResultMatchers.model().attribute("username", user.getUsername()))
-                            .andExpect(MockMvcResultMatchers.model().attribute("intentionToDeleteAccount", true))
-                            .andExpect(SecurityMockMvcResultMatchers.authenticated());
-                },
+                () -> mockMvc.perform(
+                                MockMvcRequestBuilders
+                                        .get("/settings")
+                                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                                        .with(SecurityMockMvcRequestPostProcessors
+                                                .authentication(new AuthenticationForControllerTests(user)))
+                        )
+                        .andExpect(MockMvcResultMatchers.status().isOk())
+                        .andExpect(MockMvcResultMatchers.content().contentType("text/html;charset=UTF-8"))
+                        .andExpect(MockMvcResultMatchers.view().name("settings"))
+                        .andExpect(MockMvcResultMatchers.model().attribute("username", user.getUsername()))
+                        .andExpect(SecurityMockMvcResultMatchers.authenticated()),
+                () -> mockMvc.perform(
+                                MockMvcRequestBuilders
+                                        .get("/settings")
+                                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                                        .with(SecurityMockMvcRequestPostProcessors
+                                                .authentication(new AuthenticationForControllerTests(user)))
+                                        .param("editableUsername", "")
+                        )
+                        .andExpect(MockMvcResultMatchers.view().name("settings"))
+                        .andExpect(MockMvcResultMatchers.model().attribute("username", user.getUsername()))
+                        .andExpect(MockMvcResultMatchers.model().attribute("editableUsername", true))
+                        .andExpect(SecurityMockMvcResultMatchers.authenticated()),
+                () -> mockMvc.perform(
+                                MockMvcRequestBuilders
+                                        .get("/settings")
+                                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                                        .with(SecurityMockMvcRequestPostProcessors
+                                                .authentication(new AuthenticationForControllerTests(user)))
+                                        .param("editablePassword", "")
+                        )
+                        .andExpect(MockMvcResultMatchers.view().name("settings"))
+                        .andExpect(MockMvcResultMatchers.model().attribute("username", user.getUsername()))
+                        .andExpect(MockMvcResultMatchers.model().attribute("editablePassword", true))
+                        .andExpect(SecurityMockMvcResultMatchers.authenticated()),
+                () -> mockMvc.perform(
+                                MockMvcRequestBuilders
+                                        .get("/settings")
+                                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                                        .with(SecurityMockMvcRequestPostProcessors
+                                                .authentication(new AuthenticationForControllerTests(user)))
+                                        .param("intentionToDeleteAccount", "")
+                        )
+                        .andExpect(MockMvcResultMatchers.view().name("settings"))
+                        .andExpect(MockMvcResultMatchers.model().attribute("username", user.getUsername()))
+                        .andExpect(MockMvcResultMatchers.model().attribute("intentionToDeleteAccount", true))
+                        .andExpect(SecurityMockMvcResultMatchers.authenticated()),
                 () -> {
                     var error = "error";
                     mockMvc.perform(
@@ -297,18 +289,16 @@ class SettingsControllerTests {
                     Mockito.verify(userServiceMock, Mockito.times(1))
                             .deleteById(user.getId());
                 },
-                () -> {
-                    mockMvc.perform(
-                                    MockMvcRequestBuilders
-                                            .get("/settings/deleteAccount")
-                                            .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                            .with(SecurityMockMvcRequestPostProcessors
-                                                    .authentication(new AuthenticationForControllerTests(user)))
-                            )
-                            .andExpect(MockMvcResultMatchers
-                                    .redirectedUrl("/settings?intentionToDeleteAccount"))
-                            .andExpect(SecurityMockMvcResultMatchers.authenticated());
-                }
+                () -> mockMvc.perform(
+                                MockMvcRequestBuilders
+                                        .get("/settings/deleteAccount")
+                                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                                        .with(SecurityMockMvcRequestPostProcessors
+                                                .authentication(new AuthenticationForControllerTests(user)))
+                        )
+                        .andExpect(MockMvcResultMatchers
+                                .redirectedUrl("/settings?intentionToDeleteAccount"))
+                        .andExpect(SecurityMockMvcResultMatchers.authenticated())
         );
     }
 }
