@@ -1,13 +1,15 @@
 package org.lennardjones.investmanager.repository;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class JdbcProductRepositoryTests {
     EmbeddedDatabase embeddedDataSource;
@@ -33,54 +35,103 @@ class JdbcProductRepositoryTests {
 
     @Test
     void getCurrentPriceByUserIdAndProductNameTest() {
-        var optionalDouble = jdbcProductRepository
-                .getCurrentPriceByUserIdAndProductName(1L, "product1");
-        Assertions.assertEquals(100, optionalDouble.orElseThrow());
+        assertAll(
+                () -> {
+                    //given
+                    var userId = 1L;
+                    var productName = "product1";
 
-        optionalDouble = jdbcProductRepository
-                .getCurrentPriceByUserIdAndProductName(2L, "product2");
-        Assertions.assertEquals(0, optionalDouble.orElseThrow());
+                    //when
+                    var optionalDouble = jdbcProductRepository
+                            .getCurrentPriceByUserIdAndProductName(userId, productName);
+
+                    //then
+                    assertEquals(100, optionalDouble.orElseThrow());
+                },
+                () -> {
+                    //given
+                    var userId = 2L;
+                    var productName = "product2";
+
+                    //when
+                    var optionalDouble = jdbcProductRepository
+                            .getCurrentPriceByUserIdAndProductName(userId, productName);
+
+                    //then
+                    assertEquals(0, optionalDouble.orElseThrow());
+                }
+        );
     }
 
     @Test
     void saveTest() {
-        Assertions.assertAll(
+        assertAll(
                 () -> {
-                    jdbcProductRepository.save(1L, "product3", 55);
-                    var names = jdbcProductRepository.getAllNamesByUserId(1L);
-                    Assertions.assertEquals("product1", names.get(0));
-                    Assertions.assertEquals("product2", names.get(1));
-                    Assertions.assertEquals("product3", names.get(2));
-                    var currentPrice = jdbcProductRepository
-                            .getCurrentPriceByUserIdAndProductName(1L, "product3");
-                    Assertions.assertEquals(55, currentPrice.orElseThrow());
+                    //given
+                    var userId = 1L;
+                    var productName = "product3";
+                    var currentPrice = 55;
+
+                    //when
+                    jdbcProductRepository.save(userId, productName, currentPrice);
+
+                    //then
+                    var names = jdbcProductRepository.getAllNamesByUserId(userId);
+                    assertEquals("product1", names.get(0));
+                    assertEquals("product2", names.get(1));
+                    assertEquals(productName, names.get(2));
+                    var realCurrentPrice = jdbcProductRepository
+                            .getCurrentPriceByUserIdAndProductName(userId, productName)
+                            .orElseThrow();
+                    assertEquals(realCurrentPrice, realCurrentPrice);
                 },
                 () -> {
-                    jdbcProductRepository.save(2L, "product2", 99);
-                    var names = jdbcProductRepository.getAllNamesByUserId(2L);
-                    Assertions.assertEquals("product1", names.get(0));
-                    Assertions.assertEquals("product2", names.get(1));
-                    var currentPrice = jdbcProductRepository
-                            .getCurrentPriceByUserIdAndProductName(2L, "product2");
-                    Assertions.assertEquals(99, currentPrice.orElseThrow());
+                    //given
+                    var userId = 2L;
+                    var productName = "product2";
+                    var currentPrice = 99;
+
+                    //when
+                    jdbcProductRepository.save(userId, productName, currentPrice);
+
+                    //then
+                    var names = jdbcProductRepository.getAllNamesByUserId(userId);
+                    assertEquals("product1", names.get(0));
+                    assertEquals(productName, names.get(1));
+                    var realCurrentPrice = jdbcProductRepository
+                            .getCurrentPriceByUserIdAndProductName(userId, productName)
+                            .orElseThrow();
+                    assertEquals(currentPrice, realCurrentPrice);
                 }
         );
     }
 
     @Test
     void getAllNamesByUserIdTest() {
-        var names = jdbcProductRepository.getAllNamesByUserId(2L);
-        Assertions.assertEquals(2, names.size());
-        Assertions.assertEquals("product1", names.get(0));
-        Assertions.assertEquals("product2", names.get(1));
+        //given
+        var userId = 2L;
+
+        //when
+        var names = jdbcProductRepository.getAllNamesByUserId(userId);
+
+        //then
+        assertEquals(2, names.size());
+        assertEquals("product1", names.get(0));
+        assertEquals("product2", names.get(1));
     }
 
     @Test
     void removeByUserIdAndProductNameTest() {
-        jdbcProductRepository.removeByUserIdAndProductName(1L, "product2");
+        //given
+        var userId = 1L;
+        var productName = "product2";
 
-        var names = jdbcProductRepository.getAllNamesByUserId(1L);
-        Assertions.assertEquals(1, names.size());
-        Assertions.assertEquals("product1", names.get(0));
+        //when
+        jdbcProductRepository.removeByUserIdAndProductName(userId, productName);
+
+        //then
+        var names = jdbcProductRepository.getAllNamesByUserId(userId);
+        assertEquals(1, names.size());
+        assertEquals("product1", names.get(0));
     }
 }
