@@ -32,7 +32,7 @@ class UpdateSortingParametersAndAddItToModelTests {
     AccountPageService accountPageService;
 
     @BeforeEach
-    void before() {
+    void setup() {
         accountPageService = new AccountPageService(loggedUserManagementServiceMock,
                                                     purchaseServiceMock, saleServiceMock);
     }
@@ -40,15 +40,22 @@ class UpdateSortingParametersAndAddItToModelTests {
     @ParameterizedTest
     @EnumSource(SortType.class)
     void testAllNonNullInputParameters(SortType sortType) {
+        //given
         var sortTypeString = sortType.name();
+
         assertAll(
                 () -> {
+                    //and given
                     var orderTypeString = Sort.Direction.ASC.name();
+
+                    //when
                     Mockito.when(loggedUserManagementServiceMock.getSortType())
                             .thenReturn(sortType);
                     Mockito.when(loggedUserManagementServiceMock.getSortOrderType())
                             .thenReturn(Sort.Direction.ASC);
                     accountPageService.updateSortingParametersAndAddItToModel(sortTypeString, orderTypeString, modelMock);
+
+                    //then
                     Mockito.verify(loggedUserManagementServiceMock)
                             .setSortingParametersIfNotNull(sortTypeString, orderTypeString);
                     Mockito.verify(modelMock)
@@ -57,10 +64,15 @@ class UpdateSortingParametersAndAddItToModelTests {
                             .addAttribute("sortOrderType", orderTypeString);
                 },
                 () -> {
+                    //and given
                     var orderTypeString = Sort.Direction.DESC.name();
+
+                    //when
                     Mockito.when(loggedUserManagementServiceMock.getSortOrderType())
                             .thenReturn(Sort.Direction.DESC);
                     accountPageService.updateSortingParametersAndAddItToModel(sortTypeString, orderTypeString, modelMock);
+
+                    //then
                     Mockito.verify(loggedUserManagementServiceMock)
                             .setSortingParametersIfNotNull(sortTypeString, orderTypeString);
                     Mockito.verify(modelMock, Mockito.times(2))
@@ -73,13 +85,18 @@ class UpdateSortingParametersAndAddItToModelTests {
 
     @Test
     void testAllNullInputParameters() {
+        //given
         var sortType = SortType.NONE;
         var orderType = Sort.Direction.ASC;
+
+        //when
         Mockito.when(loggedUserManagementServiceMock.getSortType())
                 .thenReturn(sortType);
         Mockito.when(loggedUserManagementServiceMock.getSortOrderType())
                 .thenReturn(orderType);
         accountPageService.updateSortingParametersAndAddItToModel(null, null, modelMock);
+
+        //then
         Mockito.verify(loggedUserManagementServiceMock)
                 .setSortingParametersIfNotNull(null, null);
         Mockito.verify(modelMock)

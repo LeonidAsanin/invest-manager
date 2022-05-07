@@ -168,9 +168,9 @@ class ProductControllerTests {
     @Test
     void setCurrentPricesAndCalculateProfitsTest() throws Exception {
         var user = new User();
-            user.setId(1L);
-            user.setUsername("username");
-            user.setPassword("password");
+        user.setId(1L);
+        user.setUsername("username");
+        user.setPassword("password");
 
         List<String> productName = new ArrayList<>();
         Collections.addAll(productName, "product1", "product1", "product3");
@@ -203,11 +203,11 @@ class ProductControllerTests {
     @Test
     void editCurrentPricesTest() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders
-                        .post("/product/edit")
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .with(SecurityMockMvcRequestPostProcessors
-                                .authentication(new AuthenticationForControllerTests()))
+                        MockMvcRequestBuilders
+                                .post("/product/edit")
+                                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                                .with(SecurityMockMvcRequestPostProcessors
+                                        .authentication(new AuthenticationForControllerTests()))
                 )
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/product?editable"))
                 .andExpect(SecurityMockMvcResultMatchers.authenticated());

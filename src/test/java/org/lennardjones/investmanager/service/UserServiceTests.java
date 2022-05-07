@@ -19,40 +19,67 @@ class UserServiceTests {
     UserService userService;
 
     @BeforeEach
-    void before() {
+    void setup() {
         userService = new UserService(userRepositoryMock);
     }
 
     @Test
     void existsByUsernameTest() {
-        Mockito.when(userRepositoryMock.existsByUsernameIgnoreCase("username"))
-                .thenReturn(true);
-        Mockito.when(userRepositoryMock.existsByUsernameIgnoreCase("otherUsername"))
-                .thenReturn(false);
+        //given
+        var username = "username";
+        var otherUsername = "otherUsername";
 
+        //when
+        Mockito.when(userRepositoryMock.existsByUsernameIgnoreCase(username))
+                .thenReturn(true);
+        Mockito.when(userRepositoryMock.existsByUsernameIgnoreCase(otherUsername))
+                .thenReturn(false);
+        var existsByUsernameResult = userService.existsByUsername(username);
+        var existsByOtherUsernameResult = userService.existsByUsername(otherUsername);
+
+        //then
         assertAll(
-                () -> assertTrue(userService.existsByUsername("username")),
-                () -> assertFalse(userService.existsByUsername("otherUsername"))
+                () -> assertTrue(existsByUsernameResult),
+                () -> assertFalse(existsByOtherUsernameResult)
         );
     }
 
     @Test
     void registerNewUserTest() {
+        //given
         var user = new User();
+
+        //when
         userService.registerNewUser(user);
-        Mockito.verify(userRepositoryMock).save(user);
+
+        //then
+        Mockito.verify(userRepositoryMock)
+                .save(user);
     }
 
     @Test
     void updateTest() {
+        //given
         var user = new User();
+
+        //when
         userService.update(user);
-        Mockito.verify(userRepositoryMock).save(user);
+
+        //then
+        Mockito.verify(userRepositoryMock)
+                .save(user);
     }
 
     @Test
     void deleteByIdTest() {
-        userService.deleteById(1L);
-        Mockito.verify(userRepositoryMock).deleteById(1L);
+        //given
+        var userId = 1L;
+
+        //when
+        userService.deleteById(userId);
+
+        //then
+        Mockito.verify(userRepositoryMock)
+                .deleteById(userId);
     }
 }

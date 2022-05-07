@@ -41,7 +41,7 @@ class AddSaleTemplateTests {
     Sale invalidSale;
 
     @BeforeEach()
-    void before() {
+    void setup() {
         accountPageService = new AccountPageService(loggedUserManagementServiceMock,
                 purchaseServiceMock, saleServiceMock);
 
@@ -55,6 +55,7 @@ class AddSaleTemplateTests {
 
     @Test
     void testInvalidSaleIsNotEmpty() {
+        //given
         invalidSale.setName("name");
         invalidSale.setSeller(user);
         invalidSale.setPrice(1.);
@@ -62,16 +63,22 @@ class AddSaleTemplateTests {
         invalidSale.setAmount(1);
         invalidSale.setDateTime(LocalDateTime.now());
 
+        //when
         accountPageService.addSaleTemplate(invalidSale, user, modelMock);
 
+        //then
         Mockito.verify(modelMock)
                 .addAttribute("sale", invalidSale);
     }
 
     @Test
     void testInvalidSaleIsEmpty() {
+        //given
+
+        //when
         accountPageService.addSaleTemplate(invalidSale, user, modelMock);
 
+        //then
         Mockito.verify(modelMock)
                 .addAttribute(stringCaptor.capture(), saleCaptor.capture());
 

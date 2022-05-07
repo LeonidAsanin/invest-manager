@@ -36,7 +36,7 @@ class DefineTotalsTests {
     User user;
 
     @BeforeEach
-    void before() {
+    void setup() {
         accountPageService = new AccountPageService(loggedUserManagementServiceMock,
                 purchaseServiceMock, saleServiceMock);
 
@@ -48,10 +48,13 @@ class DefineTotalsTests {
 
     @Test
     void testDefaultPurchaseTotals() {
+        //given
         var chosenTableToSee = ChosenTableToSee.PURCHASE;
 
+        //when
         accountPageService.defineTotals(user.getUsername(), chosenTableToSee, modelMock);
 
+        //then
         Mockito.verify(modelMock)
                 .addAttribute("purchaseTotal", new PurchaseTotal(0, 0));
         Mockito.verify(modelMock)
@@ -61,6 +64,7 @@ class DefineTotalsTests {
 
     @Test
     void testPurchaseTotals() {
+        //given
         var chosenTableToSee = ChosenTableToSee.PURCHASE;
 
         List<Purchase> purchaseList = new ArrayList<>();
@@ -72,11 +76,12 @@ class DefineTotalsTests {
             purchaseList.add(purchase);
         }
 
+        //when
         Mockito.when(purchaseServiceMock.getListByUsername(user.getUsername()))
                         .thenReturn(purchaseList);
-
         accountPageService.defineTotals(user.getUsername(), chosenTableToSee, modelMock);
 
+        //then
         Mockito.verify(modelMock)
                 .addAttribute("purchaseTotal",
                         new PurchaseTotal(50, 5));
@@ -87,10 +92,13 @@ class DefineTotalsTests {
 
     @Test
     void testDefaultSaleTotals() {
+        //given
         var chosenTableToSee = ChosenTableToSee.SALE;
 
+        //when
         accountPageService.defineTotals(user.getUsername(), chosenTableToSee, modelMock);
 
+        //then
         Mockito.verify(modelMock)
                 .addAttribute("purchaseTotal", new PurchaseTotal(0, 0));
         Mockito.verify(modelMock)
@@ -100,6 +108,7 @@ class DefineTotalsTests {
 
     @Test
     void testSaleTotals() {
+        //given
         var chosenTableToSee = ChosenTableToSee.SALE;
 
         List<Sale> saleList = new ArrayList<>();
@@ -113,11 +122,12 @@ class DefineTotalsTests {
             saleList.add(sale);
         }
 
+        //when
         Mockito.when(saleServiceMock.getListByUsername(user.getUsername()))
                 .thenReturn(saleList);
-
         accountPageService.defineTotals(user.getUsername(), chosenTableToSee, modelMock);
 
+        //then
         Mockito.verify(modelMock)
                 .addAttribute("purchaseTotal",
                         new PurchaseTotal(0, 0));

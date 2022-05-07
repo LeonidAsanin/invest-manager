@@ -29,7 +29,7 @@ class UpdateChosenTableAndAddItToModelTests {
     AccountPageService accountPageService;
 
     @BeforeEach
-    void before() {
+    void setup() {
         accountPageService = new AccountPageService(loggedUserManagementServiceMock,
                 purchaseServiceMock, saleServiceMock);
     }
@@ -37,9 +37,15 @@ class UpdateChosenTableAndAddItToModelTests {
     @ParameterizedTest
     @EnumSource(ChosenTableToSee.class)
     void testNonNullInputParameters(ChosenTableToSee chosenTableToSee) {
+        //given
+        var chosenTableToSeeString = chosenTableToSee.name();
+
+        //when
         Mockito.when(loggedUserManagementServiceMock.getChosenTableToSee())
                         .thenReturn(chosenTableToSee);
-        accountPageService.updateChosenTableAndAddItToModel(chosenTableToSee.name(), modelMock);
+        accountPageService.updateChosenTableAndAddItToModel(chosenTableToSeeString, modelMock);
+
+        //then
         Mockito.verify(loggedUserManagementServiceMock)
                 .setChosenTableIfNotNull(chosenTableToSee.name());
         Mockito.verify(modelMock)
@@ -48,10 +54,15 @@ class UpdateChosenTableAndAddItToModelTests {
 
     @Test
     void testNullInputParameter() {
+        //given
         var chosenTableToSee = ChosenTableToSee.PURCHASE;
+
+        //when
         Mockito.when(loggedUserManagementServiceMock.getChosenTableToSee())
                 .thenReturn(chosenTableToSee);
         accountPageService.updateChosenTableAndAddItToModel(null, modelMock);
+
+        //then
         Mockito.verify(loggedUserManagementServiceMock)
                 .setChosenTableIfNotNull(null);
         Mockito.verify(modelMock)

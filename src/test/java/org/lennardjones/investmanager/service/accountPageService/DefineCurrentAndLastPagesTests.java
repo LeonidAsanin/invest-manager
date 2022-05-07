@@ -37,7 +37,7 @@ class DefineCurrentAndLastPagesTests {
     String filterByTag;
 
     @BeforeEach
-    void before() {
+    void setup() {
         accountPageService = new AccountPageService(loggedUserManagementServiceMock,
                 purchaseServiceMock, saleServiceMock);
 
@@ -53,20 +53,22 @@ class DefineCurrentAndLastPagesTests {
     @Nested
     class PurchasePage {
         ChosenTableToSee chosenTableToSee = ChosenTableToSee.PURCHASE;
+
         @Test
         void testEmptyPage() {
+            //given
             var currentPage = 0;
-
             List<Purchase> purchaseList = new ArrayList<>();
 
+            //when
             Mockito.when(loggedUserManagementServiceMock.getPurchasePage())
                     .thenReturn(currentPage);
             Mockito.when(purchaseServiceMock.getListByUsernameContainingSubstring(user.getUsername(), filterByName))
                     .thenReturn(purchaseList);
-
             accountPageService.defineCurrentAndLastPages(user.getUsername(), chosenTableToSee,
                     filterByName, filterByTag, modelMock);
 
+            //then
             Mockito.verify(modelMock)
                     .addAttribute("currentPage", currentPage +  1);
             Mockito.verify(modelMock)
@@ -75,8 +77,8 @@ class DefineCurrentAndLastPagesTests {
 
         @Test
         void testPageWithFilterByNameAndTag() {
+            //given
             var currentPage = 0;
-
             List<Purchase> purchaseList = new ArrayList<>();
             for (int i = 0; i < 11; i++) {
                 var purchase = new Purchase();
@@ -87,14 +89,15 @@ class DefineCurrentAndLastPagesTests {
                 purchaseList.add(purchase);
             }
 
+            //when
             Mockito.when(loggedUserManagementServiceMock.getPurchasePage())
                     .thenReturn(currentPage);
             Mockito.when(purchaseServiceMock.getListByUsernameContainingSubstring(user.getUsername(), filterByName))
                     .thenReturn(purchaseList);
-
             accountPageService.defineCurrentAndLastPages(user.getUsername(), chosenTableToSee,
                     filterByName, filterByTag, modelMock);
 
+            //then
             Mockito.verify(modelMock)
                     .addAttribute("currentPage", currentPage +  1);
             Mockito.verify(modelMock)
@@ -103,8 +106,8 @@ class DefineCurrentAndLastPagesTests {
 
         @Test
         void testPageWithFilterByName() {
+            //given
             var currentPage = 0;
-
             List<Purchase> purchaseList = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
                 var purchase = new Purchase();
@@ -115,14 +118,15 @@ class DefineCurrentAndLastPagesTests {
                 purchaseList.add(purchase);
             }
 
+            //when
             Mockito.when(loggedUserManagementServiceMock.getPurchasePage())
                     .thenReturn(currentPage);
             Mockito.when(purchaseServiceMock.getListByUsernameContainingSubstring(user.getUsername(), filterByName))
                     .thenReturn(purchaseList);
-
             accountPageService.defineCurrentAndLastPages(user.getUsername(), chosenTableToSee,
                     filterByName, "", modelMock);
 
+            //then
             Mockito.verify(modelMock)
                     .addAttribute("currentPage", currentPage +  1);
             Mockito.verify(modelMock)
@@ -131,8 +135,8 @@ class DefineCurrentAndLastPagesTests {
 
         @Test
         void testPageWithFilterByTag() {
+            //given
             var currentPage = 0;
-
             List<Purchase> purchaseList = new ArrayList<>();
             for (int i = 0; i < 43; i++) {
                 var purchase = new Purchase();
@@ -147,14 +151,15 @@ class DefineCurrentAndLastPagesTests {
                 purchaseList.add(purchase);
             }
 
+            //when
             Mockito.when(loggedUserManagementServiceMock.getPurchasePage())
                     .thenReturn(currentPage);
             Mockito.when(purchaseServiceMock.getListByUsername(user.getUsername()))
                     .thenReturn(purchaseList);
-
             accountPageService.defineCurrentAndLastPages(user.getUsername(), chosenTableToSee,
                     "", filterByTag, modelMock);
 
+            //then
             Mockito.verify(modelMock)
                     .addAttribute("currentPage", currentPage +  1);
             Mockito.verify(modelMock)
@@ -163,8 +168,8 @@ class DefineCurrentAndLastPagesTests {
 
         @Test
         void testPageWithoutFilters() {
+            //given
             var currentPage = 0;
-
             List<Purchase> purchaseList = new ArrayList<>();
             for (int i = 0; i < 40; i++) {
                 var purchase = new Purchase();
@@ -175,14 +180,15 @@ class DefineCurrentAndLastPagesTests {
                 purchaseList.add(purchase);
             }
 
+            //when
             Mockito.when(loggedUserManagementServiceMock.getPurchasePage())
                     .thenReturn(currentPage);
             Mockito.when(purchaseServiceMock.getListByUsername(user.getUsername()))
                     .thenReturn(purchaseList);
-
             accountPageService.defineCurrentAndLastPages(user.getUsername(), chosenTableToSee,
                     "", "", modelMock);
 
+            //then
             Mockito.verify(modelMock)
                     .addAttribute("currentPage", currentPage +  1);
             Mockito.verify(modelMock)
@@ -196,18 +202,19 @@ class DefineCurrentAndLastPagesTests {
 
         @Test
         void testEmptyPage() {
+            //given
             var currentPage = 0;
-
             List<Sale> saleList = new ArrayList<>();
 
+            //when
             Mockito.when(loggedUserManagementServiceMock.getSalePage())
                     .thenReturn(currentPage);
             Mockito.when(saleServiceMock.getListByUsernameContainingSubstring(user.getUsername(), filterByName))
                     .thenReturn(saleList);
-
             accountPageService.defineCurrentAndLastPages(user.getUsername(), chosenTableToSee,
                     filterByName, filterByTag, modelMock);
 
+            //then
             Mockito.verify(modelMock)
                     .addAttribute("currentPage", currentPage +  1);
             Mockito.verify(modelMock)
@@ -216,8 +223,8 @@ class DefineCurrentAndLastPagesTests {
 
         @Test
         void testPageWithFilterByNameAndTag() {
+            //given
             var currentPage = 0;
-
             List<Sale> saleList = new ArrayList<>();
             for (int i = 0; i < 11; i++) {
                 var sale = new Sale();
@@ -228,14 +235,15 @@ class DefineCurrentAndLastPagesTests {
                 saleList.add(sale);
             }
 
+            //when
             Mockito.when(loggedUserManagementServiceMock.getSalePage())
                     .thenReturn(currentPage);
             Mockito.when(saleServiceMock.getListByUsernameContainingSubstring(user.getUsername(), filterByName))
                     .thenReturn(saleList);
-
             accountPageService.defineCurrentAndLastPages(user.getUsername(), chosenTableToSee,
                     filterByName, filterByTag, modelMock);
 
+            //then
             Mockito.verify(modelMock)
                     .addAttribute("currentPage", currentPage +  1);
             Mockito.verify(modelMock)
@@ -244,8 +252,8 @@ class DefineCurrentAndLastPagesTests {
 
         @Test
         void testPageWithFilterByName() {
+            //given
             var currentPage = 0;
-
             List<Sale> saleList = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
                 var sale = new Sale();
@@ -256,14 +264,15 @@ class DefineCurrentAndLastPagesTests {
                 saleList.add(sale);
             }
 
+            //when
             Mockito.when(loggedUserManagementServiceMock.getSalePage())
                     .thenReturn(currentPage);
             Mockito.when(saleServiceMock.getListByUsernameContainingSubstring(user.getUsername(), filterByName))
                     .thenReturn(saleList);
-
             accountPageService.defineCurrentAndLastPages(user.getUsername(), chosenTableToSee,
                     filterByName, "", modelMock);
 
+            //then
             Mockito.verify(modelMock)
                     .addAttribute("currentPage", currentPage +  1);
             Mockito.verify(modelMock)
@@ -272,8 +281,8 @@ class DefineCurrentAndLastPagesTests {
 
         @Test
         void testPageWithFilterByTag() {
+            //given
             var currentPage = 0;
-
             List<Sale> saleList = new ArrayList<>();
             for (int i = 0; i < 43; i++) {
                 var sale = new Sale();
@@ -288,14 +297,15 @@ class DefineCurrentAndLastPagesTests {
                 saleList.add(sale);
             }
 
+            //when
             Mockito.when(loggedUserManagementServiceMock.getSalePage())
                     .thenReturn(currentPage);
             Mockito.when(saleServiceMock.getListByUsername(user.getUsername()))
                     .thenReturn(saleList);
-
             accountPageService.defineCurrentAndLastPages(user.getUsername(), chosenTableToSee,
                     "", filterByTag, modelMock);
 
+            //then
             Mockito.verify(modelMock)
                     .addAttribute("currentPage", currentPage +  1);
             Mockito.verify(modelMock)
@@ -304,8 +314,8 @@ class DefineCurrentAndLastPagesTests {
 
         @Test
         void testPageWithoutFilters() {
+            //given
             var currentPage = 0;
-
             List<Sale> saleList = new ArrayList<>();
             for (int i = 0; i < 40; i++) {
                 var sale = new Sale();
@@ -316,14 +326,15 @@ class DefineCurrentAndLastPagesTests {
                 saleList.add(sale);
             }
 
+            //when
             Mockito.when(loggedUserManagementServiceMock.getSalePage())
                     .thenReturn(currentPage);
             Mockito.when(saleServiceMock.getListByUsername(user.getUsername()))
                     .thenReturn(saleList);
-
             accountPageService.defineCurrentAndLastPages(user.getUsername(), chosenTableToSee,
                     "", "", modelMock);
 
+            //then
             Mockito.verify(modelMock)
                     .addAttribute("currentPage", currentPage +  1);
             Mockito.verify(modelMock)

@@ -45,9 +45,10 @@ class SettingsControllerTests {
     @Test
     void getPageTest() {
         var user = new User();
-            user.setId(1L);
-            user.setUsername("username");
-            user.setPassword("password");
+        user.setId(1L);
+        user.setUsername("username");
+        user.setPassword("password");
+
         assertAll(
                 () -> {
                     mockMvc.perform(
@@ -225,12 +226,12 @@ class SettingsControllerTests {
         assertAll(
                 () -> {
                     var user = new User();
-                        user.setId(1L);
-                        user.setUsername("username");
-                        user.setPassword("password");
+                    user.setId(1L);
+                    user.setUsername("username");
+                    user.setPassword("password");
 
                     Mockito.when(passwordEncoderMock.encode("newPassword"))
-                                    .thenReturn("NEW_PASSWORD");
+                            .thenReturn("NEW_PASSWORD");
 
                     mockMvc.perform(
                                     MockMvcRequestBuilders
@@ -245,18 +246,18 @@ class SettingsControllerTests {
                             .andExpect(SecurityMockMvcResultMatchers.authenticated());
 
                     var updatedUser = new User();
-                        updatedUser.setId(1L);
-                        updatedUser.setUsername("username");
-                        updatedUser.setPassword("NEW_PASSWORD");
+                    updatedUser.setId(1L);
+                    updatedUser.setUsername("username");
+                    updatedUser.setPassword("NEW_PASSWORD");
 
                     Mockito.verify(userServiceMock, Mockito.times(1))
                             .update(updatedUser);
                 },
                 () -> {
                     var user = new User();
-                        user.setId(1L);
-                        user.setUsername("username");
-                        user.setPassword("password");
+                    user.setId(1L);
+                    user.setUsername("username");
+                    user.setPassword("password");
 
                     mockMvc.perform(
                                     MockMvcRequestBuilders

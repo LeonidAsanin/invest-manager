@@ -229,14 +229,14 @@ class SaleControllerTests {
         saleList.add(sale);
 
         Mockito.when(saleServiceMock.getListByUsername(user.getUsername()))
-                        .thenReturn(saleList);
+                .thenReturn(saleList);
 
         mockMvc.perform(
-                MockMvcRequestBuilders
-                        .post("/sale/delete/" + sale.getId())
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .with(SecurityMockMvcRequestPostProcessors
-                                .authentication(new AuthenticationForControllerTests(user)))
+                        MockMvcRequestBuilders
+                                .post("/sale/delete/" + sale.getId())
+                                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                                .with(SecurityMockMvcRequestPostProcessors
+                                        .authentication(new AuthenticationForControllerTests(user)))
                 )
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/account?page=CURRENT"))
                 .andExpect(SecurityMockMvcResultMatchers.authenticated());
@@ -321,17 +321,17 @@ class SaleControllerTests {
                             .thenReturn(saleList);
 
                     mockMvc.perform(
-                            MockMvcRequestBuilders
-                                    .post("/sale/save/" + sale.getId())
-                                    .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                    .with(SecurityMockMvcRequestPostProcessors
-                                            .authentication(new AuthenticationForControllerTests(user)))
-                                    .param("dateTime", editedSale.getDateTime().toString())
-                                    .param("name", editedSale.getName())
-                                    .param("tag", editedSale.getTag())
-                                    .param("amount", editedSale.getAmount().toString())
-                                    .param("price", editedSale.getPrice().toString())
-                                    .param("commission", editedSale.getCommission().toString())
+                                    MockMvcRequestBuilders
+                                            .post("/sale/save/" + sale.getId())
+                                            .with(SecurityMockMvcRequestPostProcessors.csrf())
+                                            .with(SecurityMockMvcRequestPostProcessors
+                                                    .authentication(new AuthenticationForControllerTests(user)))
+                                            .param("dateTime", editedSale.getDateTime().toString())
+                                            .param("name", editedSale.getName())
+                                            .param("tag", editedSale.getTag())
+                                            .param("amount", editedSale.getAmount().toString())
+                                            .param("price", editedSale.getPrice().toString())
+                                            .param("commission", editedSale.getCommission().toString())
                             )
                             .andExpect(MockMvcResultMatchers.redirectedUrl("/account"))
                             .andExpect(SecurityMockMvcResultMatchers.authenticated());

@@ -204,10 +204,10 @@ class PurchaseControllerTests {
                     Mockito.when(purchaseServiceMock.getNameById(purchase1.getId()))
                             .thenReturn(purchase1.getName());
                     Mockito.when(purchaseServiceMock.getListByUsernameAndProductName(user.getUsername(),
-                                                                                     purchase1.getName()))
+                                    purchase1.getName()))
                             .thenReturn(purchaseList);
                     Mockito.when(saleServiceMock.getListByUsernameAndProductName(user.getUsername(),
-                                                                                 purchase1.getName()))
+                                    purchase1.getName()))
                             .thenReturn(saleList);
 
                     mockMvc.perform(
@@ -245,10 +245,10 @@ class PurchaseControllerTests {
                     Mockito.when(purchaseServiceMock.getNameById(purchase1.getId()))
                             .thenReturn(purchase1.getName());
                     Mockito.when(purchaseServiceMock.getListByUsernameAndProductName(user.getUsername(),
-                                                                                     purchase1.getName()))
+                                    purchase1.getName()))
                             .thenReturn(purchaseList);
                     Mockito.when(saleServiceMock.getListByUsernameAndProductName(user.getUsername(),
-                                                                                 purchase1.getName()))
+                                    purchase1.getName()))
                             .thenReturn(saleList);
 
                     mockMvc.perform(

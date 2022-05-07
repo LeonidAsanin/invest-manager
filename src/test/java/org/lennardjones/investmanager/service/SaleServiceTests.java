@@ -3,6 +3,7 @@ package org.lennardjones.investmanager.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.function.Executable;
 import org.lennardjones.investmanager.entity.Purchase;
 import org.lennardjones.investmanager.entity.Sale;
 import org.lennardjones.investmanager.entity.User;
@@ -34,7 +35,7 @@ class SaleServiceTests {
     SaleService saleService;
 
     @BeforeEach
-    void before() {
+    void setup() {
         saleService = new SaleService(saleRepositoryMock, productServiceMock, purchaseServiceMock);
     }
 
@@ -42,6 +43,7 @@ class SaleServiceTests {
     void getListByUsernameTest() {
         assertAll(
                 () -> {
+                    //given
                     List<Sale> saleList = new ArrayList<>();
                     var sale = new Sale();
                     var user = new User();
@@ -49,12 +51,17 @@ class SaleServiceTests {
                     sale.setName("default");
                     sale.setSeller(user);
                     saleList.add(sale);
+
+                    //when
                     Mockito.when(saleRepositoryMock.findBySeller_Username("username"))
                             .thenReturn(saleList);
                     var returnedPurchaseList = saleService.getListByUsername("username");
+
+                    //then
                     assertEquals(saleList, returnedPurchaseList);
                 },
                 () -> {
+                    //given
                     List<Sale> saleListPage = new ArrayList<>();
                     var sale = new Sale();
                     var user = new User();
@@ -63,13 +70,18 @@ class SaleServiceTests {
                     sale.setSeller(user);
                     saleListPage.add(sale);
                     var pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "id");
+
+                    //when
                     Mockito.when(saleRepositoryMock.findBySeller_Username("username", pageRequest))
                             .thenReturn(saleListPage);
                     var returnedPurchaseListPage = saleService.getListByUsername("username",
                             0, SortType.NONE, Sort.Direction.DESC);
+
+                    //then
                     assertEquals(saleListPage, returnedPurchaseListPage);
                 },
                 () -> {
+                    //given
                     List<Sale> saleListPage = new ArrayList<>();
                     var sale = new Sale();
                     var user = new User();
@@ -79,13 +91,18 @@ class SaleServiceTests {
                     saleListPage.add(sale);
                     var pageRequest = PageRequest.of(1, 10, Sort.Direction.ASC,
                             "name", "dateTime", "id");
+
+                    //when
                     Mockito.when(saleRepositoryMock.findBySeller_Username("username", pageRequest))
                             .thenReturn(saleListPage);
                     var returnedPurchaseListPage = saleService.getListByUsername("username",
                             1, SortType.NAME, Sort.Direction.ASC);
+
+                    //then
                     assertEquals(saleListPage, returnedPurchaseListPage);
                 },
                 () -> {
+                    //given
                     List<Sale> saleListPage = new ArrayList<>();
                     var sale = new Sale();
                     var user = new User();
@@ -95,13 +112,18 @@ class SaleServiceTests {
                     saleListPage.add(sale);
                     var pageRequest = PageRequest.of(2, 10, Sort.Direction.DESC,
                             "dateTime", "name", "id");
+
+                    //when
                     Mockito.when(saleRepositoryMock.findBySeller_Username("username", pageRequest))
                             .thenReturn(saleListPage);
                     var returnedPurchaseListPage = saleService.getListByUsername("username",
                             2, SortType.DATE, Sort.Direction.DESC);
+
+                    //then
                     assertEquals(saleListPage, returnedPurchaseListPage);
                 },
                 () -> {
+                    //given
                     List<Sale> saleListPage = new ArrayList<>();
                     var sale = new Sale();
                     var user = new User();
@@ -111,13 +133,18 @@ class SaleServiceTests {
                     saleListPage.add(sale);
                     var pageRequest = PageRequest.of(3, 10, Sort.Direction.ASC,
                             "tag", "name", "dateTime", "id");
+
+                    //when
                     Mockito.when(saleRepositoryMock.findBySeller_Username("username", pageRequest))
                             .thenReturn(saleListPage);
                     var returnedPurchaseListPage = saleService.getListByUsername("username",
                             3, SortType.TAG_NAME, Sort.Direction.ASC);
+
+                    //then
                     assertEquals(saleListPage, returnedPurchaseListPage);
                 },
                 () -> {
+                    //given
                     List<Sale> saleListPage = new ArrayList<>();
                     var sale = new Sale();
                     var user = new User();
@@ -127,10 +154,14 @@ class SaleServiceTests {
                     saleListPage.add(sale);
                     var pageRequest = PageRequest.of(4, 10, Sort.Direction.DESC,
                             "tag", "dateTime", "name", "id");
+
+                    //when
                     Mockito.when(saleRepositoryMock.findBySeller_Username("username", pageRequest))
                             .thenReturn(saleListPage);
                     var returnedPurchaseListPage = saleService.getListByUsername("username",
                             4, SortType.TAG_DATE, Sort.Direction.DESC);
+
+                    //then
                     assertEquals(saleListPage, returnedPurchaseListPage);
                 }
         );
@@ -138,6 +169,7 @@ class SaleServiceTests {
 
     @Test
     void getListByUsernameAndProductNameTest() {
+        //given
         List<Sale> saleList = new ArrayList<>();
         var sale = new Sale();
         var user = new User();
@@ -145,10 +177,14 @@ class SaleServiceTests {
         sale.setName("productName");
         sale.setSeller(user);
         saleList.add(sale);
+
+        //when
         Mockito.when(saleRepositoryMock.findBySeller_UsernameAndName("username", "productName"))
                 .thenReturn(saleList);
         var returnedPurchaseList = saleService.getListByUsernameAndProductName("username",
                 "productName");
+
+        //then
         assertEquals(saleList, returnedPurchaseList);
     }
 
@@ -156,6 +192,7 @@ class SaleServiceTests {
     void getListByUsernameContainingSubstringTest() {
         assertAll(
                 () -> {
+                    //given
                     List<Sale> saleList = new ArrayList<>();
                     var sale = new Sale();
                     var user = new User();
@@ -163,14 +200,19 @@ class SaleServiceTests {
                     sale.setName("productNameContainingSubstringDefault");
                     sale.setSeller(user);
                     saleList.add(sale);
+
+                    //when
                     Mockito.when(saleRepositoryMock
                                     .findBySeller_UsernameAndNameContainingIgnoreCase("username", "substring"))
                             .thenReturn(saleList);
                     var returnedPurchaseList = saleService
                             .getListByUsernameContainingSubstring("username", "substring");
+
+                    //then
                     assertEquals(saleList, returnedPurchaseList);
                 },
                 () -> {
+                    //given
                     List<Sale> saleList = new ArrayList<>();
                     var sale = new Sale();
                     var user = new User();
@@ -179,6 +221,8 @@ class SaleServiceTests {
                     sale.setSeller(user);
                     saleList.add(sale);
                     var pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "id");
+
+                    //when
                     Mockito.when(saleRepositoryMock
                                     .findBySeller_UsernameAndNameContainingIgnoreCase("username",
                                             "substring", pageRequest))
@@ -186,9 +230,12 @@ class SaleServiceTests {
                     var returnedPurchaseList = saleService
                             .getListByUsernameContainingSubstring("username", "substring",
                                     0, SortType.NONE, Sort.Direction.DESC);
+
+                    //then
                     assertEquals(saleList, returnedPurchaseList);
                 },
                 () -> {
+                    //given
                     List<Sale> saleList = new ArrayList<>();
                     var sale = new Sale();
                     var user = new User();
@@ -198,6 +245,8 @@ class SaleServiceTests {
                     saleList.add(sale);
                     var pageRequest = PageRequest.of(1, 10, Sort.Direction.ASC,
                             "name", "dateTime", "id");
+
+                    //when
                     Mockito.when(saleRepositoryMock
                                     .findBySeller_UsernameAndNameContainingIgnoreCase("username",
                                             "substring", pageRequest))
@@ -205,9 +254,12 @@ class SaleServiceTests {
                     var returnedPurchaseList = saleService
                             .getListByUsernameContainingSubstring("username", "substring",
                                     1, SortType.NAME, Sort.Direction.ASC);
+
+                    //then
                     assertEquals(saleList, returnedPurchaseList);
                 },
                 () -> {
+                    //given
                     List<Sale> saleList = new ArrayList<>();
                     var sale = new Sale();
                     var user = new User();
@@ -217,6 +269,8 @@ class SaleServiceTests {
                     saleList.add(sale);
                     var pageRequest = PageRequest.of(2, 10, Sort.Direction.DESC,
                             "dateTime", "name", "id");
+
+                    //when
                     Mockito.when(saleRepositoryMock
                                     .findBySeller_UsernameAndNameContainingIgnoreCase("username",
                                             "substring", pageRequest))
@@ -224,9 +278,12 @@ class SaleServiceTests {
                     var returnedPurchaseList = saleService
                             .getListByUsernameContainingSubstring("username", "substring",
                                     2, SortType.DATE, Sort.Direction.DESC);
+
+                    //then
                     assertEquals(saleList, returnedPurchaseList);
                 },
                 () -> {
+                    //given
                     List<Sale> saleList = new ArrayList<>();
                     var sale = new Sale();
                     var user = new User();
@@ -236,6 +293,8 @@ class SaleServiceTests {
                     saleList.add(sale);
                     var pageRequest = PageRequest.of(3, 10, Sort.Direction.ASC,
                             "tag", "name", "dateTime", "id");
+
+                    //when
                     Mockito.when(saleRepositoryMock
                                     .findBySeller_UsernameAndNameContainingIgnoreCase("username",
                                             "substring", pageRequest))
@@ -243,9 +302,12 @@ class SaleServiceTests {
                     var returnedPurchaseList = saleService
                             .getListByUsernameContainingSubstring("username", "substring",
                                     3, SortType.TAG_NAME, Sort.Direction.ASC);
+
+                    //then
                     assertEquals(saleList, returnedPurchaseList);
                 },
                 () -> {
+                    //given
                     List<Sale> saleList = new ArrayList<>();
                     var sale = new Sale();
                     var user = new User();
@@ -255,6 +317,8 @@ class SaleServiceTests {
                     saleList.add(sale);
                     var pageRequest = PageRequest.of(4, 10, Sort.Direction.DESC,
                             "tag", "dateTime", "name", "id");
+
+                    //when
                     Mockito.when(saleRepositoryMock
                                     .findBySeller_UsernameAndNameContainingIgnoreCase("username",
                                             "substring", pageRequest))
@@ -262,6 +326,8 @@ class SaleServiceTests {
                     var returnedPurchaseList = saleService
                             .getListByUsernameContainingSubstring("username", "substring",
                                     4, SortType.TAG_DATE, Sort.Direction.DESC);
+
+                    //then
                     assertEquals(saleList, returnedPurchaseList);
                 }
         );
@@ -269,27 +335,43 @@ class SaleServiceTests {
 
     @Test
     void saveTest() {
-        var user = new User();
-        user.setId(1L);
-        var sale = new Sale();
-        sale.setSeller(user);
+        assertAll(
+                () -> {
+                    //given
+                    var user = new User();
+                    user.setId(1L);
+                    var sale = new Sale();
+                    sale.setSeller(user);
 
-        var authentication = new AuthenticationForServiceTests(user);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    var authentication = new AuthenticationForServiceTests(user);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        saleService.save(sale);
-        Mockito.verify(saleRepositoryMock).save(sale);
-        Mockito.verify(productServiceMock).setDataChanged();
+                    //when
+                    saleService.save(sale);
 
-        var otherUser = new User();
-        otherUser.setId(2L);
-        var otherSale= new Sale();
-        otherSale.setSeller(otherUser);
-        assertThrows(RuntimeException.class, () -> saleService.save(otherSale));
+                    //then
+                    Mockito.verify(saleRepositoryMock).save(sale);
+                    Mockito.verify(productServiceMock).setDataChanged();
+                },
+                () -> {
+                    //and given
+                    var otherUser = new User();
+                    otherUser.setId(2L);
+                    var otherSale = new Sale();
+                    otherSale.setSeller(otherUser);
+
+                    //when
+                    Executable failedSave = () -> saleService.save(otherSale);
+
+                    //then
+                    assertThrows(RuntimeException.class, failedSave);
+                }
+        );
     }
 
     @Test
     void updateAllByNameTest() {
+        //given
         var user = new User();
         user.setId(1L);
         user.setUsername("username");
@@ -325,51 +407,71 @@ class SaleServiceTests {
         var authentication = new AuthenticationForServiceTests(user);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        //when
         Mockito.when(purchaseServiceMock.getListByUsernameAndProductName(user.getUsername(), "productName"))
                 .thenReturn(purchaseList);
         Mockito.when(saleRepositoryMock.findBySeller_UsernameAndName(user.getUsername(), "productName"))
                 .thenReturn(saleList);
-
         saleService.updateProfitsByName("productName");
 
+        //then
         var updatedSale = (Sale) sale.clone();
         updatedSale.setAbsoluteProfit(1.5);
         updatedSale.setRelativeProfit(100.);
 
-        Mockito.verify(saleRepositoryMock).save(updatedSale);
-
-        Mockito.verify(productServiceMock).setDataChanged();
+        Mockito.verify(saleRepositoryMock)
+                .save(updatedSale);
+        Mockito.verify(productServiceMock)
+                .setDataChanged();
     }
 
     @Test
     void deleteByIdTest() {
-        var user1 = new User();
-        user1.setId(1L);
-        var user2 = new User();
-        user2.setId(2L);
+        assertAll(
+                () -> {
+                    //given
+                    var user1 = new User();
+                    user1.setId(1L);
+                    var user2 = new User();
+                    user2.setId(2L);
 
-        var sale1 = new Sale();
-        sale1.setSeller(user1);
-        var sale2 = new Sale();
-        sale2.setSeller(user2);
+                    var sale1 = new Sale();
+                    sale1.setSeller(user1);
+                    var sale2 = new Sale();
+                    sale2.setSeller(user2);
 
-        var authentication = new AuthenticationForServiceTests(user1);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    var authentication = new AuthenticationForServiceTests(user1);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        Mockito.when(saleRepositoryMock.findById(1L))
-                .thenReturn(Optional.of(sale1));
-        Mockito.when(saleRepositoryMock.findById(2L))
-                .thenReturn(Optional.of(sale2));
+                    //when
+                    Mockito.when(saleRepositoryMock.findById(1L))
+                            .thenReturn(Optional.of(sale1));
+                    Mockito.when(saleRepositoryMock.findById(2L))
+                            .thenReturn(Optional.of(sale2));
+                    saleService.deleteById(1L);
 
-        saleService.deleteById(1L);
-        Mockito.verify(saleRepositoryMock).deleteById(1L);
-        Mockito.verify(productServiceMock).setDataChanged();
+                    //then
+                    Mockito.verify(saleRepositoryMock)
+                            .deleteById(1L);
+                    Mockito.verify(productServiceMock)
+                            .setDataChanged();
+                },
+                () -> {
+                    //and given
+                    var saleId = 2L;
 
-        assertThrows(RuntimeException.class, () -> saleService.deleteById(2L));
+                    //when
+                    Executable failedDelete = () -> saleService.deleteById(saleId);
+
+                    //then
+                    assertThrows(RuntimeException.class, failedDelete);
+                }
+        );
     }
 
     @Test
     void updateTagsByUsernameAndProductNameTest() {
+        //given
         var user = new User();
         user.setId(1L);
         user.setUsername("username");
@@ -391,45 +493,85 @@ class SaleServiceTests {
         saleList.add(sale1);
         saleList.add(sale2);
 
+        //when
         Mockito.when(saleRepositoryMock.findBySeller_UsernameAndName("username", "productName"))
                 .thenReturn(saleList);
-
         saleService.updateTagsByUsernameAndProductName("username", "productName", "tag");
 
+        //then
         sale1.setTag("tag");
         sale2.setTag("tag");
-        Mockito.verify(saleRepositoryMock).save(sale1);
-        Mockito.verify(saleRepositoryMock).save(sale2);
-        Mockito.verify(productServiceMock, Mockito.times(2)).setDataChanged();
+        Mockito.verify(saleRepositoryMock)
+                .save(sale1);
+        Mockito.verify(saleRepositoryMock)
+                .save(sale2);
+        Mockito.verify(productServiceMock, Mockito.times(2))
+                .setDataChanged();
     }
 
     @Test
     void getAnyByUsernameAndProductNameTest() {
-        List<Sale> saleList = new ArrayList<>();
-        var sale = new Sale();
-        var user = new User();
-        user.setUsername("username");
-        sale.setName("productName");
-        sale.setSeller(user);
-        saleList.add(sale);
-        Mockito.when(saleRepositoryMock.findBySeller_UsernameAndName("username", "productName"))
-                .thenReturn(saleList);
-        var returnedOptionalPurchase = saleService
-                .getAnyByUsernameAndProductName("username", "productName");
-        assertTrue(returnedOptionalPurchase.isPresent());
-        assertEquals("username", returnedOptionalPurchase.get().getSeller().getUsername());
-        assertEquals("productName", returnedOptionalPurchase.get().getName());
+        assertAll(
+                () -> {
+                    //given
+                    List<Sale> saleList = new ArrayList<>();
+                    var sale = new Sale();
+                    var user = new User();
+                    user.setUsername("username");
+                    sale.setName("productName");
+                    sale.setSeller(user);
+                    saleList.add(sale);
 
-        returnedOptionalPurchase = saleService
-                .getAnyByUsernameAndProductName("otherUsername", "productName");
-        assertFalse(returnedOptionalPurchase.isPresent());
+                    //when
+                    Mockito.when(saleRepositoryMock.findBySeller_UsernameAndName("username", "productName"))
+                            .thenReturn(saleList);
+                    var returnedOptionalPurchase = saleService
+                            .getAnyByUsernameAndProductName("username", "productName");
 
-        returnedOptionalPurchase = saleService
-                .getAnyByUsernameAndProductName("username", "otherProductName");
-        assertFalse(returnedOptionalPurchase.isPresent());
+                    //then
+                    assertTrue(returnedOptionalPurchase.isPresent());
+                    assertEquals("username", returnedOptionalPurchase.get()
+                            .getSeller()
+                            .getUsername());
+                    assertEquals("productName", returnedOptionalPurchase.get()
+                            .getName());
+                },
+                () -> {
+                    //given
+                    var username = "otherUsername";
+                    var name = "productName";
 
-        returnedOptionalPurchase = saleService
-                .getAnyByUsernameAndProductName("otherUsername", "otherProductName");
-        assertFalse(returnedOptionalPurchase.isPresent());
+                    //when
+                    var returnedOptionalPurchase = saleService
+                            .getAnyByUsernameAndProductName(username, name);
+
+                    //then
+                    assertFalse(returnedOptionalPurchase.isPresent());
+                },
+                () -> {
+                    //given
+                    var username = "username";
+                    var name = "otherProductName";
+
+                    //when
+                    var returnedOptionalPurchase = saleService
+                            .getAnyByUsernameAndProductName(username, name);
+
+                    //then
+                    assertFalse(returnedOptionalPurchase.isPresent());
+                },
+                () -> {
+                    //given
+                    var username = "otherUsername";
+                    var name = "otherProductName";
+
+                    //when
+                    var returnedOptionalPurchase = saleService
+                            .getAnyByUsernameAndProductName(username, name);
+
+                    //then
+                    assertFalse(returnedOptionalPurchase.isPresent());
+                }
+        );
     }
 }

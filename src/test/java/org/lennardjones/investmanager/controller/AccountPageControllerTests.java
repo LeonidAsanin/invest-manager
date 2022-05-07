@@ -61,18 +61,18 @@ class AccountPageControllerTests {
         var invalidSale = new Sale();
 
         Mockito.when(loggedUserManagementServiceMock.getChosenTableToSee())
-                        .thenReturn(chosenTableToSee);
+                .thenReturn(chosenTableToSee);
         Mockito.when(loggedUserManagementServiceMock.getFilterByNameString())
-                        .thenReturn(filterByName);
+                .thenReturn(filterByName);
         Mockito.when(loggedUserManagementServiceMock.getFilterByTagString())
-                        .thenReturn(filterByTag);
+                .thenReturn(filterByTag);
 
         mockMvc.perform(
-                MockMvcRequestBuilders
-                        .get("/account")
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .with(SecurityMockMvcRequestPostProcessors
-                                .authentication(new AuthenticationForControllerTests(user)))
+                        MockMvcRequestBuilders
+                                .get("/account")
+                                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                                .with(SecurityMockMvcRequestPostProcessors
+                                        .authentication(new AuthenticationForControllerTests(user)))
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("text/html;charset=UTF-8"))
@@ -86,30 +86,30 @@ class AccountPageControllerTests {
 
         Mockito.verify(accountPageServiceMock)
                 .updateSortingParametersAndAddItToModel(ArgumentMatchers.isNull(),
-                                                        ArgumentMatchers.isNull(), ArgumentMatchers.any(Model.class));
+                        ArgumentMatchers.isNull(), ArgumentMatchers.any(Model.class));
         Mockito.verify(accountPageServiceMock)
                 .updateFilterParametersAndAddItToModel(ArgumentMatchers.isNull(),
-                                                       ArgumentMatchers.isNull(), ArgumentMatchers.any(Model.class));
+                        ArgumentMatchers.isNull(), ArgumentMatchers.any(Model.class));
         Mockito.verify(accountPageServiceMock)
                 .updateChosenTableAndAddItToModel(ArgumentMatchers.isNull(), ArgumentMatchers.any(Model.class));
         Mockito.verify(accountPageServiceMock)
                 .definePage(user.getUsername(), null, chosenTableToSee, filterByName, filterByTag);
         Mockito.verify(accountPageServiceMock)
                 .defineTable(ArgumentMatchers.eq(user.getUsername()), ArgumentMatchers.eq(chosenTableToSee),
-                             ArgumentMatchers.eq(filterByName), ArgumentMatchers.eq(filterByTag),
-                             ArgumentMatchers.any(Model.class));
+                        ArgumentMatchers.eq(filterByName), ArgumentMatchers.eq(filterByTag),
+                        ArgumentMatchers.any(Model.class));
         Mockito.verify(accountPageServiceMock)
                 .defineTotals(ArgumentMatchers.eq(user.getUsername()), ArgumentMatchers.eq(chosenTableToSee),
-                              ArgumentMatchers.any(Model.class));
+                        ArgumentMatchers.any(Model.class));
         Mockito.verify(accountPageServiceMock)
                 .defineCurrentAndLastPages(ArgumentMatchers.eq(user.getUsername()),
-                                           ArgumentMatchers.eq(chosenTableToSee), ArgumentMatchers.eq(filterByName),
-                                           ArgumentMatchers.eq(filterByTag), ArgumentMatchers.any(Model.class));
+                        ArgumentMatchers.eq(chosenTableToSee), ArgumentMatchers.eq(filterByName),
+                        ArgumentMatchers.eq(filterByTag), ArgumentMatchers.any(Model.class));
         Mockito.verify(accountPageServiceMock)
                 .addPurchaseTemplate(ArgumentMatchers.eq(user), ArgumentMatchers.any(Model.class));
         Mockito.verify(accountPageServiceMock)
                 .addSaleTemplate(ArgumentMatchers.eq(invalidSale), ArgumentMatchers.eq(user),
-                                 ArgumentMatchers.any(Model.class));
+                        ArgumentMatchers.any(Model.class));
     }
 
     @Test
@@ -152,7 +152,7 @@ class AccountPageControllerTests {
                         ArgumentMatchers.isNull(), ArgumentMatchers.any(Model.class));
         Mockito.verify(accountPageServiceMock)
                 .updateChosenTableAndAddItToModel(ArgumentMatchers.eq(chosenTableToSee.name()),
-                                                  ArgumentMatchers.any(Model.class));
+                        ArgumentMatchers.any(Model.class));
         Mockito.verify(accountPageServiceMock)
                 .definePage(user.getUsername(), null, chosenTableToSee, filterByName, filterByTag);
         Mockito.verify(accountPageServiceMock)

@@ -39,19 +39,23 @@ class AddPurchaseTemplateTests {
     AccountPageService accountPageService;
 
     @BeforeEach()
-    void before() {
+    void setup() {
         accountPageService = new AccountPageService(loggedUserManagementServiceMock,
                                                     purchaseServiceMock, saleServiceMock);
     }
 
     @Test
     void test() {
+        //given
         var user = new User();
         user.setId(1L);
         user.setUsername("username");
         user.setPassword("password");
 
+        //when
         accountPageService.addPurchaseTemplate(user, modelMock);
+
+        //then
         Mockito.verify(modelMock)
                 .addAttribute(stringCaptor.capture(), purchaseCaptor.capture());
         var string = stringCaptor.getValue();

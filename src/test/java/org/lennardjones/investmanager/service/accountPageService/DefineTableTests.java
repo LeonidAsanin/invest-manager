@@ -38,7 +38,7 @@ class DefineTableTests {
     User user;
 
     @BeforeEach
-    void before() {
+    void setup() {
         accountPageService = new AccountPageService(loggedUserManagementServiceMock,
                 purchaseServiceMock, saleServiceMock);
 
@@ -54,6 +54,7 @@ class DefineTableTests {
 
         @Test
         void testTableWithoutFilters() {
+            //given
             var page = 1;
             var sortType = SortType.DATE;
             var sortDirection = Sort.Direction.ASC;
@@ -61,6 +62,7 @@ class DefineTableTests {
             purchaseList.add(new Purchase());
             List<Sale> saleList = Collections.emptyList();
 
+            //when
             Mockito.when(loggedUserManagementServiceMock.getSortType())
                     .thenReturn(sortType);
             Mockito.when(loggedUserManagementServiceMock.getSortOrderType())
@@ -69,9 +71,9 @@ class DefineTableTests {
                     .thenReturn(page);
             Mockito.when(purchaseServiceMock.getListByUsername(user.getUsername(), page, sortType, sortDirection))
                     .thenReturn(purchaseList);
-
             accountPageService.defineTable(user.getUsername(), chosenTableToSee, "", "", modelMock);
 
+            //then
             Mockito.verify(modelMock)
                     .addAttribute("purchaseList", purchaseList);
             Mockito.verify(modelMock)
@@ -80,6 +82,7 @@ class DefineTableTests {
 
         @Test
         void testTableWithFilterByName() {
+            //given
             var page = 1;
             var sortType = SortType.NAME;
             var sortDirection = Sort.Direction.DESC;
@@ -93,6 +96,7 @@ class DefineTableTests {
 
             List<Sale> saleList = Collections.emptyList();
 
+            //when
             Mockito.when(loggedUserManagementServiceMock.getSortType())
                     .thenReturn(sortType);
             Mockito.when(loggedUserManagementServiceMock.getSortOrderType())
@@ -102,9 +106,9 @@ class DefineTableTests {
             Mockito.when(purchaseServiceMock.getListByUsernameContainingSubstring(user.getUsername(), "w", page,
                             sortType, sortDirection))
                     .thenReturn(purchaseList);
-
             accountPageService.defineTable(user.getUsername(), chosenTableToSee, "w", "", modelMock);
 
+            //then
             Mockito.verify(modelMock)
                     .addAttribute("purchaseList", purchaseList);
             Mockito.verify(modelMock)
@@ -113,6 +117,7 @@ class DefineTableTests {
 
         @Test
         void testTableWithFilterByTag() {
+            //given
             var page = 1;
             var sortType = SortType.TAG_DATE;
             var sortDirection = Sort.Direction.ASC;
@@ -126,6 +131,7 @@ class DefineTableTests {
 
             List<Sale> saleList = Collections.emptyList();
 
+            //when
             Mockito.when(loggedUserManagementServiceMock.getSortType())
                     .thenReturn(sortType);
             Mockito.when(loggedUserManagementServiceMock.getSortOrderType())
@@ -135,9 +141,9 @@ class DefineTableTests {
             Mockito.when(purchaseServiceMock.getListByUsername(user.getUsername(), page,
                             sortType, sortDirection))
                     .thenReturn(purchaseList);
-
             accountPageService.defineTable(user.getUsername(), chosenTableToSee, "", "tag", modelMock);
 
+            //then
             purchaseList = new ArrayList<>();
             var purchase = new Purchase();
             purchase.setTag("tag");
@@ -151,6 +157,7 @@ class DefineTableTests {
 
         @Test
         void testTableWithFilterByNameAndTag() {
+            //given
             var page = 1;
             var sortType = SortType.TAG_DATE;
             var sortDirection = Sort.Direction.DESC;
@@ -166,6 +173,7 @@ class DefineTableTests {
 
             List<Sale> saleList = Collections.emptyList();
 
+            //when
             Mockito.when(loggedUserManagementServiceMock.getSortType())
                     .thenReturn(sortType);
             Mockito.when(loggedUserManagementServiceMock.getSortOrderType())
@@ -175,9 +183,9 @@ class DefineTableTests {
             Mockito.when(purchaseServiceMock.getListByUsernameContainingSubstring(user.getUsername(), "w", page,
                             sortType, sortDirection))
                     .thenReturn(purchaseList);
-
             accountPageService.defineTable(user.getUsername(), chosenTableToSee, "w", "tag", modelMock);
 
+            //then
             purchaseList = new ArrayList<>();
             var purchase = new Purchase();
             purchase.setName("awa");
@@ -197,6 +205,7 @@ class DefineTableTests {
 
         @Test
         void testTableWithoutFilters() {
+            //given
             var page = 2;
             var sortType = SortType.NONE;
             var sortDirection = Sort.Direction.ASC;
@@ -204,6 +213,7 @@ class DefineTableTests {
             List<Sale> saleList = new ArrayList<>();
             saleList.add(new Sale());
 
+            //when
             Mockito.when(loggedUserManagementServiceMock.getSortType())
                     .thenReturn(sortType);
             Mockito.when(loggedUserManagementServiceMock.getSortOrderType())
@@ -212,9 +222,9 @@ class DefineTableTests {
                     .thenReturn(page);
             Mockito.when(saleServiceMock.getListByUsername(user.getUsername(), page, sortType, sortDirection))
                     .thenReturn(saleList);
-
             accountPageService.defineTable(user.getUsername(), chosenTableToSee, "", "", modelMock);
 
+            //then
             Mockito.verify(modelMock)
                     .addAttribute("purchaseList", purchaseList);
             Mockito.verify(modelMock)
@@ -223,6 +233,7 @@ class DefineTableTests {
 
         @Test
         void testTableWithFilterByName() {
+            //given
             var page = 3;
             var sortType = SortType.TAG_DATE;
             var sortDirection = Sort.Direction.ASC;
@@ -236,6 +247,7 @@ class DefineTableTests {
 
             List<Purchase> purchaseList = Collections.emptyList();
 
+            //when
             Mockito.when(loggedUserManagementServiceMock.getSortType())
                     .thenReturn(sortType);
             Mockito.when(loggedUserManagementServiceMock.getSortOrderType())
@@ -245,9 +257,10 @@ class DefineTableTests {
             Mockito.when(saleServiceMock.getListByUsernameContainingSubstring(user.getUsername(), "w", page,
                             sortType, sortDirection))
                     .thenReturn(saleList);
-
             accountPageService.defineTable(user.getUsername(), chosenTableToSee, "w", "", modelMock);
 
+
+            //then
             Mockito.verify(modelMock)
                     .addAttribute("purchaseList", purchaseList);
             Mockito.verify(modelMock)
@@ -256,6 +269,7 @@ class DefineTableTests {
 
         @Test
         void testTableWithFilterByTag() {
+            //given
             var page = 10;
             var sortType = SortType.TAG_DATE;
             var sortDirection = Sort.Direction.ASC;
@@ -269,6 +283,7 @@ class DefineTableTests {
 
             List<Purchase> purchaseList = Collections.emptyList();
 
+            //when
             Mockito.when(loggedUserManagementServiceMock.getSortType())
                     .thenReturn(sortType);
             Mockito.when(loggedUserManagementServiceMock.getSortOrderType())
@@ -278,9 +293,9 @@ class DefineTableTests {
             Mockito.when(saleServiceMock.getListByUsername(user.getUsername(), page,
                             sortType, sortDirection))
                     .thenReturn(saleList);
-
             accountPageService.defineTable(user.getUsername(), chosenTableToSee, "", "tag", modelMock);
 
+            //then
             saleList = new ArrayList<>();
             var sale = new Sale();
             sale.setTag("tag");
@@ -294,6 +309,7 @@ class DefineTableTests {
 
         @Test
         void testTableWithFilterByNameAndTag() {
+            //given
             var page = 1;
             var sortType = SortType.TAG_DATE;
             var sortDirection = Sort.Direction.DESC;
@@ -309,6 +325,7 @@ class DefineTableTests {
 
             List<Purchase> purchaseList = Collections.emptyList();
 
+            //when
             Mockito.when(loggedUserManagementServiceMock.getSortType())
                     .thenReturn(sortType);
             Mockito.when(loggedUserManagementServiceMock.getSortOrderType())
@@ -318,9 +335,9 @@ class DefineTableTests {
             Mockito.when(saleServiceMock.getListByUsernameContainingSubstring(user.getUsername(), "w", page,
                             sortType, sortDirection))
                     .thenReturn(saleList);
-
             accountPageService.defineTable(user.getUsername(), chosenTableToSee, "w", "tag", modelMock);
 
+            //then
             saleList = new ArrayList<>();
             var sale = new Sale();
             sale.setName("awa");

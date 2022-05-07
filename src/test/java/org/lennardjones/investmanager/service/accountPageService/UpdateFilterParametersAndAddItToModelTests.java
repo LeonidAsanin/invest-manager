@@ -27,20 +27,25 @@ class UpdateFilterParametersAndAddItToModelTests {
     AccountPageService accountPageService;
 
     @BeforeEach
-    void before() {
+    void setup() {
         accountPageService = new AccountPageService(loggedUserManagementServiceMock,
                                                     purchaseServiceMock, saleServiceMock);
     }
 
     @Test
     void testNonNullInputParameters() {
+        //given
         var filterByNameString = "filterByNameString";
         var filterByTagString = "filterByTagString";
+
+        //when
         Mockito.when(loggedUserManagementServiceMock.getFilterByNameString())
                         .thenReturn(filterByNameString);
         Mockito.when(loggedUserManagementServiceMock.getFilterByTagString())
                         .thenReturn(filterByTagString);
         accountPageService.updateFilterParametersAndAddItToModel(filterByNameString, filterByTagString, modelMock);
+
+        //then
         Mockito.verify(loggedUserManagementServiceMock)
                 .setFilterParametersIfNotNull(filterByNameString, filterByTagString);
         Mockito.verify(modelMock)
@@ -51,13 +56,18 @@ class UpdateFilterParametersAndAddItToModelTests {
 
     @Test
     void testNullInputParameters() {
+        //given
         var filterByNameString = "filterByNameString";
         var filterByTagString = "filterByTagString";
+
+        //when
         Mockito.when(loggedUserManagementServiceMock.getFilterByNameString())
                 .thenReturn(filterByNameString);
         Mockito.when(loggedUserManagementServiceMock.getFilterByTagString())
                 .thenReturn(filterByTagString);
         accountPageService.updateFilterParametersAndAddItToModel(null, null, modelMock);
+
+        //then
         Mockito.verify(loggedUserManagementServiceMock)
                 .setFilterParametersIfNotNull(null, null);
         Mockito.verify(modelMock)
