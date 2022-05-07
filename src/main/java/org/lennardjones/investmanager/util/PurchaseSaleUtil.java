@@ -36,8 +36,12 @@ public class PurchaseSaleUtil {
      * @return true if current queue purchase and sale lists are correct, otherwise false
      */
     public static boolean isQueueIncorrect(List<Purchase> purchaseList, List<Sale> saleList, String productName) {
-        purchaseList = purchaseList.stream().filter(p -> p.getName().equals(productName)).toList();
-        saleList = saleList.stream().filter(s -> s.getName().equals(productName)).toList();
+        purchaseList = purchaseList.stream()
+                .filter(p -> p.getName().equals(productName))
+                .toList();
+        saleList = saleList.stream()
+                .filter(s -> s.getName().equals(productName))
+                .toList();
 
         List<Transaction> transactionList = new LinkedList<>();
         for (var p : purchaseList) {
@@ -46,7 +50,9 @@ public class PurchaseSaleUtil {
         for (var s : saleList) {
             transactionList.add(new Transaction(-s.getAmount(), s.getDateTime()));
         }
-        transactionList = transactionList.stream().sorted(Comparator.comparing(Transaction::dateTime)).toList();
+        transactionList = transactionList.stream()
+                .sorted(Comparator.comparing(Transaction::dateTime))
+                .toList();
 
         var productAmount = 0;
         for (var transaction: transactionList) {
@@ -98,12 +104,16 @@ public class PurchaseSaleUtil {
         }
 
         /* Setting up sale benefits to zero in order to calculate new values */
-        saleStack = saleStack.stream().peek(sale -> {
-            sale.setAbsoluteProfit(0.);
-            sale.setRelativeProfit(0.);
-        }).collect(Collectors.toCollection(LinkedList::new));
+        saleStack = saleStack.stream()
+                .peek(sale -> {
+                    sale.setAbsoluteProfit(0.);
+                    sale.setRelativeProfit(0.);
+                })
+                .collect(Collectors.toCollection(LinkedList::new));
 
-        var saleOriginalValuesList = saleStack.stream().map(Sale::getAmount).toList();
+        var saleOriginalValuesList = saleStack.stream()
+                .map(Sale::getAmount)
+                .toList();
 
         var resultSaleList = new LinkedList<Sale>();
 

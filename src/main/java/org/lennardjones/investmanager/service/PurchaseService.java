@@ -56,7 +56,9 @@ public class PurchaseService {
     }
 
     public void save(Purchase purchase) {
-        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var user = (User) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
         var userId = user.getId();
         var ownerId = purchase.getOwner().getId();
         if (userId != null && userId.equals(ownerId)) {
@@ -69,9 +71,14 @@ public class PurchaseService {
     }
 
     public void deleteById(Long id) {
-        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var user = (User) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
         var userId = user.getId();
-        var ownerId = purchaseRepository.findById(id).orElseThrow().getOwner().getId();
+        var ownerId = purchaseRepository.findById(id)
+                .orElseThrow()
+                .getOwner()
+                .getId();
         if (userId != null && userId.equals(ownerId)) {
             purchaseRepository.deleteById(id);
             productService.setDataChanged();

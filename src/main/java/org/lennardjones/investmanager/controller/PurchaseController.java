@@ -87,7 +87,8 @@ public class PurchaseController {
         var unchangedProductName = previousPurchaseList.stream()
                 .filter(p -> p.getId().equals(purchaseId))
                 .map(Purchase::getName)
-                .findFirst().orElseThrow();
+                .findFirst()
+                .orElseThrow();
         if (PurchaseSaleUtil.isQueueIncorrect(purchaseList, saleList, productName) ||
             PurchaseSaleUtil.isQueueIncorrect(purchaseList, saleList, unchangedProductName)) {
             return "redirect:/account?error=editPurchase";

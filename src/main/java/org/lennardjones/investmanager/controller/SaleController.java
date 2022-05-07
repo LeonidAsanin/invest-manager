@@ -47,7 +47,7 @@ public class SaleController {
 
         /* Tag assigning */
         var optionalSale = saleService.getAnyByUsernameAndProductName(user.getUsername(),
-                sale.getName());
+                                                                                    sale.getName());
         optionalSale.ifPresentOrElse(p -> sale.setTag(p.getTag()), () -> sale.setTag(""));
 
         saleService.save(sale);
@@ -96,7 +96,8 @@ public class SaleController {
         var unchangedProductName = previousSaleList.stream()
                 .filter(s -> s.getId().equals(saleId))
                 .map(Sale::getName)
-                .findFirst().orElseThrow();
+                .findFirst()
+                .orElseThrow();
         if (PurchaseSaleUtil.isQueueIncorrect(purchaseList, saleList, productName) ||
             PurchaseSaleUtil.isQueueIncorrect(purchaseList, saleList, unchangedProductName)) {
             return "redirect:/account?error=editSale";

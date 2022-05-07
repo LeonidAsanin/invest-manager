@@ -135,11 +135,14 @@ public class ProductService {
 
             /* Filling in fields of the product */
             var product = new Product();
-                product.setName(productName);
-                product.setAmount(productAmount);
-                product.setAveragePrice(averagePriceConsideringCommission);
-            var tag = purchaseStack.stream().findAny().orElseThrow().getTag();
-                product.setTag(tag);
+            product.setName(productName);
+            product.setAmount(productAmount);
+            product.setAveragePrice(averagePriceConsideringCommission);
+            var tag = purchaseStack.stream()
+                    .findAny()
+                    .orElseThrow()
+                    .getTag();
+            product.setTag(tag);
 
             /* Setting current price and calculating current profits if corresponding data exists */
             var optionalCurrentPrice = productRepository

@@ -69,7 +69,9 @@ public class AccountPageService {
                         purchaseList = purchaseService.getListByUsername(username);
                     }
                     if (!filterByTag.equals("")) {
-                        purchaseList = purchaseList.stream().filter(p -> p.getTag().equals(filterByTag)).toList();
+                        purchaseList = purchaseList.stream()
+                                .filter(p -> p.getTag().equals(filterByTag))
+                                .toList();
                     }
                     var maxPurchasePage = (int) Math.ceil((double) purchaseList.size() / 10 - 1);
 
@@ -96,7 +98,9 @@ public class AccountPageService {
                         saleList = saleService.getListByUsername(username);
                     }
                     if (!filterByTag.equals("")) {
-                        saleList = saleList.stream().filter(s -> s.getTag().equals(filterByTag)).toList();
+                        saleList = saleList.stream()
+                                .filter(s -> s.getTag().equals(filterByTag))
+                                .toList();
                     }
                     var maxSalePage = (int) Math.ceil((double) saleList.size() / 10 - 1);
 
@@ -135,7 +139,9 @@ public class AccountPageService {
                             typeOfSort, sortDirection);
                 }
                 if (!filterByTag.equals("")) {
-                    purchaseList = purchaseList.stream().filter(p -> p.getTag().equals(filterByTag)).toList();
+                    purchaseList = purchaseList.stream()
+                            .filter(p -> p.getTag().equals(filterByTag))
+                            .toList();
                 }
             }
             case SALE -> {
@@ -148,7 +154,9 @@ public class AccountPageService {
                             typeOfSort, sortDirection);
                 }
                 if (!filterByTag.equals("")) {
-                    saleList = saleList.stream().filter(s -> s.getTag().equals(filterByTag)).toList();
+                    saleList = saleList.stream()
+                            .filter(s -> s.getTag().equals(filterByTag))
+                            .toList();
                 }
             }
         }
@@ -164,19 +172,29 @@ public class AccountPageService {
         switch (chosenTable) {
             case PURCHASE -> {
                 if (!purchaseList.isEmpty()) {
-                    var totalPurchasePrice = purchaseList.stream().mapToDouble(p -> p.getPrice() * p.getAmount()).sum();
-                    var totalPurchaseCommission = purchaseList.stream().mapToDouble(p -> p.getCommission() * p.getAmount())
+                    var totalPurchasePrice = purchaseList.stream()
+                            .mapToDouble(p -> p.getPrice() * p.getAmount())
+                            .sum();
+                    var totalPurchaseCommission = purchaseList.stream()
+                            .mapToDouble(p -> p.getCommission() * p.getAmount())
                             .sum();
                     purchaseTotal = new PurchaseTotal(totalPurchasePrice, totalPurchaseCommission);
                 }
             }
             case SALE -> {
                 if (!saleList.isEmpty()) {
-                    var totalSalePrice = saleList.stream().mapToDouble(s -> s.getPrice() * s.getAmount()).sum();
-                    var totalSaleCommission = saleList.stream().mapToDouble(s -> s.getCommission() * s.getAmount()).sum();
-                    var totalSaleAbsoluteProfit = saleList.stream().mapToDouble(Sale::getAbsoluteProfit).sum();
+                    var totalSalePrice = saleList.stream()
+                            .mapToDouble(s -> s.getPrice() * s.getAmount())
+                            .sum();
+                    var totalSaleCommission = saleList.stream()
+                            .mapToDouble(s -> s.getCommission() * s.getAmount())
+                            .sum();
+                    var totalSaleAbsoluteProfit = saleList.stream()
+                            .mapToDouble(Sale::getAbsoluteProfit)
+                            .sum();
                     var fullTotalSalePrice = totalSalePrice - totalSaleCommission;
-                    var totalSaleRelativeProfit = (fullTotalSalePrice / (fullTotalSalePrice - totalSaleAbsoluteProfit) - 1) * 100;
+                    var totalSaleRelativeProfit = (fullTotalSalePrice /
+                            (fullTotalSalePrice - totalSaleAbsoluteProfit) - 1) * 100;
                     saleTotal = new SaleTotal(totalSalePrice, totalSaleCommission,
                                               totalSaleAbsoluteProfit, totalSaleRelativeProfit);
                 }
@@ -201,7 +219,9 @@ public class AccountPageService {
                     purchaseList = purchaseService.getListByUsername(username);
                 }
                 if (!filterByTag.equals("")) {
-                    purchaseList = purchaseList.stream().filter(p -> p.getTag().equals(filterByTag)).toList();
+                    purchaseList = purchaseList.stream()
+                            .filter(p -> p.getTag().equals(filterByTag))
+                            .toList();
                 }
                 lastPage = (int) Math.ceil((double) purchaseList.size() / 10 - 1) + 1;
             }
@@ -214,7 +234,9 @@ public class AccountPageService {
                     saleList = saleService.getListByUsername(username);
                 }
                 if (!filterByTag.equals("")) {
-                    saleList = saleList.stream().filter(s -> s.getTag().equals(filterByTag)).toList();
+                    saleList = saleList.stream()
+                            .filter(s -> s.getTag().equals(filterByTag))
+                            .toList();
                 }
                 lastPage = (int) Math.ceil((double) saleList.size() / 10 - 1) + 1;
             }

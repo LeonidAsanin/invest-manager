@@ -54,7 +54,9 @@ public class SaleService {
     }
 
     public void save(Sale sale) {
-        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var user = (User) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
         var userId = user.getId();
         var sellerId = sale.getSeller().getId();
         if (userId != null && userId.equals(sellerId)) {
@@ -67,7 +69,9 @@ public class SaleService {
     }
 
     public void updateProfitsByName(String productName) {
-        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var user = (User) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
         var purchaseList = purchaseService.getListByUsernameAndProductName(user.getUsername(), productName);
         var saleList = getListByUsernameAndProductName(user.getUsername(), productName);
         saleList = PurchaseSaleUtil.calculateProfitsFromSales(purchaseList, saleList, productName);
@@ -77,9 +81,14 @@ public class SaleService {
     }
 
     public void deleteById(Long id) {
-        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var user = (User) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
         var userId = user.getId();
-        var sellerId = saleRepository.findById(id).orElseThrow().getSeller().getId();
+        var sellerId = saleRepository.findById(id)
+                .orElseThrow()
+                .getSeller()
+                .getId();
         if (userId != null && userId.equals(sellerId)) {
             saleRepository.deleteById(id);
             productService.setDataChanged();
