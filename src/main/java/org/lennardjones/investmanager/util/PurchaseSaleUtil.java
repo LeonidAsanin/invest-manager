@@ -64,13 +64,13 @@ public class PurchaseSaleUtil {
     }
 
     /**
-     * This method calculates absolute and relative benefits from
+     * This method calculates absolute and relative profits from
      * {@link org.lennardjones.investmanager.entity.Sale sales}.
      *
      * @param purchaseList list of purchases that were made by user
      * @param saleList list of sales that were made by user
      * @param productName name of the product
-     * @return updated with new benefit values sale list
+     * @return updated sale list with new profit values
      */
     public static List<Sale> calculateProfitsFromSales(List<Purchase> purchaseList,
                                                        List<Sale> saleList,
@@ -103,7 +103,7 @@ public class PurchaseSaleUtil {
             saleStack.set(i, saleClone);
         }
 
-        /* Setting up sale benefits to zero in order to calculate new values */
+        /* Setting up sale profits to zero in order to calculate new values */
         saleStack = saleStack.stream()
                 .peek(sale -> {
                     sale.setAbsoluteProfit(0.);
@@ -132,13 +132,13 @@ public class PurchaseSaleUtil {
                 var remainingProductAmount = purchaseAmount - saleAmount;
 
                 if (remainingProductAmount >= 0) {
-                    var saleBenefit = (saleFullPrice - purchaseFullPrice) * saleAmount;
-                    sale.setAbsoluteProfit(saleCurrentProfit + saleBenefit);
+                    var saleProfit = (saleFullPrice - purchaseFullPrice) * saleAmount;
+                    sale.setAbsoluteProfit(saleCurrentProfit + saleProfit);
                     resultSaleList.add(sale);
                     purchase.setAmount(remainingProductAmount);
                 } else {
-                    var saleBenefit = (saleFullPrice - purchaseFullPrice) * purchaseAmount;
-                    sale.setAbsoluteProfit(saleCurrentProfit + saleBenefit);
+                    var saleProfit = (saleFullPrice - purchaseFullPrice) * purchaseAmount;
+                    sale.setAbsoluteProfit(saleCurrentProfit + saleProfit);
                     sale.setAmount(-remainingProductAmount);
                     saleStack.addFirst(sale);
                     break;
@@ -153,11 +153,11 @@ public class PurchaseSaleUtil {
             /* Changing affected amounts during while-loop to original ones */
             sale.setAmount(saleOriginalValuesList.get(i));
 
-            /* Calculating relative benefit */
+            /* Calculating relative profit */
             var fullPriceOfSelling = (sale.getPrice() - sale.getCommission()) * sale.getAmount();
             var relativeProfit = (fullPriceOfSelling / (fullPriceOfSelling - absoluteProfit) - 1) * 100;
 
-            /* Setting final (for the current calculation) benefit values to the sale */
+            /* Setting final (for the current calculation) profit values to the sale */
             sale.setAbsoluteProfit(absoluteProfit);
             sale.setRelativeProfit(relativeProfit);
         }

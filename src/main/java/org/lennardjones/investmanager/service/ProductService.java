@@ -152,8 +152,8 @@ public class ProductService {
 
                 product.setCurrentPrice(currentPrice);
 
-                var absoluteBenefit = (currentPrice - averagePriceConsideringCommission) * productAmount;
-                product.setAbsoluteProfit(absoluteBenefit);
+                var absoluteProfit = (currentPrice - averagePriceConsideringCommission) * productAmount;
+                product.setAbsoluteProfit(absoluteProfit);
 
                 var relativePrice = (currentPrice / averagePriceConsideringCommission - 1) * 100;
                 product.setRelativeProfit(relativePrice);
