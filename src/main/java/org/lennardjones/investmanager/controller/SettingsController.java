@@ -79,7 +79,7 @@ public class SettingsController {
         return "redirect:/settings";
     }
 
-    @GetMapping("/deleteAccount")
+    @PostMapping("/deleteAccount")
     public String deleteAccount(@RequestParam(required = false) String confirmation,
                                 @AuthenticationPrincipal User user) {
         if (confirmation == null) return "redirect:/settings?intentionToDeleteAccount";

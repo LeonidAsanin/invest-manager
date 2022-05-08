@@ -78,19 +78,21 @@
 
         <div class="settingBlock">
             <div th:if="${intentionToDeleteAccount} == null">
-                <a th:href="@{/settings/deleteAccount}">
-                    <button>Delete account</button>
-                </a>
+                <form method="post" th:action="@{/settings/deleteAccount}">
+                    <button type="submit">Delete account</button>
+                </form>
             </div>
             <div class="warningMessage" th:if="${intentionToDeleteAccount} != null">
                 <p>
                     Do you really want to delete your account?
                 </p>
-                <a th:href="@{settings/deleteAccount?confirmation}">
-                    <button>Yes, I do</button>
-                </a>
+                <form method="post" th:action="@{/settings/deleteAccount?confirmation}">
+                    <button type="submit">Yes, I do</button>
+                    <a th:href="@{/settings}">
+                        <button type="button">No, I don't</button>
+                    </a>
+                </form>
                 <a th:href="@{/settings}">
-                    <button>No, I don't</button>
                 </a>
             </div>
         </div>

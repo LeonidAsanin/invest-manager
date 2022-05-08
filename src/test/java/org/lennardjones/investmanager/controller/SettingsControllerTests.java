@@ -277,7 +277,7 @@ class SettingsControllerTests {
                 () -> {
                     mockMvc.perform(
                                     MockMvcRequestBuilders
-                                            .get("/settings/deleteAccount")
+                                            .post("/settings/deleteAccount")
                                             .with(SecurityMockMvcRequestPostProcessors.csrf())
                                             .with(SecurityMockMvcRequestPostProcessors
                                                     .authentication(new AuthenticationForControllerTests(user)))
@@ -291,7 +291,7 @@ class SettingsControllerTests {
                 },
                 () -> mockMvc.perform(
                                 MockMvcRequestBuilders
-                                        .get("/settings/deleteAccount")
+                                        .post("/settings/deleteAccount")
                                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                                         .with(SecurityMockMvcRequestPostProcessors
                                                 .authentication(new AuthenticationForControllerTests(user)))

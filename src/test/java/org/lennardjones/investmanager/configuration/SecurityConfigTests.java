@@ -45,7 +45,7 @@ class SecurityConfigTests {
                 .build();
 
         user = new User();
-        user.setId(1L);
+        user.setId(0L);
         user.setUsername("username");
         user.setPassword("password");
     }
@@ -96,29 +96,6 @@ class SecurityConfigTests {
         }
 
         @Test
-        void getSettingsTest() {
-            assertAll(
-                    () -> mockMvc.perform(
-                                    MockMvcRequestBuilders
-                                            .get("/settings/deleteAccount")
-                            )
-                            .andExpect(MockMvcResultMatchers.status().is(302))
-                            .andExpect(MockMvcResultMatchers.redirectedUrlPattern("**/login"))
-                            .andExpect(SecurityMockMvcResultMatchers.unauthenticated()),
-                    () -> mockMvc.perform(
-                                    MockMvcRequestBuilders
-                                            .get("/settings/deleteAccount")
-                                            .with(SecurityMockMvcRequestPostProcessors.csrf())
-                                            .with(SecurityMockMvcRequestPostProcessors
-                                                    .authentication(new AuthenticationForControllerTests(user)))
-                                            .param("confirmation", "confirmation")
-                            )
-                            .andExpect(MockMvcResultMatchers.redirectedUrl("/login"))
-                            .andExpect(SecurityMockMvcResultMatchers.unauthenticated())
-            );
-        }
-
-        @Test
         void postSettingsTest() {
             assertAll(
                     () -> mockMvc.perform(
@@ -147,6 +124,22 @@ class SecurityConfigTests {
                                             .param("passwordConfirmation", "newPassword")
                             )
                             .andExpect(MockMvcResultMatchers.status().is(403))
+                            .andExpect(SecurityMockMvcResultMatchers.unauthenticated()),
+                    () -> mockMvc.perform(
+                                    MockMvcRequestBuilders
+                                            .post("/settings/deleteAccount")
+                            )
+                            .andExpect(MockMvcResultMatchers.status().is(403))
+                            .andExpect(SecurityMockMvcResultMatchers.unauthenticated()),
+                    () -> mockMvc.perform(
+                                    MockMvcRequestBuilders
+                                            .post("/settings/deleteAccount")
+                                            .with(SecurityMockMvcRequestPostProcessors.csrf())
+                                            .with(SecurityMockMvcRequestPostProcessors
+                                                    .authentication(new AuthenticationForControllerTests(user)))
+                                            .param("confirmation", "confirmation")
+                            )
+                            .andExpect(MockMvcResultMatchers.redirectedUrl("/login"))
                             .andExpect(SecurityMockMvcResultMatchers.unauthenticated())
             );
         }
