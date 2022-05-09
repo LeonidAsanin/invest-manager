@@ -36,7 +36,7 @@ public class SaleController {
         var username = user.getUsername();
         var productName = sale.getName();
 
-        /* Validating presence of enough amount products to sell considering purchase and sale dates */
+        /* Validating presence of enough product amount to sell considering purchase and sale dates */
         var purchaseList = purchaseService.getListByUsernameAndProductName(username, productName);
         var saleList = saleService.getListByUsernameAndProductName(username, productName);
         saleList.add(sale);
@@ -86,7 +86,7 @@ public class SaleController {
         var saleId = sale.getId();
         var productName = sale.getName();
 
-        /* Validating presence of enough amount products to sell considering purchase and sale dates */
+        /* Validating presence of enough product amount to sell considering purchase and sale dates */
         var purchaseList = purchaseService.getListByUsername(username);
         var previousSaleList = saleService.getListByUsername(username);
         var saleList = previousSaleList.stream()

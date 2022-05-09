@@ -49,7 +49,7 @@ public class PurchaseController {
         var username = user.getUsername();
         var productName = purchaseService.getNameById(id);
 
-        /* Validating presence of enough amount products to sell considering purchase and sale dates */
+        /* Validating presence of enough product amount to sell considering purchase and sale dates */
         var purchaseList = purchaseService.getListByUsernameAndProductName(username, productName)
                 .stream()
                 .filter(p -> !p.getId().equals(id))
@@ -77,7 +77,7 @@ public class PurchaseController {
         var purchaseId = purchase.getId();
         var productName = purchase.getName(); //product name can be changed
 
-        /* Validating presence of enough amount products to sell considering purchase and sale dates */
+        /* Validating presence of enough product amount to sell considering purchase and sale dates */
         var previousPurchaseList = purchaseService.getListByUsername(username);
         var purchaseList = previousPurchaseList.stream()
                 .filter(p -> !p.getId().equals(purchaseId))
