@@ -1,12 +1,12 @@
 # invest-manager
 
 ## Table of content
-* [General info](#General info)
+* [General](#General)
 * [Technologies](#Technologies)
 * [Launch](#Launch)
 * [Developer](#Developer)
 
-## General info
+## General
 Manager of your investment portfolio.
 
 This project represents account-based web application 
