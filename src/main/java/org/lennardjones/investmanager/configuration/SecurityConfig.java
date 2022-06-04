@@ -36,23 +36,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .authorizeRequests()
-                    .antMatchers("/account", "/product").authenticated()
-                    .antMatchers("/product/calculate", "/product/edit").authenticated()
-                    .antMatchers("/purchase/delete/*", "/purchase/edit/*",
-                            "/purchase/save/*", "/purchase/add").authenticated()
-                    .antMatchers("/sale/delete/*", "/sale/edit/*",
-                            "/sale/save/*", "/sale/add").authenticated()
-                    .antMatchers("/settings", "/settings/editUsername",
-                            "/settings/saveNewUsername", "/settings/editPassword",
-                            "/settings/saveNewPassword", "/settings/deleteAccount*").authenticated()
-                    .antMatchers("/**").permitAll()
+                    .antMatchers("/login", "/register", "/error").permitAll()
+                    .antMatchers("/styles/*").permitAll()
+                    .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/account")
-                .and()
-                .logout()
-                    .logoutSuccessUrl("/login")
+                    .formLogin()
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/account")
                 .and()
                 .build();
     }

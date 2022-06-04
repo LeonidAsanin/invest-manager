@@ -59,7 +59,7 @@ class SecurityConfigTests {
                         .with(SecurityMockMvcRequestPostProcessors
                                 .authentication(new AuthenticationForControllerTests()))
                 )
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/login"))
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/login?logout"))
                 .andExpect(SecurityMockMvcResultMatchers.unauthenticated());
     }
 
