@@ -33,16 +33,20 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, UserDetailsService userDetailsService) throws Exception {
         return httpSecurity
                 .authorizeRequests()
                     .antMatchers("/login", "/register", "/error").permitAll()
                     .antMatchers("/styles/*").permitAll()
+                    .antMatchers("/images/*").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
                         .loginPage("/login")
                         .defaultSuccessUrl("/account")
+                .and()
+                    .rememberMe()
+                        .userDetailsService(userDetailsService)
                 .and()
                 .build();
     }

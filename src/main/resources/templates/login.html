@@ -22,7 +22,10 @@
                     <label for="password">Password</label>
                     <input type="password" required id="password" th:field="*{password}"/>
                 </div>
-                <button type="submit">Log in</button>
+                <div>
+                    Remember me: <input type="checkbox" name="remember-me" />
+                    <button type="submit">Log in</button>
+                </div>
             </fieldset>
 
             <div class="errorMessage" th:if="${error} != null" th:text="${error}">
