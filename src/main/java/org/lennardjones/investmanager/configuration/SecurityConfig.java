@@ -24,16 +24,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(UserRepository userRepository) {
-        return username -> {
-            var optionalAccount = userRepository.findByUsername(username);
-            return optionalAccount
-                    .orElseThrow(() -> new UsernameNotFoundException("User '" + username + "' not found"));
-        };
-    }
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, UserDetailsService userDetailsService) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity,
+                                                   UserDetailsService userService) throws Exception {
         return httpSecurity
                 .authorizeRequests()
                     .antMatchers("/login", "/register", "/error").permitAll()
@@ -46,7 +38,7 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/account")
                 .and()
                     .rememberMe()
-                        .userDetailsService(userDetailsService)
+                        .userDetailsService(userService)
                 .and()
                 .build();
     }

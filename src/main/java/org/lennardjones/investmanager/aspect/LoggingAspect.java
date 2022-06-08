@@ -48,8 +48,10 @@ public class LoggingAspect {
         var user = new User();
             user.setUsername("Unknown");
         if (SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal() instanceof User userObject) {
+                                 .getAuthentication() != null
+            && SecurityContextHolder.getContext()
+                                    .getAuthentication()
+                                    .getPrincipal() instanceof User userObject) {
             user = userObject;
         }
 

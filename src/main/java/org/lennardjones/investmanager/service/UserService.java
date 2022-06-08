@@ -2,6 +2,9 @@ package org.lennardjones.investmanager.service;
 
 import org.lennardjones.investmanager.entity.User;
 import org.lennardjones.investmanager.repository.UserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,7 +14,7 @@ import org.springframework.stereotype.Service;
  * @author lennardjones
  */
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
@@ -32,5 +35,12 @@ public class UserService {
 
     public void deleteById(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        var optionalAccount = userRepository.findByUsername(username);
+        return optionalAccount
+                .orElseThrow(() -> new UsernameNotFoundException("User '" + username + "' not found"));
     }
 }
