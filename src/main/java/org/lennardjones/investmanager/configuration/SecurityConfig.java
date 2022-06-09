@@ -1,11 +1,9 @@
 package org.lennardjones.investmanager.configuration;
 
-import org.lennardjones.investmanager.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -25,7 +23,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity,
-                                                   UserDetailsService userService) throws Exception {
+                                                   UserDetailsService userDetailsService) throws Exception {
         return httpSecurity
                 .authorizeRequests()
                     .antMatchers("/login", "/register", "/error").permitAll()
@@ -38,7 +36,7 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/account")
                 .and()
                     .rememberMe()
-                        .userDetailsService(userService)
+                        .userDetailsService(userDetailsService)
                 .and()
                 .build();
     }
